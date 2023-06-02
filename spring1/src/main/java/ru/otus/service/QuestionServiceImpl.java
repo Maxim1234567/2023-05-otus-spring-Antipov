@@ -6,6 +6,7 @@ import ru.otus.dao.QuestionDao;
 @RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
     private final ConvertQuestionToStringService convertQuestionToStringService;
+
     private final QuestionDao questionDao;
 
     @Override

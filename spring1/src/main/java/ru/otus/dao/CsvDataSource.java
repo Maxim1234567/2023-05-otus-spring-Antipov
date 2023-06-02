@@ -4,14 +4,20 @@ import lombok.Getter;
 import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.Arrays;
 
 @Getter
 public class CsvDataSource {
     private List<Question> questions = new ArrayList<>();
 
     public CsvDataSource(String nameFileQuestions, String delimiter) {
-        try(Scanner scanner = new Scanner(Objects.requireNonNull(CsvDataSource.class.getResourceAsStream(nameFileQuestions)), "UTF-8")) {
+        try(Scanner scanner = new Scanner(
+                Objects.requireNonNull(CsvDataSource.class.getResourceAsStream(nameFileQuestions)),
+                "UTF-8")) {
             while(scanner.hasNextLine()) {
                 String line = scanner.nextLine();
 

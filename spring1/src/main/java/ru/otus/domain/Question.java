@@ -11,5 +11,6 @@ import java.util.List;
 @EqualsAndHashCode
 public class Question {
     private final String question;
+
     private final List<Answer> answers;
 }
