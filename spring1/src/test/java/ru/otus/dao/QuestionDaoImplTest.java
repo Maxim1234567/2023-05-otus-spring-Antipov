@@ -11,8 +11,6 @@ import ru.otus.domain.Question;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,25 +38,5 @@ public class QuestionDaoImplTest {
 
         assertThat(questionDao.getAllQuestions())
                 .isEqualTo(questions);
-    }
-
-    @Test
-    void correctReturnQuestionByIndex() {
-        given(csvDataSource.getQuestionByNumber(eq(1)))
-                .willReturn(question);
-
-        assertThat(questionDao.findQuestionByNumber(1))
-                .isEqualTo(question);
-    }
-
-    @Test
-    void notCorrectIndex() {
-        given(csvDataSource.getQuestionByNumber(eq(BIG_INDEX)))
-                .willThrow(QuestionNotFoundException.class);
-
-        assertThrows(
-                QuestionNotFoundException.class,
-                () -> questionDao.findQuestionByNumber(BIG_INDEX)
-        );
     }
 }

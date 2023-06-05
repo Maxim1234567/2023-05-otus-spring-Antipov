@@ -2,14 +2,12 @@ package ru.otus.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.otus.dao.CsvDataSource;
 import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CsvDataSourceTest {
     private CsvDataSource csvDataSource;
@@ -35,18 +33,5 @@ public class CsvDataSourceTest {
     void correctParseFileCsv() {
         List<Question> result = csvDataSource.getAllQuestions();
         assertEquals(result, questions);
-    }
-
-    @Test
-    void correctReturnQuestionByIndex() {
-        Question question = csvDataSource.getQuestionByNumber(0);
-        assertEquals(questions.get(0), question);
-    }
-
-    @Test
-    void notCorrectIndex() {
-        assertThrows(
-                QuestionNotFoundException.class, () -> csvDataSource.getQuestionByNumber(questions.size())
-        );
     }
 }

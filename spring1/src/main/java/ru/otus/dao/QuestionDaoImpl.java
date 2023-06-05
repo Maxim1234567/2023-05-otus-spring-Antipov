@@ -13,9 +13,4 @@ public class QuestionDaoImpl implements QuestionDao {
     public List<Question> getAllQuestions() {
         return dataSource.getAllQuestions();
     }
-
-    @Override
-    public Question findQuestionByNumber(int number) {
-        return dataSource.getQuestionByNumber(number);
-    }
 }

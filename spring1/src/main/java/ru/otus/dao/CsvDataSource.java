@@ -37,12 +37,4 @@ public class CsvDataSource {
 
         return questions;
     }
-
-    public Question getQuestionByNumber(int number) {
-        try {
-            return getAllQuestions().get(number);
-        } catch (IndexOutOfBoundsException e) {
-            throw new QuestionNotFoundException();
-        }
-    }
 }
