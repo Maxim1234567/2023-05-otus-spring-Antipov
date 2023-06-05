@@ -12,7 +12,7 @@
         <constructor-arg index="0" ref="dataSource"/>
     </bean>
 
-    <bean id="showQuestionService" class="ru.otus.service.ConvertQuestionToStringToStringServiceImpl"/>
+    <bean id="showQuestionService" class="ru.otus.service.ConvertQuestionServiceImpl"/>
 
     <bean id="questionService" class="ru.otus.service.QuestionServiceImpl">
         <constructor-arg index="0" ref="showQuestionService"/>

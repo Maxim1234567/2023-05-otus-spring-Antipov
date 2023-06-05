@@ -16,14 +16,14 @@ public class QuestionServiceTest {
     private final int BIG_INDEX = Integer.MAX_VALUE;
 
     @Mock
-    private ConvertQuestionToStringService convertQuestionToStringService;
+    private ConvertQuestionService convertQuestionService;
     @Mock
     private QuestionDao questionDao;
     private QuestionService questionService;
 
     @BeforeEach
     void setUp() {
-        questionService = new QuestionServiceImpl(convertQuestionToStringService, questionDao);
+        questionService = new QuestionServiceImpl(convertQuestionService, questionDao);
     }
 
     @Test

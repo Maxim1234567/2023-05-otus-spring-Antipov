@@ -1,6 +1,7 @@
 package ru.otus.dao;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
 
@@ -10,11 +11,15 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.Arrays;
 
-@Getter
+@RequiredArgsConstructor
 public class CsvDataSource {
-    private List<Question> questions = new ArrayList<>();
+    private final String nameFileQuestions;
+    private final String delimiter;
 
-    public CsvDataSource(String nameFileQuestions, String delimiter) {
+
+    public List<Question> getAllQuestions() {
+        List<Question> questions = new ArrayList<>();
+
         try(Scanner scanner = new Scanner(
                 Objects.requireNonNull(CsvDataSource.class.getResourceAsStream(nameFileQuestions)),
                 "UTF-8")) {
@@ -29,11 +34,13 @@ public class CsvDataSource {
                 questions.add(new Question(question, answers));
             }
         }
+
+        return questions;
     }
 
     public Question getQuestionByNumber(int number) {
         try {
-            return questions.get(number);
+            return getAllQuestions().get(number);
         } catch (IndexOutOfBoundsException e) {
             throw new QuestionNotFoundException();
         }

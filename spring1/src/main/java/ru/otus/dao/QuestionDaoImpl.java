@@ -11,7 +11,7 @@ public class QuestionDaoImpl implements QuestionDao {
 
     @Override
     public List<Question> getAllQuestions() {
-        return dataSource.getQuestions();
+        return dataSource.getAllQuestions();
     }
 
     @Override

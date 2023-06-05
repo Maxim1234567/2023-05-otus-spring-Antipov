@@ -33,7 +33,7 @@ public class CsvDataSourceTest {
 
     @Test
     void correctParseFileCsv() {
-        List<Question> result = csvDataSource.getQuestions();
+        List<Question> result = csvDataSource.getAllQuestions();
         assertEquals(result, questions);
     }
 

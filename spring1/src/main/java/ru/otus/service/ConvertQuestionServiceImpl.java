@@ -3,7 +3,7 @@ package ru.otus.service;
 
 import ru.otus.domain.Question;
 
-public class ConvertQuestionToStringToStringServiceImpl implements ConvertQuestionToStringService {
+public class ConvertQuestionServiceImpl implements ConvertQuestionService {
     @Override
     public String questionToString(Question question) {
         StringBuilder questionAsString = new StringBuilder();

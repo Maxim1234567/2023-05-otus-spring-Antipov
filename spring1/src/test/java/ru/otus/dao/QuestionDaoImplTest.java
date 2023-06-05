@@ -35,7 +35,7 @@ public class QuestionDaoImplTest {
 
     @Test
     void correctReturnAllQuestion() {
-        given(csvDataSource.getQuestions())
+        given(csvDataSource.getAllQuestions())
                 .willReturn(questions);
 
         assertThat(questionDao.getAllQuestions())

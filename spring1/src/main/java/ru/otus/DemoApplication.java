@@ -10,7 +10,5 @@ public class DemoApplication {
         QuestionService service = context.getBean(QuestionService.class);
 
         service.showAllQuestion();
-
-        context.close();
     }
 }

@@ -3,6 +3,6 @@ package ru.otus.service;
 
 import ru.otus.domain.Question;
 
-public interface ConvertQuestionToStringService {
+public interface ConvertQuestionService {
     String questionToString(Question question);
 }

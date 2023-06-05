@@ -14,8 +14,8 @@ public class ConvertQuestionToStringToStringServiceTest {
     private final String ANSWER2 = "Test Answer 2";
     private final String ANSWER3 = "Test Answer 3";
 
-    private ConvertQuestionToStringService convertQuestionToStringService
-            = new ConvertQuestionToStringToStringServiceImpl();
+    private ConvertQuestionService convertQuestionService
+            = new ConvertQuestionServiceImpl();
     private Question question = new Question(
             QUESTION,
             List.of(new Answer(ANSWER1), new Answer(ANSWER2), new Answer(ANSWER3))
@@ -23,7 +23,7 @@ public class ConvertQuestionToStringToStringServiceTest {
 
     @Test
     void correctConvertQuestionToString() {
-        String result = convertQuestionToStringService.questionToString(question);
+        String result = convertQuestionService.questionToString(question);
 
         assertTrue(result.contains(QUESTION));
         assertTrue(result.contains(ANSWER1));
