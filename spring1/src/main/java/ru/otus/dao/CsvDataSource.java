@@ -1,6 +1,5 @@
 package ru.otus.dao;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
