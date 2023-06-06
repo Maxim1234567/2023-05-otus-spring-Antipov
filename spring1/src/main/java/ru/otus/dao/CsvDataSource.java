@@ -16,7 +16,6 @@ public class CsvDataSource {
     private final String nameFileQuestions;
     private final String delimiter;
 
-
     public List<Question> getAllQuestions() {
         List<Question> questions = new ArrayList<>();
 
