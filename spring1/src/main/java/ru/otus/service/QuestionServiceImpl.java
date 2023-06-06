@@ -12,7 +12,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void showAllQuestion() {
         questionDao.getAllQuestions().forEach(q ->
-                System.out.println(convertQuestionService.questionToString(q))
+                System.out.println(convertQuestionService.convert(q))
         );
     }
 }

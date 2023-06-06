@@ -5,7 +5,7 @@ import ru.otus.domain.Question;
 
 public class ConvertQuestionServiceImpl implements ConvertQuestionService {
     @Override
-    public String questionToString(Question question) {
+    public String convert(Question question) {
         StringBuilder questionAsString = new StringBuilder();
         
         questionAsString.append(question.getQuestion())

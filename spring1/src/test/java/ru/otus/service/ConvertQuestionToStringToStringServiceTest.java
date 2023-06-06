@@ -23,7 +23,7 @@ public class ConvertQuestionToStringToStringServiceTest {
 
     @Test
     void correctConvertQuestionToString() {
-        String result = convertQuestionService.questionToString(question);
+        String result = convertQuestionService.convert(question);
 
         assertTrue(result.contains(QUESTION));
         assertTrue(result.contains(ANSWER1));
