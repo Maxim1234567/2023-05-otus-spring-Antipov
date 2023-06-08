@@ -8,7 +8,7 @@
         <constructor-arg index="1" value=";"/>
     </bean>
 
-    <bean id="showQuestionService" class="ru.otus.service.ConvertQuestionServiceImpl"/>
+    <bean id="showQuestionService" class="ru.otus.service.ConvertTestQuestionServiceImpl"/>
 
     <bean id="questionService" class="ru.otus.service.QuestionServiceImpl">
         <constructor-arg index="0" ref="showQuestionService"/>
