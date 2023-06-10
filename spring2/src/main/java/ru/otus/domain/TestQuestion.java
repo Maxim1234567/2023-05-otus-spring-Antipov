@@ -12,7 +12,7 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public class TestQuestion {
-    private final Question question;
-    private final List<Answer> answers;
-    private final Answer correctAnswer;
+    private final String question;
+    private final List<String> answers;
+    private final String correctAnswer;
 }

@@ -3,9 +3,10 @@ package ru.otus.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.otus.dao.QuestionDao;
+import ru.otus.dao.CsvQuestionDao;
 import ru.otus.domain.*;
 
 import java.util.List;
@@ -22,38 +23,36 @@ public class QuestionServiceTest {
     private ConvertTestQuestionService convertTestQuestionService;
 
     @Mock
-    private QuestionDao questionDao;
+    private CsvQuestionDao csvQuestionDao;
 
     @Mock
     private UserInteraction userInteraction;
 
-    private QuestionService questionService;
+    @Mock
+    private IOService ioService;
+
+    @InjectMocks
+    private QuestionServiceImpl questionService;
 
     private List<TestQuestion> questions;
 
     @BeforeEach
     public void setUp() {
-        questionService = new QuestionServiceImpl(
-                convertTestQuestionService,
-                questionDao,
-                userInteraction
-        );
-
         questions = List.of(
                 new TestQuestion(
-                        new Question("Test Answer 1?"),
-                        List.of(new Answer("1"), new Answer("1"), new Answer("1")),
-                        new Answer("1")
+                        "Test Answer 1?",
+                        List.of("1", "1", "1"),
+                        "1"
                 ),
                 new TestQuestion(
-                        new Question("Test Answer 2?"),
-                        List.of(new Answer("2"), new Answer("2")),
-                        new Answer("2")
+                        "Test Answer 2?",
+                        List.of("2", "2"),
+                        "2"
                 ),
                 new TestQuestion(
-                        new Question("Test Answer 3?"),
-                        List.of(new Answer("3")),
-                        new Answer("3")
+                        "Test Answer 3?",
+                        List.of("3"),
+                        "3"
                 )
         );
     }
@@ -81,7 +80,7 @@ public class QuestionServiceTest {
 
     @Test
     public void askQuestion() {
-        given(questionDao.getAllQuestions())
+        given(csvQuestionDao.getAllQuestions())
                 .willReturn(questions);
 
         List<Result> result = questionService.askUserQuestions();

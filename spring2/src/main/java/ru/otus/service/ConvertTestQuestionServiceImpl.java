@@ -17,7 +17,7 @@ public class ConvertTestQuestionServiceImpl implements ConvertTestQuestionServic
             questionAsString.append("\t")
                     .append(i + 1)
                     .append(". ")
-                    .append(question.getAnswers().get(i).getAnswer())
+                    .append(question.getAnswers().get(i))
                     .append("\n");
         }
         

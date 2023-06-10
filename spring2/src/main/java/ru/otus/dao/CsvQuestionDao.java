@@ -4,6 +4,6 @@ import ru.otus.domain.TestQuestion;
 
 import java.util.List;
 
-public interface QuestionDao {
+public interface CsvQuestionDao {
     List<TestQuestion> getAllQuestions();
 }

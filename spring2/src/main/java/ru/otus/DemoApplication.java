@@ -5,9 +5,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import ru.otus.domain.Result;
-import ru.otus.domain.UserData;
-import ru.otus.service.QuestionService;
+import ru.otus.service.DemoInteraction;
 
 import java.util.List;
 
@@ -19,18 +17,7 @@ public class DemoApplication {
         ApplicationContext context =
                 new AnnotationConfigApplicationContext(DemoApplication.class);
 
-        QuestionService questionService = context.getBean(QuestionService.class);
-
-        UserData userData = questionService.fillUserData();
-        List<Result> results = questionService.askUserQuestions();
-
-        System.out.println();
-        System.out.println(userData.getFirstName() + " " + userData.getLastName());
-        results.forEach(result -> {
-            System.out.println("Question: " + result.getQuestion().getQuestion());
-            System.out.println("Your Answer: " + result.getAnswerUser().getAnswer());
-            System.out.println("Correct Answer: " + result.getCorrectAnswer().getAnswer());
-            System.out.println();
-        });
+        DemoInteraction interaction = context.getBean(DemoInteraction.class);
+        interaction.interaction();
     }
 }

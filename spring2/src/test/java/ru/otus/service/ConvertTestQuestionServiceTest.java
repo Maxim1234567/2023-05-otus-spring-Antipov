@@ -1,8 +1,6 @@
 package ru.otus.service;
 
 import org.junit.jupiter.api.Test;
-import ru.otus.domain.Answer;
-import ru.otus.domain.Question;
 import ru.otus.domain.TestQuestion;
 
 import java.util.List;
@@ -21,9 +19,9 @@ public class ConvertTestQuestionServiceTest {
     private ConvertTestQuestionService convertTestQuestionService
             = new ConvertTestQuestionServiceImpl();
     private TestQuestion question = new TestQuestion(
-            new Question(QUESTION),
-            List.of(new Answer(ANSWER1), new Answer(ANSWER2), new Answer(ANSWER3)),
-            new Answer(CORRECT_ANSWER)
+            QUESTION,
+            List.of(ANSWER1, ANSWER2, ANSWER3),
+            CORRECT_ANSWER
     );
 
     @Test
