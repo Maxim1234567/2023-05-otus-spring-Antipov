@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import ru.otus.service.DemoInteraction;
 
-import java.util.List;
-
 @PropertySource("classpath:/application.properties")
 @Configuration
 @ComponentScan

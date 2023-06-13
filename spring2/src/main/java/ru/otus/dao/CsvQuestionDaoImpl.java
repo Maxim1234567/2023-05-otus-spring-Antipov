@@ -4,17 +4,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import ru.otus.domain.TestQuestion;
 
-import java.util.*;
+import java.util.List;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Arrays;
 
 @Repository
 public class CsvQuestionDaoImpl implements CsvQuestionDao {
     private final String nameFileQuestions;
+
     private final String delimiter;
 
     public CsvQuestionDaoImpl(
             @Value("${name.file.questions}") String nameFileQuestions,
-            @Value("${delimiter}") String delimiter
-    ) {
+            @Value("${delimiter}") String delimiter) {
         this.nameFileQuestions = "/" + nameFileQuestions;
         this.delimiter = delimiter;
     }

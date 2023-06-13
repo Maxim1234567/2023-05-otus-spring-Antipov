@@ -3,6 +3,7 @@ package ru.otus.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.domain.Result;
@@ -25,15 +26,8 @@ public class UserInteractionTest {
     @Mock
     private IOService ioService;
 
+    @InjectMocks
     private UserInteraction userInteraction;
-
-    @BeforeEach
-    public void setUp() {
-        userInteraction = new UserInteractionImpl(
-                convert,
-                ioService
-        );
-    }
 
     @Test
     public void askFirstNameTest() {

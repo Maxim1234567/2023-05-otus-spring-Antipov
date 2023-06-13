@@ -13,6 +13,8 @@ import java.util.List;
 @ToString
 public class TestQuestion {
     private final String question;
+
     private final List<String> answers;
+
     private final String correctAnswer;
 }

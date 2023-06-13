@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode
 public class Result {
     private final String question;
+
     private final String answerUser;
+
     private final String correctAnswer;
 }
