@@ -3,12 +3,12 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="questionDao" class="ru.otus.dao.QuestionDaoImpl">
+    <bean id="questionDao" class="ru.otus.dao.CsvQuestionDaoImpl">
         <constructor-arg index="0" value="/data.csv"/>
         <constructor-arg index="1" value=";"/>
     </bean>
 
-    <bean id="showQuestionService" class="ru.otus.service.ConvertQuestionServiceImpl"/>
+    <bean id="showQuestionService" class="ru.otus.service.ConvertTestQuestionServiceImpl"/>
 
     <bean id="questionService" class="ru.otus.service.QuestionServiceImpl">
         <constructor-arg index="0" ref="showQuestionService"/>
