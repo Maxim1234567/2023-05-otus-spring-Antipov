@@ -10,7 +10,9 @@ import ru.otus.logging.Logging;
 @RequiredArgsConstructor
 public class UserInteractionImpl implements UserInteraction {
     private final ConvertTestQuestionService convert;
+
     private final IOService ioService;
+
     private final ApplicationMessageSource messageSource;
 
     @Override

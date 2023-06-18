@@ -5,12 +5,19 @@ import ru.otus.props.ApplicationProperties;
 import ru.otus.domain.TestQuestion;
 import ru.otus.service.ApplicationMessageSource;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Objects;
+
 
 @Repository
 public class CsvQuestionDaoImpl implements CsvQuestionDao {
     private final ApplicationMessageSource messageSource;
+
     private final ApplicationProperties props;
+
     private final String nameFileQuestions;
 
     public CsvQuestionDaoImpl(

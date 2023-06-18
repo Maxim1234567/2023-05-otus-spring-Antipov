@@ -9,6 +9,7 @@ import ru.otus.props.ApplicationProperties;
 @RequiredArgsConstructor
 public class ApplicationMessageSourceImpl implements ApplicationMessageSource {
     private final MessageSource messageSource;
+
     private final ApplicationProperties props;
 
     @Override

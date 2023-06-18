@@ -9,6 +9,7 @@ import java.util.Locale;
 @Getter
 public class ApplicationProperties {
     private final String delimiter;
+
     private final Locale locale;
 
     public ApplicationProperties(String delimiter, Locale locale) {

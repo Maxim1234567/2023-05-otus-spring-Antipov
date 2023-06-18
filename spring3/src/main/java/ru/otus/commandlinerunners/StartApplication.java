@@ -3,7 +3,6 @@ package ru.otus.commandlinerunners;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import ru.otus.service.DemoInteraction;
 

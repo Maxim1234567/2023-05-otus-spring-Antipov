@@ -1,11 +1,9 @@
 package ru.otus.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.Result;
 import ru.otus.domain.UserData;
-import ru.otus.props.ApplicationProperties;
 
 import java.util.List;
 
@@ -13,8 +11,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DemoInteractionImpl implements DemoInteraction {
     private final QuestionService questionService;
+
     private final IOService ioService;
+
     private final ApplicationMessageSource messageSource;
+
     @Override
     public void interaction() {
         UserData userData = questionService.fillUserData();

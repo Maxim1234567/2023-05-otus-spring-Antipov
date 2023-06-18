@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface QuestionService {
     void showAllQuestion();
+
     UserData fillUserData();
+
     List<Result> askUserQuestions();
 }
