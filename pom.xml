@@ -11,7 +11,14 @@
     <modules>
         <module>spring1</module>
         <module>spring2</module>
+        <module>spring3</module>
     </modules>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.0</version>
+    </parent>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
