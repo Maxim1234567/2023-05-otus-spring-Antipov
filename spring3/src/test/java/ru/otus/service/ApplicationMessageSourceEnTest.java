@@ -15,36 +15,36 @@ public class ApplicationMessageSourceEnTest {
 
     @Test
     public void getFileQuestionTest() {
-        assertEquals(messageSource.getFileQuestion(), "question-test-en.csv");
+        assertEquals(messageSource.getMessage("file-question"), "/question-test-en.csv");
     }
 
     @Test
     public void getTextQuestionTest() {
-        assertEquals(messageSource.getTextQuestion(), "Question");
+        assertEquals(messageSource.getMessage("question"), "Question");
     }
 
     @Test
     public void getTextAnswerUserTest() {
-        assertEquals(messageSource.getTextAnswerUser(), "Your Answer");
+        assertEquals(messageSource.getMessage("answer.user"), "Your Answer");
     }
 
     @Test
     public void getTextAnswerCorrectTest() {
-        assertEquals(messageSource.getTextAnswerCorrect(), "Correct Answer");
+        assertEquals(messageSource.getMessage("answer.correct"), "Correct Answer");
     }
 
     @Test
     public void getTextUserNameTest() {
-        assertEquals(messageSource.getTextUserName(), "Enter your First Name: ");
+        assertEquals(messageSource.getMessage("user.name"), "Enter your First Name: ");
     }
 
     @Test
     public void getTextUserLastnameTest() {
-        assertEquals(messageSource.getTextUserLastname(), "Enter your Last Name: ");
+        assertEquals(messageSource.getMessage("user.lastname"), "Enter your Last Name: ");
     }
 
     @Test
     public void getTextUserAnswerTest() {
-        assertEquals(messageSource.getTextUserAnswer(), "Enter your answer: ");
+        assertEquals(messageSource.getMessage("user.answer"), "Enter your answer: ");
     }
 }

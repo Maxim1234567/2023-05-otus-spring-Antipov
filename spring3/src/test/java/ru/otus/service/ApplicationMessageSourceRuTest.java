@@ -15,36 +15,36 @@ public class ApplicationMessageSourceRuTest {
 
     @Test
     public void getFileQuestionTest() {
-        assertEquals(messageSource.getFileQuestion(), "question-test-ru.csv");
+        assertEquals(messageSource.getMessage("file-question"), "/question-test-ru.csv");
     }
 
     @Test
     public void getTextQuestionTest() {
-        assertEquals(messageSource.getTextQuestion(), "Вопрос");
+        assertEquals(messageSource.getMessage("question"), "Вопрос");
     }
 
     @Test
     public void getTextAnswerUserTest() {
-        assertEquals(messageSource.getTextAnswerUser(), "Ответ пользователя");
+        assertEquals(messageSource.getMessage("answer.user"), "Ответ пользователя");
     }
 
     @Test
     public void getTextAnswerCorrectTest() {
-        assertEquals(messageSource.getTextAnswerCorrect(), "Корректный ответ");
+        assertEquals(messageSource.getMessage("answer.correct"), "Корректный ответ");
     }
 
     @Test
     public void getTextUserNameTest() {
-        assertEquals(messageSource.getTextUserName(), "Введите имя: ");
+        assertEquals(messageSource.getMessage("user.name"), "Введите имя: ");
     }
 
     @Test
     public void getTextUserLastnameTest() {
-        assertEquals(messageSource.getTextUserLastname(), "Введите фамилию: ");
+        assertEquals(messageSource.getMessage("user.lastname"), "Введите фамилию: ");
     }
 
     @Test
     public void getTextUserAnswerTest() {
-        assertEquals(messageSource.getTextUserAnswer(), "Введите ответ: ");
+        assertEquals(messageSource.getMessage("user.answer"), "Введите ответ: ");
     }
 }

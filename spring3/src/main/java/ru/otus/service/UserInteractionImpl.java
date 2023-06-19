@@ -18,7 +18,7 @@ public class UserInteractionImpl implements UserInteraction {
     @Override
     @Logging
     public String askFirstName() {
-        ioService.print(messageSource.getTextUserName());
+        ioService.print(messageSource.getMessage("user.name"));
 
         return ioService.readLine();
     }
@@ -26,7 +26,7 @@ public class UserInteractionImpl implements UserInteraction {
     @Override
     @Logging
     public String askLastName() {
-        ioService.print(messageSource.getTextUserLastname());
+        ioService.print(messageSource.getMessage("user.lastname"));
 
         return ioService.readLine();
     }
@@ -35,7 +35,7 @@ public class UserInteractionImpl implements UserInteraction {
     @Logging
     public Result askQuestion(TestQuestion question) {
         ioService.println(convert.convert(question));
-        ioService.print(messageSource.getTextUserAnswer());
+        ioService.print(messageSource.getMessage("user.answer"));
 
         return new Result(
                 question.getQuestion(),

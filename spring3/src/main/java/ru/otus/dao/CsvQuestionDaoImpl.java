@@ -26,7 +26,7 @@ public class CsvQuestionDaoImpl implements CsvQuestionDao {
     ) {
         this.messageSource = messageSource;
         this.props = props;
-        this.nameFileQuestions = "/" + this.messageSource.getFileQuestion();
+        this.nameFileQuestions = this.messageSource.getMessage("file-question");
     }
 
     @Override

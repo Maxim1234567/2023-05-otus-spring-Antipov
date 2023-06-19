@@ -82,7 +82,7 @@ public class UserInteractionTest {
                 .willReturn(testQuestion.getQuestion());
         given(ioService.readLine())
                 .willReturn("User Answer");
-        given(messageSource.getTextUserAnswer())
+        given(messageSource.getMessage(eq("user.answer")))
                 .willReturn("Enter your answer: ");
 
         var result = new Result(

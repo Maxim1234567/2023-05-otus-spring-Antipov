@@ -1,9 +1,7 @@
 package ru.otus.service;
 
-public interface IOService {
-    void println(String line);
+import ru.otus.service.utils.InputService;
+import ru.otus.service.utils.OutputService;
 
-    void print(String line);
-
-    String readLine();
+public interface IOService extends InputService, OutputService {
 }

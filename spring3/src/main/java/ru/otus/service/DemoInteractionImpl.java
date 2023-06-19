@@ -24,9 +24,9 @@ public class DemoInteractionImpl implements DemoInteraction {
         ioService.println("");
         ioService.println(userData.getFirstName() + " " + userData.getLastName());
         results.forEach(result -> {
-            ioService.println(messageSource.getTextQuestion() + ": " + result.getQuestion());
-            ioService.println(messageSource.getTextAnswerUser() + ": " + result.getAnswerUser());
-            ioService.println(messageSource.getTextAnswerCorrect() + ": " + result.getCorrectAnswer());
+            ioService.println(messageSource.getMessage("question") + ": " + result.getQuestion());
+            ioService.println(messageSource.getMessage("answer.user") + ": " + result.getAnswerUser());
+            ioService.println(messageSource.getMessage("answer.correct") + ": " + result.getCorrectAnswer());
             ioService.println("");
         });
     }

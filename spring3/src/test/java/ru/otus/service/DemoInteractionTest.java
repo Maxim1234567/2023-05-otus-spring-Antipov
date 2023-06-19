@@ -47,11 +47,11 @@ public class DemoInteractionTest {
                 .willReturn(userData);
         given(questionService.askUserQuestions())
                 .willReturn(results);
-        given(messageSource.getTextQuestion())
+        given(messageSource.getMessage(eq("question")))
                 .willReturn("Question");
-        given(messageSource.getTextAnswerUser())
+        given(messageSource.getMessage(eq("answer.user")))
                 .willReturn("Your Answer");
-        given(messageSource.getTextAnswerCorrect())
+        given(messageSource.getMessage(eq("answer.correct")))
                 .willReturn("Correct Answer");
 
         demoInteraction.interaction();
