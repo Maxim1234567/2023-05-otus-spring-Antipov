@@ -4,22 +4,43 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.domain.TestQuestion;
+import ru.otus.props.ApplicationProperties;
+import ru.otus.service.ApplicationMessageSource;
+import ru.otus.service.ApplicationMessageSourceImpl;
 
 import java.util.List;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
-@ActiveProfiles("test-ru")
 public class CsvQuestionDaoRuTest {
-    @Autowired
+
     private CsvQuestionDao csvQuestionDao;
     private List<TestQuestion> questions;
 
     @BeforeEach
     public void setUp() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasenames("i18n/appmessages");
+        messageSource.setDefaultEncoding("UTF-8");
+
+        ApplicationProperties applicationProperties = new ApplicationProperties(
+                ";", new Locale("ru")
+        );
+
+        ApplicationMessageSource applicationMessageSource = new ApplicationMessageSourceImpl(
+                messageSource,
+                applicationProperties
+        );
+
+        csvQuestionDao = new CsvQuestionDaoImpl(
+                applicationMessageSource,
+                applicationProperties
+        );
+
         questions = List.of(
                 new TestQuestion(
                         "Тестовый вопрос 1?",

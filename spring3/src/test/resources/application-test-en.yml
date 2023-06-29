@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   messages:
     basename: "i18n/appmessages"
     encoding: "UTF-8"
