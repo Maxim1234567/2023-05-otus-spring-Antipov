@@ -30,7 +30,7 @@ public class UserInteractionTest {
     private ApplicationMessageSource messageSource;
 
     @Autowired
-    private UserInteractionImpl userInteraction;
+    private UserInteraction userInteraction;
 
     @Test
     public void askFirstNameTest() {

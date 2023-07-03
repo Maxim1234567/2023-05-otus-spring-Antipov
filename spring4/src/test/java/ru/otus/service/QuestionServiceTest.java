@@ -30,7 +30,7 @@ public class QuestionServiceTest {
     private UserInteraction userInteraction;
 
     @Autowired
-    private QuestionServiceImpl questionService;
+    private QuestionService questionService;
 
     private List<TestQuestion> questions;
 

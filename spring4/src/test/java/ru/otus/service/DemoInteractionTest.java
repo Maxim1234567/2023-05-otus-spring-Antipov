@@ -28,7 +28,7 @@ public class DemoInteractionTest {
     private ApplicationMessageSource messageSource;
 
     @Autowired
-    private DemoInteractionImpl demoInteraction;
+    private DemoInteraction demoInteraction;
 
     private UserData userData;
     private List<Result> results;
