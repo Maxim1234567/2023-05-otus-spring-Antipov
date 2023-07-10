@@ -20,8 +20,6 @@ import java.util.List;
 public class ApplicationEventsCommands {
     private final QuestionService questionService;
 
-    private final IOService ioService;
-
     private final ApplicationMessageSource messageSource;
 
     private UserData userData;
@@ -44,13 +42,7 @@ public class ApplicationEventsCommands {
     @ShellMethod(value = "Show result command", key = {"s", "show"})
     @ShellMethodAvailability(value = "isTestPassed")
     public String showResult() {
-        ioService.println(userData.getFirstName() + " " + userData.getLastName());
-        results.forEach(result -> {
-            ioService.println(messageSource.getMessage("question") + ": " + result.getQuestion());
-            ioService.println(messageSource.getMessage("answer.user") + ": " + result.getAnswerUser());
-            ioService.println(messageSource.getMessage("answer.correct") + ": " + result.getCorrectAnswer());
-            ioService.println("");
-        });
+        questionService.printResult(userData, results);
 
         return "Result";
     }

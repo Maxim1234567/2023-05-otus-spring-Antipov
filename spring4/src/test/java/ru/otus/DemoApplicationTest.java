@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.domain.Result;
 import ru.otus.domain.TestQuestion;
+import ru.otus.domain.UserData;
 import ru.otus.service.DemoInteraction;
 import ru.otus.service.IOService;
 import ru.otus.service.IOServiceStreams;
@@ -95,10 +96,8 @@ public class DemoApplicationTest {
                 question3.getCorrectAnswer()
         );
 
-        given(userInteraction.askFirstName())
-                .willReturn("Maxim");
-        given(userInteraction.askLastName())
-                .willReturn("Antipov");
+        given(userInteraction.createUser())
+                .willReturn(new UserData("Maxim", "Antipov"));
 
         given(userInteraction.askQuestion(eq(question1)))
                 .willReturn(result1);

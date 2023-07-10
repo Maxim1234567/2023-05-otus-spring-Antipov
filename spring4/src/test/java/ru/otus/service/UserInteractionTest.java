@@ -32,28 +32,21 @@ public class UserInteractionTest {
     @Autowired
     private UserInteraction userInteraction;
 
-    @Test
-    public void askFirstNameTest() {
-        given(ioService.readLine())
-                .willReturn("Maxim");
+    /*
+            ioService.print(messageSource.getMessage("user.name"));
+        String name = ioService.readLine();
 
-        assertThat(userInteraction.askFirstName())
-                .isEqualTo("Maxim");
+        ioService.print(messageSource.getMessage("user.lastname"));
+        String lastname = ioService.readLine();
 
-        verify(ioService, times(1))
-                .readLine();
-    }
+        return new UserData(name, lastname);
+    */
 
     @Test
-    public void askLastNameTest() {
-        given(ioService.readLine())
-                .willReturn("Antipov");
+    public void createUserTest() {
+        userInteraction.createUser();
 
-        assertThat(userInteraction.askLastName())
-                .isEqualTo("Antipov");
-
-        verify(ioService, times(1))
-                .readLine();
+        verify(ioService, times(2)).readLine();
     }
 
     @Test

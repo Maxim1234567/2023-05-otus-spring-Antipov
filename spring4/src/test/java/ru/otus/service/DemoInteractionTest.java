@@ -21,12 +21,6 @@ import static org.mockito.Mockito.verify;
 public class DemoInteractionTest {
     @MockBean
     private QuestionService questionService;
-    @MockBean
-    private  IOService ioService;
-
-    @MockBean
-    private ApplicationMessageSource messageSource;
-
     @Autowired
     private DemoInteraction demoInteraction;
 
@@ -43,33 +37,26 @@ public class DemoInteractionTest {
         );
     }
 
+    /*
+        @Override
+    public void interaction() {
+        UserData userData = questionService.fillUserData();
+        List<Result> results = questionService.askUserQuestions();
+
+        questionService.printResult(userData, results);
+    }
+    */
+
     @Test
     public void interactionTest() {
         given(questionService.fillUserData())
                 .willReturn(userData);
         given(questionService.askUserQuestions())
                 .willReturn(results);
-        given(messageSource.getMessage(eq("question")))
-                .willReturn("Question");
-        given(messageSource.getMessage(eq("answer.user")))
-                .willReturn("Your Answer");
-        given(messageSource.getMessage(eq("answer.correct")))
-                .willReturn("Correct Answer");
 
         demoInteraction.interaction();
 
-        verify(ioService, times(1 + results.size()))
-                .println(eq(""));
-        verify(ioService, times(1))
-                .println(eq(userData.getFirstName() + " " + userData.getLastName()));
-
-        results.forEach(result -> {
-            verify(ioService, times(1))
-                    .println(eq("Question: " + result.getQuestion()));
-            verify(ioService, times(1))
-                    .println(eq("Your Answer: " + result.getAnswerUser()));
-            verify(ioService, times(1))
-                    .println(eq("Correct Answer: " + result.getCorrectAnswer()));
-        });
+        verify(questionService, times(1))
+                .printResult(eq(userData), eq(results));
     }
 }

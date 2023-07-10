@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import ru.otus.dao.CsvQuestionDao;
+import ru.otus.dao.QuestionDao;
 import ru.otus.domain.Result;
 import ru.otus.domain.TestQuestion;
 import ru.otus.domain.UserData;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 @ActiveProfiles("test-en")
 public class QuestionServiceTest {
     @MockBean
-    private CsvQuestionDao csvQuestionDao;
+    private QuestionDao questionDao;
 
     @MockBean
     private UserInteraction userInteraction;
@@ -57,16 +57,12 @@ public class QuestionServiceTest {
 
     @Test
     public void enterFirstAndLastNameUser() {
-        given(userInteraction.askFirstName())
-                .willReturn("Maxim");
-
-        given(userInteraction.askLastName())
-                .willReturn("Antipov");
+        given(userInteraction.createUser())
+                .willReturn(new UserData("Maxim", "Antipov"));
 
         UserData userData = questionService.fillUserData();
 
-        verify(userInteraction, times(1)).askFirstName();
-        verify(userInteraction, times(1)).askLastName();
+        verify(userInteraction, times(1)).createUser();
 
         assertEquals(userData.getFirstName(), "Maxim");
         assertEquals(userData.getLastName(), "Antipov");
@@ -78,7 +74,7 @@ public class QuestionServiceTest {
 
     @Test
     public void askQuestion() {
-        given(csvQuestionDao.getAllQuestions())
+        given(questionDao.getAllQuestions())
                 .willReturn(questions);
 
         List<Result> result = questionService.askUserQuestions();

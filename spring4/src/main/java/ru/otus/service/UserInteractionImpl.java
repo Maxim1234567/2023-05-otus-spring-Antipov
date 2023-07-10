@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.domain.Result;
 import ru.otus.domain.TestQuestion;
+import ru.otus.domain.UserData;
 import ru.otus.logging.Logging;
 
 @Service
@@ -16,19 +17,14 @@ public class UserInteractionImpl implements UserInteraction {
     private final ApplicationMessageSource messageSource;
 
     @Override
-    @Logging
-    public String askFirstName() {
+    public UserData createUser() {
         ioService.print(messageSource.getMessage("user.name"));
+        String name = ioService.readLine();
 
-        return ioService.readLine();
-    }
-
-    @Override
-    @Logging
-    public String askLastName() {
         ioService.print(messageSource.getMessage("user.lastname"));
+        String lastname = ioService.readLine();
 
-        return ioService.readLine();
+        return new UserData(name, lastname);
     }
 
     @Override
