@@ -1,0 +1,16 @@
+spring:
+  messages:
+    basename: "i18n/appmessages"
+    encoding: "UTF-8"
+
+application:
+  delimiter: ";"
+  locale: ru_RU
+
+command:
+  line:
+    runner:
+      enabled: false
+  shell:
+    runner:
+      enabled: true

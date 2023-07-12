@@ -3,7 +3,7 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="questionDao" class="ru.otus.dao.CsvQuestionDaoImpl">
+    <bean id="questionDao" class="ru.otus.repository.CsvQuestionDao">
         <constructor-arg index="0" value="/data.csv"/>
         <constructor-arg index="1" value=";"/>
     </bean>

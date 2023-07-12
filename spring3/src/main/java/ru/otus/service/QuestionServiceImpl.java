@@ -2,7 +2,7 @@ package ru.otus.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.otus.dao.CsvQuestionDao;
+import ru.otus.repository.CsvQuestionDao;
 import ru.otus.domain.Result;
 import ru.otus.domain.UserData;
 

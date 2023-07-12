@@ -12,6 +12,8 @@
         <module>spring1</module>
         <module>spring2</module>
         <module>spring3</module>
+        <module>spring4</module>
+        <module>spring5</module>
     </modules>
 
     <parent>

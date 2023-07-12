@@ -1,7 +1,7 @@
 package ru.otus.service;
 
 import lombok.RequiredArgsConstructor;
-import ru.otus.dao.QuestionDao;
+import ru.otus.repository.QuestionDao;
 
 @RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
