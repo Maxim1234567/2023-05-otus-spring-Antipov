@@ -1,7 +1,6 @@
 package ru.otus.shell;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -9,8 +8,6 @@ import org.springframework.shell.standard.ShellMethodAvailability;
 import ru.otus.domain.Result;
 import ru.otus.domain.UserData;
 import ru.otus.service.ApplicationMessageSource;
-import ru.otus.service.DemoInteraction;
-import ru.otus.service.IOService;
 import ru.otus.service.QuestionService;
 
 import java.util.List;

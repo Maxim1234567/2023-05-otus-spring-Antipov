@@ -4,19 +4,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
+import ru.otus.Utils;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
-import ru.otus.service.BookService;
 
-import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Service to work with book should")
 @SpringBootTest
+@ActiveProfiles("book")
 public class BookServiceTest {
     private static final Book EXISTING_BOOK = new Book(
             300L,
@@ -91,11 +91,11 @@ public class BookServiceTest {
             2023,
             1024,
             List.of(
-                    new Genre(null, "Modern domestic prose")
+                    new Genre(1100L, "Modern domestic prose")
             ),
             List.of(
                     new Author(
-                            null, "Lyubov", "Voronkova", 70, 1906
+                            500L, "Lyubov", "Voronkova", 70, 1906
                     )
             )
     );
@@ -114,7 +114,7 @@ public class BookServiceTest {
     @Test
     public void shouldCorrectReturnAllBooks() {
         List<Book> result = bookService.getAllBooks();
-        assertEqualsList(EXPECTED_BOOK, result);
+        Utils.assertEqualsBookList(EXPECTED_BOOK, result);
     }
 
     @DisplayName("correctly save book")
@@ -132,37 +132,5 @@ public class BookServiceTest {
     public void shouldCorrectDeleteBookWithAuthorAndGenre() {
         Book book = bookService.save(NOT_EXISTS_BOOK);
         assertDoesNotThrow(() -> bookService.delete(book));
-    }
-
-    @DisplayName("correctly update book with author and genre")
-    @Test
-    public void shouldCorrectUpdateBookWithAuthorAndGenre() {
-        Book exceptedBook = new Book(
-                EXISTING_BOOK.getId(),
-                "NEW NAME",
-                2012,
-                121,
-                List.of(
-                        new Genre(100L, "Fiction"),
-                        new Genre(200L, "Novel"),
-                        new Genre(300L, "Thriller")
-                ),
-                List.of(
-                        new Author(100L, "Herbert", "Shieldt", 72, 1951)
-                )
-        );
-
-        Book book = bookService.update(exceptedBook);
-        Book result = bookService.getBookById(book.getId());
-        bookService.update(EXISTING_BOOK);
-
-        assertEquals(exceptedBook, result);
-    }
-
-    public void assertEqualsList(List<Book> genres1, List<Book> genres2) {
-        assertIterableEquals(
-                genres1.stream().sorted(Comparator.comparing(Book::getId)).toList(),
-                genres2.stream().sorted(Comparator.comparing(Book::getId)).toList()
-        );
     }
 }

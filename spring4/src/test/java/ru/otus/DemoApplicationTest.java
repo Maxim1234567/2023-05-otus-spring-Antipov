@@ -28,7 +28,7 @@ import static org.mockito.BDDMockito.given;
 @SpringBootTest
 @ActiveProfiles("test-en")
 public class DemoApplicationTest {
-    private static ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    private static final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     private static final String TEXT_WILL_BE = "\n" +
             "Maxim Antipov\n" +
             "Question: Test Answer 1?\n" +

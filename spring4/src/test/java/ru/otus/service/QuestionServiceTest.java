@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import ru.otus.dao.QuestionDao;
+import ru.otus.repository.QuestionDao;
 import ru.otus.domain.Result;
 import ru.otus.domain.TestQuestion;
 import ru.otus.domain.UserData;

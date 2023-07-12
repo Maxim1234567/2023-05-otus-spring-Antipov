@@ -32,16 +32,6 @@ public class UserInteractionTest {
     @Autowired
     private UserInteraction userInteraction;
 
-    /*
-            ioService.print(messageSource.getMessage("user.name"));
-        String name = ioService.readLine();
-
-        ioService.print(messageSource.getMessage("user.lastname"));
-        String lastname = ioService.readLine();
-
-        return new UserData(name, lastname);
-    */
-
     @Test
     public void createUserTest() {
         userInteraction.createUser();
