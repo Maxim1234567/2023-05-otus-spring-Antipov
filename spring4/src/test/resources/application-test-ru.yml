@@ -1,0 +1,17 @@
+spring:
+  shell:
+    interactive:
+      enabled: false
+  messages:
+    basename: "i18n/appmessages"
+    encoding: "UTF-8"
+
+command:
+  line:
+    runner:
+      enabled: false
+
+application:
+  delimiter: ";"
+  locale: ru_RU
+  file-name: /question-test-ru.csv

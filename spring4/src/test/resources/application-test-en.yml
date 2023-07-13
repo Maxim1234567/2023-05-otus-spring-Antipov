@@ -1,0 +1,19 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  messages:
+    basename: "i18n/appmessages"
+    encoding: "UTF-8"
+  shell:
+    interactive:
+      enabled: false
+
+command:
+  line:
+    runner:
+      enabled: false
+
+application:
+  delimiter: ";"
+  locale: en_EN
+  file-name: /question-test-en.csv
