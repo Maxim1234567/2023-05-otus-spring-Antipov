@@ -14,7 +14,9 @@ import java.util.List;
 public class TestQuestion {
     private final String question;
 
-    private final List<String> answers;
+    private final List<Answer> answers;
 
-    private final String correctAnswer;
+    public Answer getCorrectAnswer() {
+        return answers.stream().filter(Answer::isCorrect).findFirst().get();
+    }
 }

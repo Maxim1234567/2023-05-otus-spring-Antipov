@@ -10,9 +10,9 @@ import ru.otus.props.ApplicationProperties;
 public class ApplicationMessageSourceImpl implements ApplicationMessageSource {
     private final MessageSource messageSource;
 
-    private final ApplicationProperties props;
+    private final ResourceProvider resourceProvider;
 
     public String getMessage(String property) {
-        return messageSource.getMessage(property, new String[]{}, props.getLocale());
+        return messageSource.getMessage(property, new String[]{}, resourceProvider.getLocale());
     }
 }

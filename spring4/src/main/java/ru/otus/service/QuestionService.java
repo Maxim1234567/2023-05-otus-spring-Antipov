@@ -11,4 +11,6 @@ public interface QuestionService {
     UserData fillUserData();
 
     List<Result> askUserQuestions();
+
+    void printResult(UserData userData, List<Result> results);
 }

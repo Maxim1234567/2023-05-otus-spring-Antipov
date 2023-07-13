@@ -8,8 +8,10 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
+import ru.otus.domain.Answer;
 import ru.otus.domain.Result;
 import ru.otus.domain.TestQuestion;
+import ru.otus.domain.UserData;
 import ru.otus.service.DemoInteraction;
 import ru.otus.service.IOService;
 import ru.otus.service.IOServiceStreams;
@@ -27,7 +29,7 @@ import static org.mockito.BDDMockito.given;
 @SpringBootTest
 @ActiveProfiles("test-en")
 public class DemoApplicationTest {
-    private static ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    private static final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     private static final String TEXT_WILL_BE = "\n" +
             "Maxim Antipov\n" +
             "Question: Test Answer 1?\n" +
@@ -61,44 +63,39 @@ public class DemoApplicationTest {
     public void setUp() {
         TestQuestion question1 = new TestQuestion(
                 "Test Answer 1?",
-                List.of("1", "1", "1"),
-                "4"
+                List.of(new Answer("1", false), new Answer("1", false), new Answer("1", false), new Answer("4", true))
         );
 
         Result result1 = new Result(
                 question1.getQuestion(),
-                "1",
+                new Answer("1", false),
                 question1.getCorrectAnswer()
         );
 
         TestQuestion question2 = new TestQuestion(
                 "Test Answer 2?",
-                List.of("2", "2"),
-                "5"
+                List.of(new Answer("2", false), new Answer("2", false), new Answer("5", true))
         );
 
         Result result2 = new Result(
                 question2.getQuestion(),
-                "2",
+                new Answer("2", false),
                 question2.getCorrectAnswer()
         );
 
         TestQuestion question3 = new TestQuestion(
                 "Test Answer 3?",
-                List.of("3"),
-                "6"
+                List.of(new Answer("3", false), new Answer("6", true))
         );
 
         Result result3 = new Result(
                 question3.getQuestion(),
-                "3",
+                new Answer("3", false),
                 question3.getCorrectAnswer()
         );
 
-        given(userInteraction.askFirstName())
-                .willReturn("Maxim");
-        given(userInteraction.askLastName())
-                .willReturn("Antipov");
+        given(userInteraction.createUser())
+                .willReturn(new UserData("Maxim", "Antipov"));
 
         given(userInteraction.askQuestion(eq(question1)))
                 .willReturn(result1);

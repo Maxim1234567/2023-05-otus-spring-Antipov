@@ -1,21 +1,23 @@
-package ru.otus.dao;
+package ru.otus.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import ru.otus.domain.Answer;
 import ru.otus.domain.TestQuestion;
 import ru.otus.props.ApplicationProperties;
 import ru.otus.service.ApplicationMessageSource;
 import ru.otus.service.ApplicationMessageSourceImpl;
+import ru.otus.service.ResourceProvider;
+import ru.otus.service.ResourceProviderImpl;
 
 import java.util.List;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CsvQuestionDaoRuTest {
-
-    private CsvQuestionDao csvQuestionDao;
+public class CsvQuestionDaoEnTest {
+    private QuestionDao questionDao;
     private List<TestQuestion> questions;
 
     @BeforeEach
@@ -25,41 +27,32 @@ public class CsvQuestionDaoRuTest {
         messageSource.setDefaultEncoding("UTF-8");
 
         ApplicationProperties applicationProperties = new ApplicationProperties(
-                ";", new Locale("ru")
+                ";", new Locale("en"), "/question-test-en.csv"
         );
 
-        ApplicationMessageSource applicationMessageSource = new ApplicationMessageSourceImpl(
-                messageSource,
-                applicationProperties
-        );
+        ResourceProvider resourceProvider = new ResourceProviderImpl(applicationProperties);
 
-        csvQuestionDao = new CsvQuestionDaoImpl(
-                applicationMessageSource,
-                applicationProperties
-        );
+        questionDao = new CsvQuestionDao(resourceProvider);
 
         questions = List.of(
                 new TestQuestion(
-                        "Тестовый вопрос 1?",
-                        List.of("1", "1", "1"),
-                        "4"
+                        "Test Answer 1?",
+                        List.of(new Answer("1", false), new Answer("1", false), new Answer("1", false), new Answer("4", true))
                 ),
                 new TestQuestion(
-                        "Тестовый вопрос 2?",
-                        List.of("2", "2"),
-                        "5"
+                        "Test Answer 2?",
+                        List.of(new Answer("2", false), new Answer("2", false), new Answer("5", true))
                 ),
                 new TestQuestion(
-                        "Тестовый вопрос 3?",
-                        List.of("3"),
-                        "6"
+                        "Test Answer 3?",
+                        List.of(new Answer("3", false), new Answer("6", true))
                 )
         );
     }
 
     @Test
     void correctParseFileCsv() {
-        List<TestQuestion> result = csvQuestionDao.getAllQuestions();
+        List<TestQuestion> result = questionDao.getAllQuestions();
         assertEquals(result, questions);
     }
 }

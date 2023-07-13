@@ -12,8 +12,11 @@ public class ApplicationProperties {
 
     private final Locale locale;
 
-    public ApplicationProperties(String delimiter, Locale locale) {
+    private final String fileName;
+
+    public ApplicationProperties(String delimiter, Locale locale, String fileName) {
         this.delimiter = delimiter;
         this.locale = locale;
+        this.fileName = fileName;
     }
 }
