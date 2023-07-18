@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class LibraryServiceImpl implements LibraryService {
+public class LibraryFacadeImpl implements LibraryFacade {
     private final IOService ioService;
     private final AuthorService authorService;
     private final GenreService genreService;

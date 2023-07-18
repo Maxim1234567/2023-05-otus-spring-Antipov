@@ -27,7 +27,7 @@ public class UserInteractionTest {
     private IOService ioService;
 
     @InjectMocks
-    private UserInteraction userInteraction;
+    private UserInteractionImpl userInteraction;
 
     @Test
     public void askFirstNameTest() {

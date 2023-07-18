@@ -12,7 +12,7 @@ import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
 import ru.otus.service.IOService;
-import ru.otus.service.LibraryService;
+import ru.otus.service.LibraryFacade;
 import ru.otus.service.UserInteraction;
 import ru.otus.service.impl.IOServiceStreams;
 
@@ -98,7 +98,7 @@ public class MainTest {
     private UserInteraction userInteraction;
 
     @Autowired
-    private LibraryService libraryService;
+    private LibraryFacade libraryFacade;
 
     @TestConfiguration
     static class MainTestConfiguration {
@@ -125,13 +125,13 @@ public class MainTest {
 
     @Test
     public void integrationTest() {
-        libraryService.createGenre();
+        libraryFacade.createGenre();
 
-        libraryService.createAuthor();
+        libraryFacade.createAuthor();
 
-        libraryService.createBook();
+        libraryFacade.createBook();
 
-        libraryService.showBooks();
+        libraryFacade.showBooks();
 
         assertEquals(baos.toString().replace("\r", ""), TEXT_WILL_BE);
     }

@@ -37,15 +37,15 @@ public class GenreRepositoryJdbcTest {
     );
 
     @Autowired
-    private GenreRepositoryJdbcImpl genreDao;
+    private GenreRepositoryJdbcImpl genreRepository;
 
 
     @DisplayName("correctly save the genre without a given ID in the database")
     @Test
     public void shouldCorrectSaveGenreWithoutId() {
-        Genre genre = genreDao.insert(new Genre(null, "TEST_GENRE"));
+        Genre genre = genreRepository.insert(new Genre(null, "TEST_GENRE"));
 
-        List<Genre> genres = genreDao.getAllGenres();
+        List<Genre> genres = genreRepository.findAll();
 
         assertNotNull(genre.getId());
         assertTrue(genres.contains(genre));
@@ -54,15 +54,35 @@ public class GenreRepositoryJdbcTest {
     @DisplayName("correctly returns the expected list of genres")
     @Test
     public void shouldCorrectReturnExceptedGenreList() {
-        List<Genre> genres = genreDao.getAllGenres();
+        List<Genre> genres = genreRepository.findAll();
 
         Utils.assertEqualsGenreList(EXPECTED_GENRES, genres);
+    }
+
+    @DisplayName("correctly return the genres by book id")
+    @Test
+    public void shouldCorrectReturnGenresByBookId() {
+        long bookId = 100L;
+        List<Genre> expected = List.of(EXPECTED_GENRES.get(8), EXPECTED_GENRES.get(9));
+
+        List<Genre> result = genreRepository.findByBookId(bookId);
+        Utils.assertEqualsGenreList(expected, result);
+    }
+
+    @DisplayName("correctly return the genres by book ids")
+    @Test
+    public void shouldCorrectReturnGenresByBookIds() {
+        List<Long> bookIds = List.of(100L, 200L);
+        List<Genre> expected = List.of(EXPECTED_GENRES.get(8), EXPECTED_GENRES.get(9), EXPECTED_GENRES.get(5), EXPECTED_GENRES.get(6), EXPECTED_GENRES.get(1));
+
+        List<Genre> result = genreRepository.findByBookIds(bookIds);
+        Utils.assertEqualsGenreList(expected, result);
     }
 
     @DisplayName("correctly return the genre by id")
     @Test
     public void shouldCorrectReturnGenreById() {
-        Genre genre = genreDao.getGenreById(EXISTING_GENRE.getId());
+        Genre genre = genreRepository.findById(EXISTING_GENRE.getId());
 
         assertEquals(EXISTING_GENRE, genre);
     }
@@ -84,7 +104,7 @@ public class GenreRepositoryJdbcTest {
         ids.add(genre2.getId());
         ids.add(genre3.getId());
 
-        List<Genre> result = genreDao.findAllGenresByIds(ids);
+        List<Genre> result = genreRepository.findByIds(ids);
 
         Utils.assertEqualsGenreList(excepted, result);
     }
@@ -92,12 +112,12 @@ public class GenreRepositoryJdbcTest {
     @DisplayName("correctly delete a genre by its id")
     @Test
     public void shouldCorrectDeleteGenreById() {
-        assertThatCode(() -> genreDao.getGenreById(EXISTING_GENRE.getId()))
+        assertThatCode(() -> genreRepository.findById(EXISTING_GENRE.getId()))
                 .doesNotThrowAnyException();
 
-        genreDao.deleteById(EXISTING_GENRE.getId());
+        genreRepository.deleteById(EXISTING_GENRE.getId());
 
-        assertThatCode(() -> genreDao.getGenreById(EXISTING_GENRE.getId()))
+        assertThatCode(() -> genreRepository.findById(EXISTING_GENRE.getId()))
                 .isInstanceOf(EmptyResultDataAccessException.class);
     }
 
@@ -112,7 +132,7 @@ public class GenreRepositoryJdbcTest {
                 EXPECTED_GENRES.get(9)
         );
 
-        List<Genre> result = genreDao.findAllUsed();
+        List<Genre> result = genreRepository.findAllUsed();
 
         Utils.assertEqualsGenreList(excepted, result);
     }

@@ -7,11 +7,15 @@ import java.util.List;
 public interface AuthorRepositoryJdbc {
     Author insert(Author author);
 
-    Author getAuthorById(long id);
+    Author findById(long id);
 
-    List<Author> findAllAuthorsByIds(List<Long> ids);
+    List<Author> findByIds(List<Long> ids);
 
-    List<Author> getAllAuthors();
+    List<Author> findByBookId(long bookId);
+
+    List<Author> findByBookIds(List<Long> bookIds);
+
+    List<Author> findAll();
 
     void deleteById(long id);
 

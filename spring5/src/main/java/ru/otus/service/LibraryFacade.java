@@ -1,6 +1,6 @@
 package ru.otus.service;
 
-public interface LibraryService {
+public interface LibraryFacade {
     void createBook();
 
     void createAuthor();

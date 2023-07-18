@@ -3,70 +3,70 @@ package ru.otus.shell;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import ru.otus.service.LibraryService;
+import ru.otus.service.LibraryFacade;
 
 @ShellComponent
 @RequiredArgsConstructor
 public class ApplicationEventsCommands {
-    private final LibraryService libraryService;
+    private final LibraryFacade libraryFacade;
 
     @ShellMethod(value = "Show all genres", key = {"gs", "genres"})
     public String showAllGenre() {
-        libraryService.showGenres();
+        libraryFacade.showGenres();
         return "";
     }
 
     @ShellMethod(value = "Show genre", key = {"g", "genre"})
     public String showGenre() {
-        libraryService.showGenre();
+        libraryFacade.showGenre();
         return "";
     }
 
     @ShellMethod(value = "Show all authors", key = {"as", "authors"})
     public String showAllAuthors() {
-        libraryService.showAuthors();
+        libraryFacade.showAuthors();
         return "";
     }
 
     @ShellMethod(value = "Show author", key = {"a", "author"})
     public String showAuthor() {
-        libraryService.showAuthor();
+        libraryFacade.showAuthor();
         return "";
     }
 
     @ShellMethod(value = "Show all books", key = {"bs", "books"})
     public String showAllBooks() {
-        libraryService.showBooks();
+        libraryFacade.showBooks();
         return "";
     }
 
     @ShellMethod(value = "Show book", key = {"b", "book"})
     public String showBook() {
-        libraryService.showBook();
+        libraryFacade.showBook();
         return "";
     }
 
     @ShellMethod(value = "Delete book", key = {"d", "delete"})
     public String deleteBook() {
-        libraryService.deleteBook();
+        libraryFacade.deleteBook();
         return "";
     }
 
     @ShellMethod(value = "Create genre", key = {"cg", "create-genre"})
     public String createGenre() {
-        libraryService.createGenre();
+        libraryFacade.createGenre();
         return "";
     }
 
     @ShellMethod(value = "Create author", key = {"ca", "create-author"})
     public String createAuthor() {
-        libraryService.createAuthor();
+        libraryFacade.createAuthor();
         return "";
     }
 
     @ShellMethod(value = "Create book", key = {"cb", "create-book"})
     public String createBook() {
-        libraryService.createBook();
+        libraryFacade.createBook();
         return "";
     }
 }

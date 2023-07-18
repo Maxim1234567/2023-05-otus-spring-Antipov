@@ -50,7 +50,7 @@ public class BookRepositoryJdbcImpl implements BookRepositoryJdbc {
         saveRelationBookAndGenres(bookId, book.getGenres().stream().map(Genre::getId).toList());
         saveRelationBookAndAuthors(bookId, book.getAuthors().stream().map(Author::getId).toList());
 
-        return getBookById(bookId);
+        return findById(bookId);
     }
 
     @Override
@@ -72,11 +72,11 @@ public class BookRepositoryJdbcImpl implements BookRepositoryJdbc {
         saveRelationBookAndGenres(book.getId(), book.getGenres().stream().map(Genre::getId).toList());
         saveRelationBookAndAuthors(book.getId(), book.getAuthors().stream().map(Author::getId).toList());
 
-        return getBookById(book.getId());
+        return findById(book.getId());
     }
 
     @Override
-    public Book getBookById(long id) {
+    public Book findById(long id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", id);
 
@@ -87,17 +87,27 @@ public class BookRepositoryJdbcImpl implements BookRepositoryJdbc {
         );
 
         Map<Long, Book> map = Map.of(book.getId(), book);
-        mergeAuthor(map, authorRepository.getAllAuthors(), getAllRelationsAuthor());
-        mergeGenre(map, genreRepository.getAllGenres(), getAllRelationsGenre());
+        mergeAuthor(map, authorRepository.findByBookId(id), getAllRelationsAuthor());
+        mergeGenre(map, genreRepository.findByBookId(id), getAllRelationsGenre());
 
         return book;
     }
 
     @Override
-    public List<Book> findAllBooksById(List<Long> ids) {
-        List<Book> books = getAllBooks();
+    public List<Book> findByIds(List<Long> ids) {
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("ids", ids);
 
-        return books.stream().filter(b -> ids.contains(b.getId())).toList();
+        Map<Long, Book> books = namedParameterJdbcOperations.query(
+                "select b.id, b.name, b.year_issue, b.number_pages from book b where b.id in (:ids)",
+                parameters,
+                new BookResultSetExtractor()
+        );
+
+        mergeAuthor(books, authorRepository.findByBookIds(ids), getAllRelationsAuthor());
+        mergeGenre(books, genreRepository.findByBookIds(ids), getAllRelationsGenre());
+
+        return new ArrayList<>(Objects.requireNonNull(books).values());
     }
 
     @Override
@@ -107,8 +117,8 @@ public class BookRepositoryJdbcImpl implements BookRepositoryJdbc {
                 new BookResultSetExtractor()
         );
 
-        mergeAuthor(books, authorRepository.getAllAuthors(), getAllRelationsAuthor());
-        mergeGenre(books, genreRepository.getAllGenres(), getAllRelationsGenre());
+        mergeAuthor(books, authorRepository.findAll(), getAllRelationsAuthor());
+        mergeGenre(books, genreRepository.findAll(), getAllRelationsGenre());
 
         return new ArrayList<>(Objects.requireNonNull(books).values());
     }

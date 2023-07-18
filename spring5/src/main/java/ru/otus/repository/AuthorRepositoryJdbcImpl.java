@@ -12,7 +12,6 @@ import ru.otus.domain.Author;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -36,11 +35,11 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepositoryJdbc {
                 keyHolder
         );
 
-        return getAuthorById((long) keyHolder.getKey());
+        return findById((long) keyHolder.getKey());
     }
 
     @Override
-    public Author getAuthorById(long id) {
+    public Author findById(long id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", id);
 
@@ -52,14 +51,45 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepositoryJdbc {
     }
 
     @Override
-    public List<Author> findAllAuthorsByIds(List<Long> ids) {
-        List<Author> authors = getAllAuthors();
+    public List<Author> findByIds(List<Long> ids) {
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("ids", ids);
 
-        return authors.stream().filter(a -> ids.contains(a.getId())).toList();
+        return namedParameterJdbcOperations.query(
+                "select id, first_name, last_name, age, year_birthdate from author where id in (:ids)",
+                parameters,
+                new AuthorMapper()
+        );
     }
 
     @Override
-    public List<Author> getAllAuthors() {
+    public List<Author> findByBookId(long bookId) {
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("book_id", bookId);
+
+        return namedParameterJdbcOperations.query(
+                "select id, first_name, last_name, age, year_birthdate from author a " +
+                        "where a.id in (select author_id from book_author ba where ba.book_id = :book_id)",
+                parameters,
+                new AuthorMapper()
+        );
+    }
+
+    @Override
+    public List<Author> findByBookIds(List<Long> bookIds) {
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("book_ids", bookIds);
+
+        return namedParameterJdbcOperations.query(
+                "select id, first_name, last_name, age, year_birthdate from author a " +
+                        "where a.id in (select author_id from book_author ba where ba.book_id in (:book_ids))",
+                parameters,
+                new AuthorMapper()
+        );
+    }
+
+    @Override
+    public List<Author> findAll() {
         return namedParameterJdbcOperations.query(
                 "select id, first_name, last_name, age, year_birthdate from author",
                 new AuthorMapper()
@@ -80,9 +110,8 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepositoryJdbc {
     @Override
     public List<Author> findAllUsed() {
         return namedParameterJdbcOperations.query(
-                "select a.id, a.first_name, a.last_name, a.age, a.year_birthdate " +
+                "select distinct a.id, a.first_name, a.last_name, a.age, a.year_birthdate " +
                         "from author a join book_author ba on ba.author_id = a.id " +
-                        "group by a.id, a.first_name, a.last_name " +
                         "order by a.last_name, a.first_name", new AuthorMapper()
         );
     }

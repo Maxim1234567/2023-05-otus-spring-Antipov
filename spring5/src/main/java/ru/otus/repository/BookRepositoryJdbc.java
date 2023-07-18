@@ -9,9 +9,9 @@ public interface BookRepositoryJdbc {
 
     Book update(Book book);
 
-    Book getBookById(long id);
+    Book findById(long id);
 
-    List<Book> findAllBooksById(List<Long> ids);
+    List<Book> findByIds(List<Long> ids);
 
     List<Book> getAllBooks();
 

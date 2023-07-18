@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
-  sql:
-    init:
-      mode: always
-      data-locations: data2.sql
-      schema-locations: schema2.sql
+#  sql:
+#    init:
+#      mode: always
+#      data-locations: data2.sql
+#      schema-locations: schema2.sql

@@ -12,7 +12,6 @@ import ru.otus.domain.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -32,11 +31,11 @@ public class GenreRepositoryJdbcImpl implements GenreRepositoryJdbc {
                 parameters,
                 keyHolder);
 
-        return getGenreById((long) keyHolder.getKey());
+        return findById((long) keyHolder.getKey());
     }
 
     @Override
-    public Genre getGenreById(long id) {
+    public Genre findById(long id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", id);
 
@@ -46,14 +45,45 @@ public class GenreRepositoryJdbcImpl implements GenreRepositoryJdbc {
     }
 
     @Override
-    public List<Genre> findAllGenresByIds(List<Long> ids) {
-        List<Genre> genres = getAllGenres();
+    public List<Genre> findByIds(List<Long> ids) {
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("ids", ids);
 
-        return genres.stream().filter(g -> ids.contains(g.getId())).toList();
+        return namedParameterJdbcOperations.query(
+                "select id, genre from genre where id in (:ids)",
+                parameters,
+                new GenreMapper()
+        );
     }
 
     @Override
-    public List<Genre> getAllGenres() {
+    public List<Genre> findByBookId(long bookId) {
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("book_id", bookId);
+
+        return namedParameterJdbcOperations.query(
+                "select id, genre from genre g " +
+                        "where g.id in (select genre_id from book_genre bg where bg.book_id = :book_id)",
+                parameters,
+                new GenreMapper()
+        );
+    }
+
+    @Override
+    public List<Genre> findByBookIds(List<Long> bookIds) {
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("book_ids", bookIds);
+
+        return namedParameterJdbcOperations.query(
+                "select id, genre from genre g " +
+                        "where g.id in (select genre_id from book_genre bg where bg.book_id in (:book_ids))",
+                parameters,
+                new GenreMapper()
+        );
+    }
+
+    @Override
+    public List<Genre> findAll() {
         return namedParameterJdbcOperations.query("select id, genre from genre", new GenreMapper());
     }
 
@@ -69,8 +99,7 @@ public class GenreRepositoryJdbcImpl implements GenreRepositoryJdbc {
     @Override
     public List<Genre> findAllUsed() {
         return namedParameterJdbcOperations.query(
-                "select g.id, g.genre from genre g join book_genre bg on bg.genre_id = g.id " +
-                        "group by g.id, g.genre " +
+                "select distinct g.id, g.genre from genre g join book_genre bg on bg.genre_id = g.id " +
                         "order by g.genre", new GenreMapper()
         );
     }

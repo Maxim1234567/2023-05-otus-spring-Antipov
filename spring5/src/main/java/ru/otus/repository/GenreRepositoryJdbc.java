@@ -7,11 +7,15 @@ import java.util.List;
 public interface GenreRepositoryJdbc {
     Genre insert(Genre genre);
 
-    Genre getGenreById(long id);
+    Genre findById(long id);
 
-    List<Genre> findAllGenresByIds(List<Long> ids);
+    List<Genre> findByIds(List<Long> ids);
 
-    List<Genre> getAllGenres();
+    List<Genre> findByBookId(long bookId);
+
+    List<Genre> findByBookIds(List<Long> bookIds);
+
+    List<Genre> findAll();
 
     void deleteById(long id);
 

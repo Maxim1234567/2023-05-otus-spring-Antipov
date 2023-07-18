@@ -17,7 +17,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional(readOnly = true)
     public List<Author> getAll() {
-        return authorRepository.getAllAuthors();
+        return authorRepository.findAll();
     }
 
     @Override
@@ -35,6 +35,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional(readOnly = true)
     public Author getAuthorById(Long id) {
-        return authorRepository.getAuthorById(id);
+        return authorRepository.findById(id);
     }
 }

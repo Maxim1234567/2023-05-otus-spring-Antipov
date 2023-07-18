@@ -36,13 +36,13 @@ public class AuthorRepositoryJdbcTest {
     );
 
     @Autowired
-    private AuthorRepositoryJdbcImpl authorDao;
+    private AuthorRepositoryJdbcImpl authorRepository;
 
     @DisplayName("correctly save the genre without a given ID in the database")
     @Test
     public void shouldCorrectSaveAuthorWithoutId() {
-        Author author = authorDao.insert(NOT_EXISTS_AUTHOR);
-        Author result = authorDao.getAuthorById(author.getId());
+        Author author = authorRepository.insert(NOT_EXISTS_AUTHOR);
+        Author result = authorRepository.findById(author.getId());
 
         assertEquals(author, result);
     }
@@ -50,7 +50,7 @@ public class AuthorRepositoryJdbcTest {
     @DisplayName("correctly return author by id")
     @Test
     public void shouldCorrectReturnAuthorById() {
-        Author result = authorDao.getAuthorById(EXISTING_AUTHOR.getId());
+        Author result = authorRepository.findById(EXISTING_AUTHOR.getId());
         assertEquals(EXISTING_AUTHOR, result);
     }
 
@@ -71,31 +71,47 @@ public class AuthorRepositoryJdbcTest {
                 EXPECTED_AUTHORS.get(3)
         );
 
-        List<Author> result = authorDao.findAllAuthorsByIds(authorIds);
+        List<Author> result = authorRepository.findByIds(authorIds);
         Utils.assertEqualsAuthorList(excepted, result);
     }
 
     @DisplayName("correctly returns the expected list of authors")
     @Test
     public void shouldCorrectReturnExceptedAuthorList() {
-        List<Author> result = authorDao.getAllAuthors();
+        List<Author> result = authorRepository.findAll();
         Utils.assertEqualsAuthorList(EXPECTED_AUTHORS, result);
+    }
+
+    @DisplayName("correctly return the authors by book id")
+    @Test
+    public void shouldCorrectReturnAuthorsByBookId() {
+        long bookId = 100L;
+        List<Author> result = authorRepository.findByBookId(bookId);
+        Utils.assertEqualsAuthorList(List.of(EXPECTED_AUTHORS.get(0)), result);
+    }
+
+    @DisplayName("correctly return the authors by book ids")
+    @Test
+    public void shouldCorrectReturnAuthorsByBookIds() {
+        List<Long> bookIds = List.of(100L, 200L, 300L);
+        List<Author> result = authorRepository.findByBookIds(bookIds);
+        Utils.assertEqualsAuthorList(List.of(EXPECTED_AUTHORS.get(0), EXPECTED_AUTHORS.get(1), EXPECTED_AUTHORS.get(2)), result);
     }
 
     @DisplayName("correctly delete a genre by its id")
     @Test
     public void shouldCorrectDeleteAuthorById() {
-        assertDoesNotThrow(() -> authorDao.getAuthorById(EXISTING_AUTHOR.getId()));
+        assertDoesNotThrow(() -> authorRepository.findById(EXISTING_AUTHOR.getId()));
 
-        authorDao.deleteById(EXISTING_AUTHOR.getId());
+        authorRepository.deleteById(EXISTING_AUTHOR.getId());
 
-        assertThrows(EmptyResultDataAccessException.class, () -> authorDao.getAuthorById(EXISTING_AUTHOR.getId()));
+        assertThrows(EmptyResultDataAccessException.class, () -> authorRepository.findById(EXISTING_AUTHOR.getId()));
     }
 
     @DisplayName("correctly return author which used")
     @Test
     public void shouldCorrectReturnAuthorWhichUsed() {
-        List<Author> result = authorDao.findAllUsed();
+        List<Author> result = authorRepository.findAllUsed();
 
         List<Author> excepted = List.of(
                 EXPECTED_AUTHORS.get(0),

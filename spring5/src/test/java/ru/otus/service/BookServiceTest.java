@@ -4,11 +4,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.Utils;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
+import ru.otus.exception.AuthorNotFound;
+import ru.otus.exception.BookNotFound;
+import ru.otus.exception.GenreNotFound;
 
 import java.util.List;
 
@@ -100,6 +104,51 @@ public class BookServiceTest {
             )
     );
 
+    private static final Book NOT_EXISTS_BOOK_WITH_ID = new Book(
+            111L,
+            "Son of Zeus",
+            2023,
+            1024,
+            List.of(
+                    new Genre(1100L, "Modern domestic prose")
+            ),
+            List.of(
+                    new Author(
+                            500L, "Lyubov", "Voronkova", 70, 1906
+                    )
+            )
+    );
+
+    private static final Book BOOK_WITH_NOT_EXISTS_GENRE = new Book(
+            null,
+            "Son of Zeus",
+            2023,
+            1024,
+            List.of(
+                    new Genre(1111L, "Modern domestic prose")
+            ),
+            List.of(
+                    new Author(
+                            500L, "Lyubov", "Voronkova", 70, 1906
+                    )
+            )
+    );
+
+    private static final Book BOOK_WITH_NOT_EXISTS_AUTHOR = new Book(
+            null,
+            "Son of Zeus",
+            2023,
+            1024,
+            List.of(
+                    new Genre(1100L, "Modern domestic prose")
+            ),
+            List.of(
+                    new Author(
+                            555L, "Lyubov", "Voronkova", 70, 1906
+                    )
+            )
+    );
+
     @Autowired
     private BookService bookService;
 
@@ -132,5 +181,23 @@ public class BookServiceTest {
     public void shouldCorrectDeleteBookWithAuthorAndGenre() {
         Book book = bookService.save(NOT_EXISTS_BOOK);
         assertDoesNotThrow(() -> bookService.delete(book));
+    }
+
+    @DisplayName("correctly throw exception save book not exists with id")
+    @Test
+    public void shouldCorrectThrowExceptionSaveBookNotExistsWithId() {
+        assertThrows(BookNotFound.class, () -> bookService.save(NOT_EXISTS_BOOK_WITH_ID));
+    }
+
+    @DisplayName("correctly throw exception save book with not exists genre")
+    @Test
+    public void shouldCorrectThrowExceptionSaveBookWithNotExistsGenre() {
+        assertThrows(GenreNotFound.class, () -> bookService.save(BOOK_WITH_NOT_EXISTS_GENRE));
+    }
+
+    @DisplayName("correctly throw exception save book with not exists author")
+    @Test
+    public void shouldCorrectThrowExceptionSaveBookWithNotExistsAuthor() {
+        assertThrows(AuthorNotFound.class, () -> bookService.save(BOOK_WITH_NOT_EXISTS_AUTHOR));
     }
 }
