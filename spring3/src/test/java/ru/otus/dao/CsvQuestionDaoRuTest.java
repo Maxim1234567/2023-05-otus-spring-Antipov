@@ -63,6 +63,6 @@ public class CsvQuestionDaoRuTest {
     @Test
     void correctParseFileCsv() {
         List<TestQuestion> result = csvQuestionDao.getAllQuestions();
-        assertEquals(result, questions);
+        assertEquals(questions, result);
     }
 }
