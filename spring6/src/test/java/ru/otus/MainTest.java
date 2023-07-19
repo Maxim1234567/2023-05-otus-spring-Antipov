@@ -18,6 +18,7 @@ import ru.otus.service.impl.IOServiceStreams;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -91,7 +92,7 @@ public class MainTest {
     );
 
     private static final Book book = new Book(
-            null, "uni corn", 2023, 320
+            null, "uni corn", 2023, 320, List.of(), List.of()
     );
 
     @MockBean

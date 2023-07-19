@@ -3,21 +3,20 @@ package ru.otus.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
 import ru.otus.Utils;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
 
 import java.util.List;
-import java.util.Optional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Dao to work with book should")
-@JdbcTest
+@DataJpaTest
 @Import({BookRepositoryJdbcImpl.class, AuthorRepositoryJdbcImpl.class, GenreRepositoryJdbcImpl.class})
 public class BookRepositoryJdbcTest {
     private static final Book EXISTING_BOOK = new Book(
@@ -103,12 +102,12 @@ public class BookRepositoryJdbcTest {
     );
 
     @Autowired
-    private BookRepositoryJdbcImpl bookDao;
+    private BookRepositoryJdbcImpl bookRepository;
 
     @DisplayName("correctly return the book by id")
     @Test
     public void shouldCorrectReturnBookById() {
-        Book book = bookDao.findById(EXISTING_BOOK.getId());
+        Book book = bookRepository.findById(EXISTING_BOOK.getId());
         assertEquals(EXISTING_BOOK, book);
     }
 
@@ -122,7 +121,7 @@ public class BookRepositoryJdbcTest {
                 EXPECTED_BOOK.get(3).getId()
         );
 
-        List<Book> result = bookDao.findByIds(ids);
+        List<Book> result = bookRepository.findByIds(ids);
 
         Utils.assertEqualsBookList(EXPECTED_BOOK, result);
     }
@@ -130,15 +129,15 @@ public class BookRepositoryJdbcTest {
     @DisplayName("correctly return all books")
     @Test
     public void shouldCorrectReturnAllBooks() {
-        List<Book> result = bookDao.getAllBooks();
+        List<Book> result = bookRepository.getAllBooks();
         Utils.assertEqualsBookList(EXPECTED_BOOK, result);
     }
 
     @DisplayName("correctly save book")
     @Test
     public void shouldCorrectInsertBook() {
-        Book book = bookDao.insert(NOT_EXISTS_BOOK);
-        Book result = bookDao.findById(book.getId());
+        Book book = bookRepository.save(NOT_EXISTS_BOOK);
+        Book result = bookRepository.findById(book.getId());
 
         assertEquals(book, result);
     }
@@ -155,8 +154,8 @@ public class BookRepositoryJdbcTest {
                 )
         );
 
-        Book book = bookDao.update(exceptedBook);
-        Book result = bookDao.findById(book.getId());
+        Book book = bookRepository.save(exceptedBook);
+        Book result = bookRepository.findById(book.getId());
 
         assertEquals(exceptedBook, result);
     }
@@ -166,9 +165,12 @@ public class BookRepositoryJdbcTest {
     public void shouldCorrectDeleteBook() {
         long bookId = 200L;
 
-        assertDoesNotThrow(() -> bookDao.findById(bookId));
-        assertDoesNotThrow(() -> bookDao.deleteById(bookId));
+        assertThat(bookRepository.findById(bookId))
+                .isNotNull();
 
-        assertThrows(EmptyResultDataAccessException.class, () -> bookDao.findById(bookId));
+        bookRepository.deleteById(bookId);
+
+        assertThat(bookRepository.findById(bookId))
+                .isNull();
     }
 }

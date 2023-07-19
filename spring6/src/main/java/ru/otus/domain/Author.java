@@ -1,19 +1,28 @@
 package ru.otus.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-import java.util.Date;
-
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @EqualsAndHashCode
+@Entity
+@Table(name = "AUTHOR")
 public class Author {
-    private final Long id;
-    private final String firstName;
-    private final String lastName;
-    private final int age;
-    private final int yearBirthdate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "age")
+    private int age;
+
+    @Column(name = "year_birthdate")
+    private int yearBirthdate;
 }

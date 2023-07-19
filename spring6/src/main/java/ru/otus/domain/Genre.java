@@ -1,16 +1,21 @@
 package ru.otus.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @EqualsAndHashCode
+@Entity
+@Table(name = "GENRE")
 public class Genre {
-    private final Long id;
-    private final String genre;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "genre")
+    private String genre;
 }

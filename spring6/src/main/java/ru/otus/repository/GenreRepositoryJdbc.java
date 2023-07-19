@@ -5,7 +5,7 @@ import ru.otus.domain.Genre;
 import java.util.List;
 
 public interface GenreRepositoryJdbc {
-    Genre insert(Genre genre);
+    Genre save(Genre genre);
 
     Genre findById(long id);
 
@@ -18,6 +18,4 @@ public interface GenreRepositoryJdbc {
     List<Genre> findAll();
 
     void deleteById(long id);
-
-    List<Genre> findAllUsed();
 }

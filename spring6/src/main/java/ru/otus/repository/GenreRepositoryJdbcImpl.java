@@ -1,5 +1,8 @@
 package ru.otus.repository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -8,110 +11,71 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
 public class GenreRepositoryJdbcImpl implements GenreRepositoryJdbc {
-    private final NamedParameterJdbcOperations namedParameterJdbcOperations;
+
+    @PersistenceContext
+    private final EntityManager em;
 
     @Override
-    public Genre insert(Genre genre) {
-        SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("genre", genre.getGenre());
-
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        namedParameterJdbcOperations.update(
-                "insert into genre (genre) values (:genre)",
-                parameters,
-                keyHolder);
-
-        return findById((long) keyHolder.getKey());
+    public Genre save(Genre genre) {
+        if(Objects.isNull(genre.getId())) {
+            em.persist(genre);
+            return genre;
+        } else {
+            return em.merge(genre);
+        }
     }
 
     @Override
     public Genre findById(long id) {
-        SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", id);
-
-        return namedParameterJdbcOperations.queryForObject(
-                "select id, genre from genre where id = :id", parameters, new GenreMapper()
-        );
+        return em.find(Genre.class, id);
     }
 
     @Override
     public List<Genre> findByIds(List<Long> ids) {
-        SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("ids", ids);
-
-        return namedParameterJdbcOperations.query(
-                "select id, genre from genre where id in (:ids)",
-                parameters,
-                new GenreMapper()
+        TypedQuery<Genre> query = em.createQuery(
+                "select g from Genre g where g.id in (:ids)",
+                Genre.class
         );
+        query.setParameter("ids", ids);
+
+        return query.getResultList();
     }
 
     @Override
     public List<Genre> findByBookId(long bookId) {
-        SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("book_id", bookId);
-
-        return namedParameterJdbcOperations.query(
-                "select id, genre from genre g " +
-                        "where g.id in (select genre_id from book_genre bg where bg.book_id = :book_id)",
-                parameters,
-                new GenreMapper()
-        );
+        return findByBookIds(List.of(bookId));
     }
 
     @Override
     public List<Genre> findByBookIds(List<Long> bookIds) {
-        SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("book_ids", bookIds);
-
-        return namedParameterJdbcOperations.query(
-                "select id, genre from genre g " +
-                        "where g.id in (select genre_id from book_genre bg where bg.book_id in (:book_ids))",
-                parameters,
-                new GenreMapper()
+        TypedQuery<Genre> query = em.createQuery(
+                "select g from Book b join b.genres g where b.id in (:bookIds)",
+                Genre.class
         );
+        query.setParameter("bookIds", bookIds);
+
+        return query.getResultList();
     }
 
     @Override
     public List<Genre> findAll() {
-        return namedParameterJdbcOperations.query("select id, genre from genre", new GenreMapper());
+        return em.createQuery("select g from Genre g", Genre.class).getResultList();
     }
 
     @Override
     public void deleteById(long id) {
-        SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", id);
-        namedParameterJdbcOperations.update(
-                "delete from genre where id = :id", parameters
-        );
-    }
-
-    @Override
-    public List<Genre> findAllUsed() {
-        return namedParameterJdbcOperations.query(
-                "select distinct g.id, g.genre from genre g join book_genre bg on bg.genre_id = g.id " +
-                        "order by g.genre", new GenreMapper()
-        );
-    }
-
-    private static class GenreMapper implements RowMapper<Genre> {
-
-        @Override
-        public Genre mapRow(ResultSet rs, int rowNum) throws SQLException {
-            long id = rs.getLong("id");
-            String genre = rs.getString("genre");
-
-            return new Genre(id, genre);
-        }
+        Genre genre = findById(id);
+        em.remove(genre);
     }
 }

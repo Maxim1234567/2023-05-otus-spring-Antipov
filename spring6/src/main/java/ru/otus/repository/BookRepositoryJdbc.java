@@ -5,9 +5,7 @@ import ru.otus.domain.Book;
 import java.util.List;
 
 public interface BookRepositoryJdbc {
-    Book insert(Book book);
-
-    Book update(Book book);
+    Book save(Book book);
 
     Book findById(long id);
 

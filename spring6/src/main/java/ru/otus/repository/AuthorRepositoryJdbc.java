@@ -5,7 +5,7 @@ import ru.otus.domain.Author;
 import java.util.List;
 
 public interface AuthorRepositoryJdbc {
-    Author insert(Author author);
+    Author save(Author author);
 
     Author findById(long id);
 
@@ -18,6 +18,4 @@ public interface AuthorRepositoryJdbc {
     List<Author> findAll();
 
     void deleteById(long id);
-
-    List<Author> findAllUsed();
 }

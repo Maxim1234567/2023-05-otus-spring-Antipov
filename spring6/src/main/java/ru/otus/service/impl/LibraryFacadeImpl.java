@@ -86,8 +86,8 @@ public class LibraryFacadeImpl implements LibraryFacade {
     @Override
     public void showBook() {
         Long id = userInteraction.getId();
-        Book book = bookService.getBookById(id);
-        showDomain.showBook(book);
+//        Book book = bookService.getBookById(id);
+//        showDomain.showBook(book);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class LibraryFacadeImpl implements LibraryFacade {
     @Override
     public void deleteBook() {
         Long id = userInteraction.getId();
-        Book book = bookService.getBookById(id);
-        bookService.delete(book);
+//        Book book = bookService.getBookById(id);
+//        bookService.delete(book);
     }
 }

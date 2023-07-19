@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.dao.EmptyResultDataAccessException;
 import ru.otus.Utils;
@@ -13,11 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Dao to work with genres should")
-@JdbcTest
+@DataJpaTest
 @Import(GenreRepositoryJdbcImpl.class)
 public class GenreRepositoryJdbcTest {
     private static final Genre EXISTING_GENRE = new Genre(400L, "Tale");
@@ -43,7 +45,7 @@ public class GenreRepositoryJdbcTest {
     @DisplayName("correctly save the genre without a given ID in the database")
     @Test
     public void shouldCorrectSaveGenreWithoutId() {
-        Genre genre = genreRepository.insert(new Genre(null, "TEST_GENRE"));
+        Genre genre = genreRepository.save(new Genre(null, "TEST_GENRE"));
 
         List<Genre> genres = genreRepository.findAll();
 
@@ -112,28 +114,12 @@ public class GenreRepositoryJdbcTest {
     @DisplayName("correctly delete a genre by its id")
     @Test
     public void shouldCorrectDeleteGenreById() {
-        assertThatCode(() -> genreRepository.findById(EXISTING_GENRE.getId()))
-                .doesNotThrowAnyException();
+        assertThat(genreRepository.findById(EXISTING_GENRE.getId()))
+                .isNotNull();
 
         genreRepository.deleteById(EXISTING_GENRE.getId());
 
-        assertThatCode(() -> genreRepository.findById(EXISTING_GENRE.getId()))
-                .isInstanceOf(EmptyResultDataAccessException.class);
-    }
-
-    @DisplayName("correctly return genre which used")
-    @Test
-    public void shouldCorrectReturnGenreWhichUsed() {
-        List<Genre> excepted = List.of(
-                EXPECTED_GENRES.get(1),
-                EXPECTED_GENRES.get(5),
-                EXPECTED_GENRES.get(6),
-                EXPECTED_GENRES.get(8),
-                EXPECTED_GENRES.get(9)
-        );
-
-        List<Genre> result = genreRepository.findAllUsed();
-
-        Utils.assertEqualsGenreList(excepted, result);
+        assertThat(genreRepository.findById(EXISTING_GENRE.getId()))
+                .isNull();
     }
 }

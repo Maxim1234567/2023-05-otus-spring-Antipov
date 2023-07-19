@@ -3,22 +3,20 @@ package ru.otus.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
 import ru.otus.Utils;
 import ru.otus.domain.Author;
 
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Dao to work with authors should")
-@JdbcTest
+@DataJpaTest
 @Import(AuthorRepositoryJdbcImpl.class)
 public class AuthorRepositoryJdbcTest {
-    private static final int CORRECT_GENRE_COUNT = 4;
-
     private static final Author EXISTING_AUTHOR = new Author(
             400L, "Irvine", "Welsh", 64, 1958
     );
@@ -41,7 +39,7 @@ public class AuthorRepositoryJdbcTest {
     @DisplayName("correctly save the genre without a given ID in the database")
     @Test
     public void shouldCorrectSaveAuthorWithoutId() {
-        Author author = authorRepository.insert(NOT_EXISTS_AUTHOR);
+        Author author = authorRepository.save(NOT_EXISTS_AUTHOR);
         Author result = authorRepository.findById(author.getId());
 
         assertEquals(author, result);
@@ -101,24 +99,12 @@ public class AuthorRepositoryJdbcTest {
     @DisplayName("correctly delete a genre by its id")
     @Test
     public void shouldCorrectDeleteAuthorById() {
-        assertDoesNotThrow(() -> authorRepository.findById(EXISTING_AUTHOR.getId()));
+        assertThat(authorRepository.findById(EXISTING_AUTHOR.getId()))
+                .isNotNull();
 
         authorRepository.deleteById(EXISTING_AUTHOR.getId());
 
-        assertThrows(EmptyResultDataAccessException.class, () -> authorRepository.findById(EXISTING_AUTHOR.getId()));
-    }
-
-    @DisplayName("correctly return author which used")
-    @Test
-    public void shouldCorrectReturnAuthorWhichUsed() {
-        List<Author> result = authorRepository.findAllUsed();
-
-        List<Author> excepted = List.of(
-                EXPECTED_AUTHORS.get(0),
-                EXPECTED_AUTHORS.get(1),
-                EXPECTED_AUTHORS.get(2)
-        );
-
-        Utils.assertEqualsAuthorList(excepted, result);
+        assertThat(authorRepository.findById(EXISTING_AUTHOR.getId()))
+                .isNull();
     }
 }
