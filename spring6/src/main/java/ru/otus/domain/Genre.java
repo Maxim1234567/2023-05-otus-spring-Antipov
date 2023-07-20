@@ -8,6 +8,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 @EqualsAndHashCode
 @Entity
 @Table(name = "GENRE")

@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.Utils;
 import ru.otus.domain.Author;
+import ru.otus.dto.AuthorDto;
 
 import java.util.List;
 
@@ -17,19 +18,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @ActiveProfiles("author")
 public class AuthorServiceTest {
-    private static final Author EXISTING_AUTHOR = new Author(
+    private static final AuthorDto EXISTING_AUTHOR = new AuthorDto(
             400L, "Irvine", "Welsh", 64, 1958
     );
 
-    private static final List<Author> EXPECTED_AUTHORS = List.of(
-            new Author(100L, "Herbert", "Shieldt", 72, 1951),
-            new Author(200L, "Ivan", "Efremov", 64, 1908),
-            new Author(300L, "Isaac", "Asimov", 72, 1919),
-            new Author(400L, "Irvine", "Welsh", 64, 1958),
-            new Author(500L, "Lyubov", "Voronkova", 70, 1906)
+    private static final List<AuthorDto> EXPECTED_AUTHORS = List.of(
+            new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951),
+            new AuthorDto(200L, "Ivan", "Efremov", 64, 1908),
+            new AuthorDto(300L, "Isaac", "Asimov", 72, 1919),
+            new AuthorDto(400L, "Irvine", "Welsh", 64, 1958),
+            new AuthorDto(500L, "Lyubov", "Voronkova", 70, 1906)
     );
 
-    private static final Author NOT_EXISTS_AUTHOR = new Author(
+    private static final AuthorDto NOT_EXISTS_AUTHOR = new AuthorDto(
             null, "Lyubov", "Voronkova", 70, 1906
     );
 
@@ -39,8 +40,8 @@ public class AuthorServiceTest {
     @DisplayName("should correct save author")
     @Test
     public void shouldCorrectSaveGenre() {
-        Author author = authorService.save(NOT_EXISTS_AUTHOR);
-        List<Author> authors = authorService.getAll();
+        AuthorDto author = authorService.save(NOT_EXISTS_AUTHOR);
+        List<AuthorDto> authors = authorService.getAll();
         authorService.delete(author);
 
         assertTrue(authors.contains(author));
@@ -49,30 +50,35 @@ public class AuthorServiceTest {
     @DisplayName("should correct return all authors")
     @Test
     public void shouldCorrectReturnAllGenres() {
-        List<Author> authors = authorService.getAll();
+        List<AuthorDto> authors = authorService.getAll();
 
-        Utils.assertEqualsAuthorList(EXPECTED_AUTHORS, authors);
+        Utils.assertEqualsAuthorListDto(EXPECTED_AUTHORS, authors);
     }
 
     @DisplayName("should correct delete author")
     @Test
     public void shouldCorrectDeleteGenre() {
-        Author author = authorService.save(NOT_EXISTS_AUTHOR);
-        List<Author> authorsWithNotExistsGenre = authorService.getAll();
+        AuthorDto author = authorService.save(NOT_EXISTS_AUTHOR);
+        List<AuthorDto> authorsWithNotExistsGenre = authorService.getAll();
 
         authorService.delete(author);
-        List<Author> authorsWithoutNotExistsGenre = authorService.getAll();
+        List<AuthorDto> authorsWithoutNotExistsGenre = authorService.getAll();
 
         assertTrue(authorsWithNotExistsGenre.contains(author));
-        Utils.assertEqualsAuthorList(EXPECTED_AUTHORS, authorsWithoutNotExistsGenre);
+        Utils.assertEqualsAuthorListDto(EXPECTED_AUTHORS, authorsWithoutNotExistsGenre);
     }
 
     @DisplayName("should correct return author")
     @Test
     public void shouldCorrectReturnAuthor() {
-        Author expected = EXPECTED_AUTHORS.get(0);
-        Author result = authorService.getAuthorById(expected.getId());
+        AuthorDto expected = EXPECTED_AUTHORS.get(0);
+        AuthorDto result = authorService.getAuthorById(expected.getId());
 
         assertEquals(expected, result);
+    }
+
+    @Test
+    public void shouldCorrectReturnEmptyAuthorDtoIfAuthorNotExists() {
+        assertTrue(false);
     }
 }

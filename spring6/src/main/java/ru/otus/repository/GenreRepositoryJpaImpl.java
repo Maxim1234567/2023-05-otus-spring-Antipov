@@ -4,24 +4,16 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.Genre;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class GenreRepositoryJdbcImpl implements GenreRepositoryJdbc {
+public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
 
     @PersistenceContext
     private final EntityManager em;
@@ -37,8 +29,8 @@ public class GenreRepositoryJdbcImpl implements GenreRepositoryJdbc {
     }
 
     @Override
-    public Genre findById(long id) {
-        return em.find(Genre.class, id);
+    public Optional<Genre> findById(long id) {
+        return Optional.ofNullable(em.find(Genre.class, id));
     }
 
     @Override
@@ -75,7 +67,6 @@ public class GenreRepositoryJdbcImpl implements GenreRepositoryJdbc {
 
     @Override
     public void deleteById(long id) {
-        Genre genre = findById(id);
-        em.remove(genre);
+        findById(id).ifPresent(em::remove);
     }
 }

@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
+import ru.otus.dto.AuthorDto;
+import ru.otus.dto.BookDto;
+import ru.otus.dto.GenreDto;
 import ru.otus.service.DomainConvert;
 import ru.otus.service.IOService;
 import ru.otus.service.ShowDomain;
@@ -18,32 +21,32 @@ public class ShowDomainImpl implements ShowDomain {
     private final IOService ioService;
 
     @Override
-    public void showBook(Book book) {
+    public void showBook(BookDto book) {
         ioService.println(domainConvert.convertBookToString(book));
     }
 
     @Override
-    public void showListBook(List<Book> books) {
+    public void showListBook(List<BookDto> books) {
         books.forEach(this::showBook);
     }
 
     @Override
-    public void showAuthor(Author author) {
+    public void showAuthor(AuthorDto author) {
         ioService.println(domainConvert.convertAuthorToString(author));
     }
 
     @Override
-    public void showListAuthor(List<Author> authors) {
+    public void showListAuthor(List<AuthorDto> authors) {
         authors.forEach(this::showAuthor);
     }
 
     @Override
-    public void showGenre(Genre genre) {
+    public void showGenre(GenreDto genre) {
         ioService.println(domainConvert.convertGenreToString(genre));
     }
 
     @Override
-    public void showListGenre(List<Genre> genres) {
+    public void showListGenre(List<GenreDto> genres) {
         genres.forEach(this::showGenre);
     }
 }

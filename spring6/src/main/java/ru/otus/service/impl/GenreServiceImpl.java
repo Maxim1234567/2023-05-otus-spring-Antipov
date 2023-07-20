@@ -3,7 +3,10 @@ package ru.otus.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.repository.GenreRepositoryJdbc;
+import ru.otus.convert.GenreConvertGenreDto;
+import ru.otus.convert.GenreDtoConvertGenre;
+import ru.otus.dto.GenreDto;
+import ru.otus.repository.GenreRepositoryJpa;
 import ru.otus.domain.Genre;
 import ru.otus.service.GenreService;
 
@@ -12,29 +15,35 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
-    private final GenreRepositoryJdbc genreRepository;
+    private final GenreRepositoryJpa genreRepository;
+    private final GenreDtoConvertGenre convertGenre;
+    private final GenreConvertGenreDto convertGenreDto;
 
     @Override
     @Transactional(readOnly = true)
-    public List<Genre> getAll() {
-        return genreRepository.findAll();
+    public List<GenreDto> getAll() {
+        return genreRepository.findAll().stream().map(convertGenreDto::convert).toList();
     }
 
     @Override
     @Transactional
-    public Genre save(Genre genre) {
-        return genreRepository.save(genre);
+    public GenreDto save(GenreDto genre) {
+        Genre genreDomain = convertGenre.convert(genre);
+        Genre genreSave = genreRepository.save(genreDomain);
+
+        return convertGenreDto.convert(genreSave);
     }
 
     @Override
     @Transactional
-    public void delete(Genre genre) {
+    public void delete(GenreDto genre) {
         genreRepository.deleteById(genre.getId());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Genre getGenreById(Long id) {
-        return genreRepository.findById(id);
+    public GenreDto getGenreById(Long id) {
+        Genre genre = genreRepository.findById(id).orElse(new Genre());
+        return convertGenreDto.convert(genre);
     }
 }

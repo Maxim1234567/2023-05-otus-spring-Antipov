@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
+import ru.otus.dto.AuthorDto;
+import ru.otus.dto.BookDto;
+import ru.otus.dto.GenreDto;
 import ru.otus.service.impl.DomainConvertImpl;
 
 import java.util.List;
@@ -27,9 +30,9 @@ public class DomainConvertTest {
             .append("\n")
             .toString();
 
-    private final Genre genre = new Genre(100L, "Fiction");
-    private final Author author = new Author(100L, "Herbert", "Shieldt", 72, 1951);
-    private final Book book = new Book(
+    private final GenreDto genre = new GenreDto(100L, "Fiction");
+    private final AuthorDto author = new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951);
+    private final BookDto book = new BookDto(
             100L, "Java. Complete guide", 2022, 1344,
             List.of(genre),
             List.of(author)

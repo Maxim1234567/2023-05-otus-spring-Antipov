@@ -1,11 +1,12 @@
 package ru.otus.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 @Builder
 @Data
 @EqualsAndHashCode

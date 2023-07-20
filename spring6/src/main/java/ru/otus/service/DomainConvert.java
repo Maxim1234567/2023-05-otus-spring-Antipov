@@ -3,11 +3,14 @@ package ru.otus.service;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
+import ru.otus.dto.AuthorDto;
+import ru.otus.dto.BookDto;
+import ru.otus.dto.GenreDto;
 
 public interface DomainConvert {
-    String convertGenreToString(Genre genre);
+    String convertGenreToString(GenreDto genre);
 
-    String convertAuthorToString(Author author);
+    String convertAuthorToString(AuthorDto author);
 
-    String convertBookToString(Book book);
+    String convertBookToString(BookDto book);
 }

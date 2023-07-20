@@ -6,6 +6,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 @EqualsAndHashCode
 @Entity
 @Table(name = "AUTHOR")

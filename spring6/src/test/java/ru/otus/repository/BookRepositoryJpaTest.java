@@ -1,9 +1,11 @@
 package ru.otus.repository;
 
+import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.Utils;
 import ru.otus.domain.Author;
@@ -11,14 +13,22 @@ import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
 
 import java.util.List;
+import java.util.Objects;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Dao to work with book should")
 @DataJpaTest
-@Import({BookRepositoryJdbcImpl.class, AuthorRepositoryJdbcImpl.class, GenreRepositoryJdbcImpl.class})
-public class BookRepositoryJdbcTest {
+@Import({BookRepositoryJpaImpl.class, AuthorRepositoryJpaImpl.class, GenreRepositoryJpaImpl.class})
+public class BookRepositoryJpaTest {
+
+    private static final int EXPECTED_NUMBER_OF_BOOKS = 4;
+
+    private static final int EXPECTED_QUERIES_COUNT = 3;
+
+    private static final long BOOK_ID = 200L;
+
     private static final Book EXISTING_BOOK = new Book(
             300L,
             "FOUNDATION",
@@ -92,22 +102,25 @@ public class BookRepositoryJdbcTest {
             2023,
             1024,
             List.of(
-                    new Genre(1100L, "Modern domestic prose")
+                    new Genre(null, "Modern domestic prose")
             ),
             List.of(
                     new Author(
-                            500L, "Lyubov", "Voronkova", 70, 1906
+                            null, "Lyubov", "Voronkova", 70, 1906
                     )
             )
     );
 
     @Autowired
-    private BookRepositoryJdbcImpl bookRepository;
+    private BookRepositoryJpaImpl bookRepository;
+
+    @Autowired
+    private TestEntityManager em;
 
     @DisplayName("correctly return the book by id")
     @Test
     public void shouldCorrectReturnBookById() {
-        Book book = bookRepository.findById(EXISTING_BOOK.getId());
+        Book book = bookRepository.findById(EXISTING_BOOK.getId()).get();
         assertEquals(EXISTING_BOOK, book);
     }
 
@@ -129,7 +142,7 @@ public class BookRepositoryJdbcTest {
     @DisplayName("correctly return all books")
     @Test
     public void shouldCorrectReturnAllBooks() {
-        List<Book> result = bookRepository.getAllBooks();
+        List<Book> result = bookRepository.findAll();
         Utils.assertEqualsBookList(EXPECTED_BOOK, result);
     }
 
@@ -137,7 +150,7 @@ public class BookRepositoryJdbcTest {
     @Test
     public void shouldCorrectInsertBook() {
         Book book = bookRepository.save(NOT_EXISTS_BOOK);
-        Book result = bookRepository.findById(book.getId());
+        Book result = bookRepository.findById(book.getId()).get();
 
         assertEquals(book, result);
     }
@@ -155,7 +168,7 @@ public class BookRepositoryJdbcTest {
         );
 
         Book book = bookRepository.save(exceptedBook);
-        Book result = bookRepository.findById(book.getId());
+        Book result = bookRepository.findById(book.getId()).get();
 
         assertEquals(exceptedBook, result);
     }
@@ -172,5 +185,29 @@ public class BookRepositoryJdbcTest {
 
         assertThat(bookRepository.findById(bookId))
                 .isNull();
+    }
+
+    @DisplayName("should use expected count queries")
+    @Test
+    public void shouldUseExpectedCountSelect() {
+        SessionFactory sessionFactory = em.getEntityManager().getEntityManagerFactory()
+                .unwrap(SessionFactory.class);
+        sessionFactory.getStatistics().setStatisticsEnabled(true);
+
+        List<Book> books = bookRepository.findAll();
+        assertThat(books).isNotNull().hasSize(EXPECTED_NUMBER_OF_BOOKS)
+                .allMatch(b -> Objects.nonNull(b.getName()))
+                .allMatch(b -> Objects.nonNull(b.getId()))
+                .allMatch(b -> Objects.nonNull(b.getNumberPages()))
+                .allMatch(b -> Objects.nonNull(b.getYearIssue()))
+                .allMatch(b -> Objects.nonNull(b.getAuthors()) && b.getAuthors().size() >= 0)
+                .allMatch(b -> Objects.nonNull(b.getGenres()) && b.getGenres().size() >= 0);
+
+        assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
+    }
+
+    @Test
+    public void shouldCorrectReturnEmptyOptionalIfBookNotExists() {
+        assertTrue(false);
     }
 }

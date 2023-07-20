@@ -3,11 +3,12 @@ package ru.otus.repository;
 import ru.otus.domain.Author;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface AuthorRepositoryJdbc {
+public interface AuthorRepositoryJpa {
     Author save(Author author);
 
-    Author findById(long id);
+    Optional<Author> findById(long id);
 
     List<Author> findByIds(List<Long> ids);
 

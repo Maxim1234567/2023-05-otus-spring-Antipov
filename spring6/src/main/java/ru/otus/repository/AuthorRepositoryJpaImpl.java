@@ -4,24 +4,16 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.Author;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class AuthorRepositoryJdbcImpl implements AuthorRepositoryJdbc {
+public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
 
     @PersistenceContext
     private final EntityManager em;
@@ -37,8 +29,8 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepositoryJdbc {
     }
 
     @Override
-    public Author findById(long id) {
-        return em.find(Author.class, id);
+    public Optional<Author> findById(long id) {
+        return Optional.ofNullable(em.find(Author.class, id));
     }
 
     @Override
@@ -72,7 +64,6 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepositoryJdbc {
 
     @Override
     public void deleteById(long id) {
-        Author author = findById(id);
-        em.remove(author);
+        findById(id).ifPresent(em::remove);
     }
 }

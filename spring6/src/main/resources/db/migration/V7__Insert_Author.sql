@@ -14,9 +14,9 @@ INSERT INTO AUTHOR (ID, FIRST_NAME, LAST_NAME, AGE, YEAR_BIRTHDATE) VALUES
     );
 
 INSERT INTO AUTHOR (ID, FIRST_NAME, LAST_NAME, AGE, YEAR_BIRTHDATE) VALUES (
-                                                                               400, 'Irvine', 'Welsh', 64, 1958
-                                                                           );
+    400, 'Irvine', 'Welsh', 64, 1958
+);
 
 INSERT INTO AUTHOR (ID, FIRST_NAME, LAST_NAME, AGE, YEAR_BIRTHDATE) VALUES (
-                                                                               500, 'Lyubov', 'Voronkova', 70, 1906
-                                                                           );
+    500, 'Lyubov', 'Voronkova', 70, 1906
+);

@@ -3,15 +3,16 @@ package ru.otus.repository;
 import ru.otus.domain.Book;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface BookRepositoryJdbc {
+public interface BookRepositoryJpa {
     Book save(Book book);
 
-    Book findById(long id);
+    Optional<Book> findById(long id);
 
     List<Book> findByIds(List<Long> ids);
 
-    List<Book> getAllBooks();
+    List<Book> findAll();
 
     void deleteById(long id);
 }

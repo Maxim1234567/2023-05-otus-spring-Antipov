@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
+import ru.otus.dto.AuthorDto;
+import ru.otus.dto.BookDto;
+import ru.otus.dto.GenreDto;
 import ru.otus.service.IOService;
 import ru.otus.service.UserInteraction;
 
@@ -16,15 +19,15 @@ public class UserInteractionImpl implements UserInteraction {
     private final IOService ioService;
 
     @Override
-    public Genre createGenre() {
+    public GenreDto createGenre() {
         ioService.print("Enter name genre: ");
         String genre = ioService.readLine();
 
-        return new Genre(null, genre);
+        return new GenreDto(null, genre);
     }
 
     @Override
-    public Author createAuthor() {
+    public AuthorDto createAuthor() {
         ioService.print("Enter first name: ");
         String firstName = ioService.readLine();
 
@@ -37,11 +40,11 @@ public class UserInteractionImpl implements UserInteraction {
         ioService.print("Enter year birthdate: ");
         int yearBirthdate = Integer.parseInt(ioService.readLine());
 
-        return new Author(null, firstName, lastName, age, yearBirthdate);
+        return new AuthorDto(null, firstName, lastName, age, yearBirthdate);
     }
 
     @Override
-    public Book createBook() {
+    public BookDto createBook() {
         ioService.print("Enter name: ");
         String name = ioService.readLine();
 
@@ -51,7 +54,7 @@ public class UserInteractionImpl implements UserInteraction {
         ioService.print("Enter number pages: ");
         int numberPages = Integer.parseInt(ioService.readLine());
 
-        return new Book(null, name, yearIssue, numberPages, new ArrayList<>(), new ArrayList<>());
+        return new BookDto(null, name, yearIssue, numberPages, new ArrayList<>(), new ArrayList<>());
     }
 
     @Override

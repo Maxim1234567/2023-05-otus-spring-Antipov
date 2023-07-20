@@ -4,22 +4,25 @@ import org.springframework.stereotype.Service;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
+import ru.otus.dto.AuthorDto;
+import ru.otus.dto.BookDto;
+import ru.otus.dto.GenreDto;
 import ru.otus.service.DomainConvert;
 
 @Service
 public class DomainConvertImpl implements DomainConvert {
     @Override
-    public String convertGenreToString(Genre genre) {
+    public String convertGenreToString(GenreDto genre) {
         return genre.getId() + ". | " + genre.getGenre();
     }
 
     @Override
-    public String convertAuthorToString(Author author) {
+    public String convertAuthorToString(AuthorDto author) {
         return author.getId() + ". | " + author.getFirstName() + " " + author.getLastName() + " | " + author.getYearBirthdate() + " | " + author.getAge();
     }
 
     @Override
-    public String convertBookToString(Book book) {
+    public String convertBookToString(BookDto book) {
         String bookString = book.getId() + ". | " + book.getName() + " | " + book.getYearIssue() + " | " + book.getNumberPages();
 
         StringBuilder bookBuilder = new StringBuilder();

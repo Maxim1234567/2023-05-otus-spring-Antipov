@@ -11,7 +11,9 @@ import ru.otus.convert.BookConvertBookDto;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
+import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
+import ru.otus.dto.GenreDto;
 import ru.otus.exception.AuthorNotFound;
 import ru.otus.exception.BookNotFound;
 import ru.otus.exception.GenreNotFound;
@@ -25,64 +27,64 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ActiveProfiles("book")
 public class BookServiceTest {
-    private static final Book EXISTING_BOOK = new Book(
+    private static final BookDto EXISTING_BOOK = new BookDto(
             300L,
             "FOUNDATION",
             2022,
             320,
             List.of(
-                    new Genre(200L, "Novel"),
-                    new Genre(600L, "Drama"),
-                    new Genre(700L, "Popular science literature")
+                    new GenreDto(200L, "Novel"),
+                    new GenreDto(600L, "Drama"),
+                    new GenreDto(700L, "Popular science literature")
             ),
             List.of(
-                    new Author(300L, "Isaac", "Asimov", 72, 1919)
+                    new AuthorDto(300L, "Isaac", "Asimov", 72, 1919)
             )
     );
 
-    private static final List<Book> EXPECTED_BOOK = List.of(
-            new Book(
+    private static final List<BookDto> EXPECTED_BOOK = List.of(
+            new BookDto(
                     100L,
                     "Java. Complete guide",
                     2022,
                     1344,
                     List.of(
-                            new Genre(900L, "Reference books and professional literature"),
-                            new Genre(1000L, "Hobbies, skills")
+                            new GenreDto(900L, "Reference books and professional literature"),
+                            new GenreDto(1000L, "Hobbies, skills")
                     ),
                     List.of(
-                            new Author(100L, "Herbert", "Shieldt", 72, 1951)
+                            new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951)
                     )
             ),
-            new Book(
+            new BookDto(
                     200L,
                     "Starships. Andromeda's nebula",
                     1987,
                     400,
                     List.of(
-                            new Genre(200L, "Novel"),
-                            new Genre(600L, "Drama"),
-                            new Genre(700L, "Popular science literature")
+                            new GenreDto(200L, "Novel"),
+                            new GenreDto(600L, "Drama"),
+                            new GenreDto(700L, "Popular science literature")
                     ),
                     List.of(
-                            new Author(200L, "Ivan", "Efremov", 64, 1908)
+                            new AuthorDto(200L, "Ivan", "Efremov", 64, 1908)
                     )
             ),
-            new Book(
+            new BookDto(
                     300L,
                     "FOUNDATION",
                     2022,
                     320,
                     List.of(
-                            new Genre(200L, "Novel"),
-                            new Genre(600L, "Drama"),
-                            new Genre(700L, "Popular science literature")
+                            new GenreDto(200L, "Novel"),
+                            new GenreDto(600L, "Drama"),
+                            new GenreDto(700L, "Popular science literature")
                     ),
                     List.of(
-                            new Author(300L, "Isaac", "Asimov", 72, 1919)
+                            new AuthorDto(300L, "Isaac", "Asimov", 72, 1919)
                     )
             ),
-            new Book(
+            new BookDto(
                     400L,
                     "Alice's Adventures in Wonderland",
                     1865,
@@ -92,17 +94,32 @@ public class BookServiceTest {
             )
     );
 
-    private static final Book NOT_EXISTS_BOOK = new Book(
+    private static final BookDto NOT_EXISTS_BOOK_WITH_NOT_EXISTS_AUTHOR_AND_GENRE = new BookDto(
             null,
             "Son of Zeus",
             2023,
             1024,
             List.of(
-                    new Genre(null, "Modern domestic prose")
+                    new GenreDto(null, "Modern domestic prose")
             ),
             List.of(
-                    new Author(
+                    new AuthorDto(
                             null, "Lyubov", "Voronkova", 70, 1906
+                    )
+            )
+    );
+
+    private static final BookDto NOT_EXISTS_BOOK = new BookDto(
+            null,
+            "Son of Zeus",
+            2023,
+            1024,
+            List.of(
+                    new GenreDto(1100L, "Modern domestic prose")
+            ),
+            List.of(
+                    new AuthorDto(
+                            500L, "Lyubov", "Voronkova", 70, 1906
                     )
             )
     );
@@ -117,30 +134,57 @@ public class BookServiceTest {
     @Test
     public void shouldCorrectReturnBookWithGenreAndAuthors() {
         BookDto result = bookService.getBookById(EXISTING_BOOK.getId());
-        assertEquals(convertBook.convert(EXISTING_BOOK), result);
+        assertEquals(EXISTING_BOOK, result);
     }
 
     @DisplayName("correctly return all books")
     @Test
     public void shouldCorrectReturnAllBooks() {
-        List<Book> result = bookService.getAllBooks();
-        Utils.assertEqualsBookList(EXPECTED_BOOK, result);
+        List<BookDto> result = bookService.getAllBooks();
+        Utils.assertEqualsBookListDto(EXPECTED_BOOK, result);
     }
 
-    @DisplayName("correctly save book")
+    @DisplayName("correctly save book with not exists authors and genres")
     @Test
-    public void shouldCorrectSaveBookAndAuthorAndGenre() {
-//        Book book = bookService.save(NOT_EXISTS_BOOK);
-//        Book result = bookService.getBookById(book.getId());
-//        bookService.delete(book);
-//
-//        assertEquals(book, result);
+    public void shouldCorrectSaveBookWithNotExistsAuthorAndGenre() {
+        BookDto book = bookService.save(NOT_EXISTS_BOOK_WITH_NOT_EXISTS_AUTHOR_AND_GENRE);
+        BookDto result = bookService.getBookById(book.getId());
+        bookService.delete(book);
+
+        assertEqualsBook(result, NOT_EXISTS_BOOK_WITH_NOT_EXISTS_AUTHOR_AND_GENRE);
+    }
+
+    @DisplayName("correctly save book with authors and genres")
+    @Test
+    public void shouldCorrectSaveBookWithAuthorAndGenre() {
+        BookDto book = bookService.save(NOT_EXISTS_BOOK);
+        BookDto result = bookService.getBookById(book.getId());
+        bookService.delete(book);
+
+        assertEqualsBook(result, NOT_EXISTS_BOOK);
     }
 
     @DisplayName("correctly delete book with author and genre")
     @Test
     public void shouldCorrectDeleteBookWithAuthorAndGenre() {
-//        Book book = bookService.save(NOT_EXISTS_BOOK);
-//        assertDoesNotThrow(() -> bookService.delete(book));
+        BookDto book = bookService.save(NOT_EXISTS_BOOK);
+        assertDoesNotThrow(() -> bookService.delete(book));
+    }
+
+    private void assertEqualsBook(BookDto book1, BookDto book2) {
+        assertThat(book1).isNotNull()
+                .matches(r -> r.getName().equals(book2.getName()))
+                .matches(r -> r.getNumberPages().equals(book2.getNumberPages()))
+                .matches(r -> r.getYearIssue().equals(book2.getYearIssue()))
+                .matches(r -> r.getAuthors().get(0).getAge() == book2.getAuthors().get(0).getAge())
+                .matches(r -> r.getAuthors().get(0).getFirstName().equals(book2.getAuthors().get(0).getFirstName()))
+                .matches(r -> r.getAuthors().get(0).getLastName().equals(book2.getAuthors().get(0).getLastName()))
+                .matches(r -> r.getAuthors().get(0).getYearBirthdate() == book2.getAuthors().get(0).getYearBirthdate())
+                .matches(r -> r.getGenres().get(0).getGenre().equals(book2.getGenres().get(0).getGenre()));
+    }
+
+    @Test
+    public void shouldCorrectReturnEmptyBookDtoIfAuthorNotExists() {
+        assertTrue(false);
     }
 }

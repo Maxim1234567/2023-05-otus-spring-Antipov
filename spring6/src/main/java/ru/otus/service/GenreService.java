@@ -1,15 +1,16 @@
 package ru.otus.service;
 
 import ru.otus.domain.Genre;
+import ru.otus.dto.GenreDto;
 
 import java.util.List;
 
 public interface GenreService {
-    List<Genre> getAll();
+    List<GenreDto> getAll();
 
-    Genre save(Genre genre);
+    GenreDto save(GenreDto genre);
 
-    void delete(Genre genre);
+    void delete(GenreDto genre);
 
-    Genre getGenreById(Long id);
+    GenreDto getGenreById(Long id);
 }

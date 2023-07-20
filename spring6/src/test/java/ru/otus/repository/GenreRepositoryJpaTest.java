@@ -3,10 +3,8 @@ package ru.otus.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.EmptyResultDataAccessException;
 import ru.otus.Utils;
 import ru.otus.domain.Genre;
 
@@ -15,13 +13,12 @@ import java.util.List;
 import java.util.Random;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Dao to work with genres should")
 @DataJpaTest
-@Import(GenreRepositoryJdbcImpl.class)
-public class GenreRepositoryJdbcTest {
+@Import(GenreRepositoryJpaImpl.class)
+public class GenreRepositoryJpaTest {
     private static final Genre EXISTING_GENRE = new Genre(400L, "Tale");
 
     private static final List<Genre> EXPECTED_GENRES = List.of(
@@ -39,7 +36,7 @@ public class GenreRepositoryJdbcTest {
     );
 
     @Autowired
-    private GenreRepositoryJdbcImpl genreRepository;
+    private GenreRepositoryJpaImpl genreRepository;
 
 
     @DisplayName("correctly save the genre without a given ID in the database")
@@ -84,7 +81,7 @@ public class GenreRepositoryJdbcTest {
     @DisplayName("correctly return the genre by id")
     @Test
     public void shouldCorrectReturnGenreById() {
-        Genre genre = genreRepository.findById(EXISTING_GENRE.getId());
+        Genre genre = genreRepository.findById(EXISTING_GENRE.getId()).get();
 
         assertEquals(EXISTING_GENRE, genre);
     }
@@ -121,5 +118,10 @@ public class GenreRepositoryJdbcTest {
 
         assertThat(genreRepository.findById(EXISTING_GENRE.getId()))
                 .isNull();
+    }
+
+    @Test
+    public void shouldCorrectReturnEmptyOptionalIfGenreNotExists() {
+        assertTrue(false);
     }
 }

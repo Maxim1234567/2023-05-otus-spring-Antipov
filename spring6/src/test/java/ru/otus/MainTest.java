@@ -11,6 +11,9 @@ import org.springframework.test.context.ActiveProfiles;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
+import ru.otus.dto.AuthorDto;
+import ru.otus.dto.BookDto;
+import ru.otus.dto.GenreDto;
 import ru.otus.service.IOService;
 import ru.otus.service.LibraryFacade;
 import ru.otus.service.UserInteraction;
@@ -53,9 +56,6 @@ public class MainTest {
             "500. | Lyubov Voronkova | 1906 | 70\n" +
             "Choice author. For exit enter -1!\n" +
             "Show all books\n" +
-            "400. | Alice's Adventures in Wonderland | 1865 | 225\n" +
-            "\n" +
-            "\n" +
             "1. | uni corn | 2023 | 320\n" +
             "----------------------------------------\n" +
             "  1. | Jen Sincero | 1965 | 57\n" +
@@ -79,19 +79,21 @@ public class MainTest {
             "  300. | Isaac Asimov | 1919 | 72\n" +
             "----------------------------------------\n" +
             "  200. | Novel  600. | Drama  700. | Popular science literature\n" +
-            "\n";
+            "\n" +
+            "400. | Alice's Adventures in Wonderland | 1865 | 225\n" +
+            "\n\n";
 
     private static final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-    private static final Genre genre = new Genre(
+    private static final GenreDto genre = new GenreDto(
             null, "Psychology"
     );
 
-    private static final Author author = new Author(
+    private static final AuthorDto author = new AuthorDto(
             null, "Jen", "Sincero", 57, 1965
     );
 
-    private static final Book book = new Book(
+    private static final BookDto book = new BookDto(
             null, "uni corn", 2023, 320, List.of(), List.of()
     );
 

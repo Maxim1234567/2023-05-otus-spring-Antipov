@@ -15,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Dao to work with authors should")
 @DataJpaTest
-@Import(AuthorRepositoryJdbcImpl.class)
-public class AuthorRepositoryJdbcTest {
+@Import(AuthorRepositoryJpaImpl.class)
+public class AuthorRepositoryJpaTest {
     private static final Author EXISTING_AUTHOR = new Author(
             400L, "Irvine", "Welsh", 64, 1958
     );
@@ -34,13 +34,13 @@ public class AuthorRepositoryJdbcTest {
     );
 
     @Autowired
-    private AuthorRepositoryJdbcImpl authorRepository;
+    private AuthorRepositoryJpaImpl authorRepository;
 
     @DisplayName("correctly save the genre without a given ID in the database")
     @Test
     public void shouldCorrectSaveAuthorWithoutId() {
         Author author = authorRepository.save(NOT_EXISTS_AUTHOR);
-        Author result = authorRepository.findById(author.getId());
+        Author result = authorRepository.findById(author.getId()).get();
 
         assertEquals(author, result);
     }
@@ -48,7 +48,7 @@ public class AuthorRepositoryJdbcTest {
     @DisplayName("correctly return author by id")
     @Test
     public void shouldCorrectReturnAuthorById() {
-        Author result = authorRepository.findById(EXISTING_AUTHOR.getId());
+        Author result = authorRepository.findById(EXISTING_AUTHOR.getId()).get();
         assertEquals(EXISTING_AUTHOR, result);
     }
 
@@ -106,5 +106,10 @@ public class AuthorRepositoryJdbcTest {
 
         assertThat(authorRepository.findById(EXISTING_AUTHOR.getId()))
                 .isNull();
+    }
+
+    @Test
+    public void shouldCorrectReturnEmptyOptionalIfAuthorNotExists() {
+        assertTrue(false);
     }
 }

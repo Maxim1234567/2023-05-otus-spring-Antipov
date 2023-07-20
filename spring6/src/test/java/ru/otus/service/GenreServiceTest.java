@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.Utils;
 import ru.otus.domain.Genre;
+import ru.otus.dto.GenreDto;
 
 import java.util.List;
 
@@ -17,22 +18,22 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("genre")
 public class GenreServiceTest {
 
-    private static final Genre NOT_EXISTING_GENRE = new Genre(null, "Not Exist Genre");
+    private static final GenreDto NOT_EXISTING_GENRE = new GenreDto(null, "Not Exist Genre");
 
-    private static final Genre EXISTING_GENRE = new Genre(400L, "Tale");
+    private static final GenreDto EXISTING_GENRE = new GenreDto(400L, "Tale");
 
-    private static final List<Genre> EXPECTED_GENRES = List.of(
-            new Genre(100L, "Fiction"),
-            new Genre(200L, "Novel"),
-            new Genre(300L, "Thriller"),
-            new Genre(400L, "Tale"),
-            new Genre(500L, "Comedy"),
-            new Genre(600L, "Drama"),
-            new Genre(700L, "Popular science literature"),
-            new Genre(800L, "Art and culture"),
-            new Genre(900L, "Reference books and professional literature"),
-            new Genre(1000L, "Hobbies, skills"),
-            new Genre(1100L, "Modern domestic prose")
+    private static final List<GenreDto> EXPECTED_GENRES = List.of(
+            new GenreDto(100L, "Fiction"),
+            new GenreDto(200L, "Novel"),
+            new GenreDto(300L, "Thriller"),
+            new GenreDto(400L, "Tale"),
+            new GenreDto(500L, "Comedy"),
+            new GenreDto(600L, "Drama"),
+            new GenreDto(700L, "Popular science literature"),
+            new GenreDto(800L, "Art and culture"),
+            new GenreDto(900L, "Reference books and professional literature"),
+            new GenreDto(1000L, "Hobbies, skills"),
+            new GenreDto(1100L, "Modern domestic prose")
     );
 
     @Autowired
@@ -41,8 +42,8 @@ public class GenreServiceTest {
     @DisplayName("should correct save genre")
     @Test
     public void shouldCorrectSaveGenre() {
-        Genre genre = genreService.save(NOT_EXISTING_GENRE);
-        List<Genre> genres = genreService.getAll();
+        GenreDto genre = genreService.save(NOT_EXISTING_GENRE);
+        List<GenreDto> genres = genreService.getAll();
         genreService.delete(genre);
 
         assertTrue(genres.contains(genre));
@@ -51,30 +52,35 @@ public class GenreServiceTest {
     @DisplayName("should correct return all genres")
     @Test
     public void shouldCorrectReturnAllGenres() {
-        List<Genre> genres = genreService.getAll();
+        List<GenreDto> genres = genreService.getAll();
 
-        Utils.assertEqualsGenreList(EXPECTED_GENRES, genres);
+        Utils.assertEqualsGenreListDto(EXPECTED_GENRES, genres);
     }
 
     @DisplayName("should correct delete genre")
     @Test
     public void shouldCorrectDeleteGenre() {
-        Genre genre = genreService.save(NOT_EXISTING_GENRE);
-        List<Genre> genresWithNotExistsGenre = genreService.getAll();
+        GenreDto genre = genreService.save(NOT_EXISTING_GENRE);
+        List<GenreDto> genresWithNotExistsGenre = genreService.getAll();
 
         genreService.delete(genre);
-        List<Genre> genresWithoutNotExistsGenre = genreService.getAll();
+        List<GenreDto> genresWithoutNotExistsGenre = genreService.getAll();
 
         assertTrue(genresWithNotExistsGenre.contains(genre));
-        Utils.assertEqualsGenreList(EXPECTED_GENRES, genresWithoutNotExistsGenre);
+        Utils.assertEqualsGenreListDto(EXPECTED_GENRES, genresWithoutNotExistsGenre);
     }
 
     @DisplayName("should correct return genre")
     @Test
     public void shouldCorrectReturnGenre() {
-        Genre excepted = EXPECTED_GENRES.get(0);
-        Genre result = genreService.getGenreById(excepted.getId());
+        GenreDto excepted = EXPECTED_GENRES.get(0);
+        GenreDto result = genreService.getGenreById(excepted.getId());
 
         assertEquals(excepted, result);
+    }
+
+    @Test
+    public void shouldCorrectReturnEmptyGenreDtoIfAuthorNotExists() {
+        assertTrue(false);
     }
 }
