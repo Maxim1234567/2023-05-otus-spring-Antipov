@@ -14,6 +14,7 @@ import ru.otus.domain.Genre;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -184,7 +185,7 @@ public class BookRepositoryJpaTest {
         bookRepository.deleteById(bookId);
 
         assertThat(bookRepository.findById(bookId))
-                .isNull();
+                .isEqualTo(Optional.empty());
     }
 
     @DisplayName("should use expected count queries")
@@ -208,6 +209,7 @@ public class BookRepositoryJpaTest {
 
     @Test
     public void shouldCorrectReturnEmptyOptionalIfBookNotExists() {
-        assertTrue(false);
+        assertThat(bookRepository.findById(111L))
+                .isEqualTo(Optional.empty());
     }
 }

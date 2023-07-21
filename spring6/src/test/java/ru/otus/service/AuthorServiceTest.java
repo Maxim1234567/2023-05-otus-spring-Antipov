@@ -11,6 +11,7 @@ import ru.otus.dto.AuthorDto;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -79,6 +80,9 @@ public class AuthorServiceTest {
 
     @Test
     public void shouldCorrectReturnEmptyAuthorDtoIfAuthorNotExists() {
-        assertTrue(false);
+        AuthorDto expected = new AuthorDto();
+        AuthorDto result = authorService.getAuthorById(111L);
+
+        assertEquals(expected, result);
     }
 }

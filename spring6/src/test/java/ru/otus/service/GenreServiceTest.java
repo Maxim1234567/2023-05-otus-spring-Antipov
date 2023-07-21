@@ -81,6 +81,8 @@ public class GenreServiceTest {
 
     @Test
     public void shouldCorrectReturnEmptyGenreDtoIfAuthorNotExists() {
-        assertTrue(false);
+        GenreDto expected = new GenreDto();
+        GenreDto result = genreService.getGenreById(111L);
+        assertEquals(expected, result);
     }
 }

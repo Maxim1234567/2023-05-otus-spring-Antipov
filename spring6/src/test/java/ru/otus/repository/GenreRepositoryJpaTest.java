@@ -10,6 +10,7 @@ import ru.otus.domain.Genre;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -93,9 +94,9 @@ public class GenreRepositoryJpaTest {
 
         Random random = new Random();
 
-        Genre genre1 = EXPECTED_GENRES.get(random.nextInt(EXPECTED_GENRES.size()));
-        Genre genre2 = EXPECTED_GENRES.get(random.nextInt(EXPECTED_GENRES.size()));
-        Genre genre3 = EXPECTED_GENRES.get(random.nextInt(EXPECTED_GENRES.size()));
+        Genre genre1 = EXPECTED_GENRES.get(0);
+        Genre genre2 = EXPECTED_GENRES.get(1);
+        Genre genre3 = EXPECTED_GENRES.get(2);
 
         List<Genre> excepted = List.of(genre1, genre2, genre3);
 
@@ -117,11 +118,12 @@ public class GenreRepositoryJpaTest {
         genreRepository.deleteById(EXISTING_GENRE.getId());
 
         assertThat(genreRepository.findById(EXISTING_GENRE.getId()))
-                .isNull();
+                .isEqualTo(Optional.empty());
     }
 
     @Test
     public void shouldCorrectReturnEmptyOptionalIfGenreNotExists() {
-        assertTrue(false);
+        assertThat(genreRepository.findById(111L))
+                .isEqualTo(Optional.empty());
     }
 }

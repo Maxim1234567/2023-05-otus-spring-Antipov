@@ -32,7 +32,12 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public BookDto getBookById(long id) {
-        Book book = bookRepository.findById(id).orElse(new Book());
+        Book book = bookRepository.findById(id).orElse(
+                Book.builder()
+                        .genres(List.of())
+                        .authors(List.of())
+                        .build()
+        );
 
         book.getGenres();
         book.getAuthors();

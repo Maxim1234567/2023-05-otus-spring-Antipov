@@ -185,6 +185,11 @@ public class BookServiceTest {
 
     @Test
     public void shouldCorrectReturnEmptyBookDtoIfAuthorNotExists() {
-        assertTrue(false);
+        BookDto expected = BookDto.builder()
+                .genres(List.of())
+                .authors(List.of()).build();
+        BookDto result = bookService.getBookById(1111L);
+
+        assertEquals(expected, result);
     }
 }

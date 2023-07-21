@@ -9,6 +9,7 @@ import ru.otus.Utils;
 import ru.otus.domain.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -105,11 +106,12 @@ public class AuthorRepositoryJpaTest {
         authorRepository.deleteById(EXISTING_AUTHOR.getId());
 
         assertThat(authorRepository.findById(EXISTING_AUTHOR.getId()))
-                .isNull();
+                .isEqualTo(Optional.empty());
     }
 
     @Test
     public void shouldCorrectReturnEmptyOptionalIfAuthorNotExists() {
-        assertTrue(false);
+        assertThat(authorRepository.findById(111L))
+                .isEqualTo(Optional.empty());
     }
 }
