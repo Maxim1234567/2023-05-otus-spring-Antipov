@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.otus.domain.Answer;
 import ru.otus.domain.TestQuestion;
 import ru.otus.service.ResourceProvider;
+import ru.otus.service.SettingsProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class CsvQuestionDao implements QuestionDao {
     private final ResourceProvider resourceProvider;
+    private final SettingsProvider settingsProvider;
 
     @Override
     public List<TestQuestion> getAllQuestions() {
@@ -28,7 +30,7 @@ public class CsvQuestionDao implements QuestionDao {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
 
-                String[] data = line.split(resourceProvider.getDelimiter());
+                String[] data = line.split(settingsProvider.getDelimiter());
 
                 String question = data[0];
                 List<String> textAnswers = Arrays.stream(data).skip(1).toList();

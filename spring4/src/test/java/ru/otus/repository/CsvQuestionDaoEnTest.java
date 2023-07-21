@@ -6,10 +6,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import ru.otus.domain.Answer;
 import ru.otus.domain.TestQuestion;
 import ru.otus.props.ApplicationProperties;
-import ru.otus.service.ApplicationMessageSource;
-import ru.otus.service.ApplicationMessageSourceImpl;
 import ru.otus.service.ResourceProvider;
-import ru.otus.service.ResourceProviderImpl;
 
 import java.util.List;
 import java.util.Locale;
@@ -30,9 +27,7 @@ public class CsvQuestionDaoEnTest {
                 ";", new Locale("en"), "/question-test-en.csv"
         );
 
-        ResourceProvider resourceProvider = new ResourceProviderImpl(applicationProperties);
-
-        questionDao = new CsvQuestionDao(resourceProvider);
+        questionDao = new CsvQuestionDao(applicationProperties, applicationProperties);
 
         questions = List.of(
                 new TestQuestion(
