@@ -12,6 +12,7 @@ import ru.otus.domain.Genre;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.junit.jupiter.api.Assertions.*;
@@ -98,7 +99,7 @@ public class GenreRepositoryJdbcTest {
         Genre genre2 = EXPECTED_GENRES.get(random.nextInt(EXPECTED_GENRES.size()));
         Genre genre3 = EXPECTED_GENRES.get(random.nextInt(EXPECTED_GENRES.size()));
 
-        List<Genre> excepted = List.of(genre1, genre2, genre3);
+        Set<Genre> excepted = Set.of(genre1, genre2, genre3);
 
         ids.add(genre1.getId());
         ids.add(genre2.getId());
@@ -106,7 +107,7 @@ public class GenreRepositoryJdbcTest {
 
         List<Genre> result = genreRepository.findByIds(ids);
 
-        Utils.assertEqualsGenreList(excepted, result);
+        Utils.assertEqualsGenreList(excepted.stream().toList(), result);
     }
 
     @DisplayName("correctly delete a genre by its id")
