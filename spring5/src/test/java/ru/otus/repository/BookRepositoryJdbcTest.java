@@ -12,7 +12,6 @@ import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 

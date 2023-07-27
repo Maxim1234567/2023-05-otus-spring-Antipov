@@ -2,16 +2,13 @@ package ru.otus.repository.ext;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import ru.otus.domain.Author;
 import ru.otus.domain.Book;
-import ru.otus.domain.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class BookResultSetExtractor implements ResultSetExtractor<Map<Long, Book>> {
     @Override
