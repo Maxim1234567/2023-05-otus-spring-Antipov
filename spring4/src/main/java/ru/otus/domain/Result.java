@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 public class Result {
     private final String question;
 
-    private final String answerUser;
+    private final Answer userAnswer;
 
-    private final String correctAnswer;
+    private final Answer correctAnswer;
 }

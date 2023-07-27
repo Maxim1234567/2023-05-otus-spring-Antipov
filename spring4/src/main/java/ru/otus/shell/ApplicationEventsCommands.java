@@ -17,8 +17,6 @@ import java.util.List;
 public class ApplicationEventsCommands {
     private final QuestionService questionService;
 
-    private final ApplicationMessageSource messageSource;
-
     private UserData userData;
     private List<Result> results;
 

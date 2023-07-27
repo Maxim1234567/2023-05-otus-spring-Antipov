@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import ru.otus.domain.Answer;
 import ru.otus.domain.Result;
 import ru.otus.domain.UserData;
 
@@ -31,21 +32,11 @@ public class DemoInteractionTest {
     public void setUp() {
         userData = new UserData("Maxim", "Antipov");
         results = List.of(
-                new Result("Question 1?", "Answer user 1", "Correct answer 1"),
-                new Result("Question 2?", "Answer user 2", "Correct answer 2"),
-                new Result("Question 3?", "Answer user 3", "Correct answer 3")
+                new Result("Question 1?", new Answer("Answer user 1", false), new Answer("Correct answer 1", true)),
+                new Result("Question 2?", new Answer("Answer user 1", false), new Answer("Correct answer 1", true)),
+                new Result("Question 3?", new Answer("Answer user 1", false), new Answer("Correct answer 1", true))
         );
     }
-
-    /*
-        @Override
-    public void interaction() {
-        UserData userData = questionService.fillUserData();
-        List<Result> results = questionService.askUserQuestions();
-
-        questionService.printResult(userData, results);
-    }
-    */
 
     @Test
     public void interactionTest() {

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CsvQuestionDaoRuTest {
 
-    private CsvQuestionDao csvQuestionDao;
+    private CsvQuestionDao questionDao;
     private List<TestQuestion> questions;
 
     @BeforeEach
@@ -28,15 +28,9 @@ public class CsvQuestionDaoRuTest {
                 ";", new Locale("ru")
         );
 
-        ApplicationMessageSource applicationMessageSource = new ApplicationMessageSourceImpl(
-                messageSource,
-                applicationProperties
-        );
+        ApplicationMessageSource applicationMessageSource = new ApplicationMessageSourceImpl(messageSource, applicationProperties);
 
-        csvQuestionDao = new CsvQuestionDaoImpl(
-                applicationMessageSource,
-                applicationProperties
-        );
+        questionDao = new CsvQuestionDaoImpl(applicationMessageSource, applicationProperties);
 
         questions = List.of(
                 new TestQuestion(
@@ -59,7 +53,7 @@ public class CsvQuestionDaoRuTest {
 
     @Test
     void correctParseFileCsv() {
-        List<TestQuestion> result = csvQuestionDao.getAllQuestions();
+        List<TestQuestion> result = questionDao.getAllQuestions();
         assertEquals(questions, questions);
     }
 }

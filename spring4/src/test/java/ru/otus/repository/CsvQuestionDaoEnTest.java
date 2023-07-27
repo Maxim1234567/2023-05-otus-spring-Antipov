@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import ru.otus.domain.TestQuestion;
 import ru.otus.props.ApplicationProperties;
-import ru.otus.service.ApplicationMessageSource;
-import ru.otus.service.ApplicationMessageSourceImpl;
+import ru.otus.domain.Answer;
 
 import java.util.List;
 import java.util.Locale;
@@ -24,34 +23,23 @@ public class CsvQuestionDaoEnTest {
         messageSource.setDefaultEncoding("UTF-8");
 
         ApplicationProperties applicationProperties = new ApplicationProperties(
-                ";", new Locale("en")
+                ";", new Locale("en"), "/question-test-en.csv"
         );
 
-        ApplicationMessageSource applicationMessageSource = new ApplicationMessageSourceImpl(
-                messageSource,
-                applicationProperties
-        );
-
-        questionDao = new CsvQuestionDao(
-                applicationMessageSource,
-                applicationProperties
-        );
+        questionDao = new CsvQuestionDao(applicationProperties, applicationProperties);
 
         questions = List.of(
                 new TestQuestion(
                         "Test Answer 1?",
-                        List.of("1", "1", "1"),
-                        "4"
+                        List.of(new Answer("1", false), new Answer("1", false), new Answer("1", false), new Answer("4", true))
                 ),
                 new TestQuestion(
                         "Test Answer 2?",
-                        List.of("2", "2"),
-                        "5"
+                        List.of(new Answer("2", false), new Answer("2", false), new Answer("5", true))
                 ),
                 new TestQuestion(
                         "Test Answer 3?",
-                        List.of("3"),
-                        "6"
+                        List.of(new Answer("3", false), new Answer("6", true))
                 )
         );
     }

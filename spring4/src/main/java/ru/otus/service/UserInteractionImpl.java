@@ -2,6 +2,8 @@ package ru.otus.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.convert.ConvertTestQuestionService;
+import ru.otus.domain.Answer;
 import ru.otus.domain.Result;
 import ru.otus.domain.TestQuestion;
 import ru.otus.domain.UserData;
@@ -15,6 +17,7 @@ public class UserInteractionImpl implements UserInteraction {
     private final IOService ioService;
 
     private final ApplicationMessageSource messageSource;
+
 
     @Override
     public UserData createUser() {
@@ -33,10 +36,18 @@ public class UserInteractionImpl implements UserInteraction {
         ioService.println(convert.convert(question));
         ioService.print(messageSource.getMessage("user.answer"));
 
+        String textAnswerUser = ioService.readLine();
+
+        Answer correctAnswer = question.getAnswers().stream().filter(Answer::isCorrect).findFirst().get();
+        Answer userAnswer = new Answer(
+                textAnswerUser,
+                correctAnswer.getAnswer().equals(textAnswerUser)
+        );
+
         return new Result(
                 question.getQuestion(),
-                ioService.readLine(),
-                question.getCorrectAnswer()
+                userAnswer,
+                correctAnswer
         );
     }
 }

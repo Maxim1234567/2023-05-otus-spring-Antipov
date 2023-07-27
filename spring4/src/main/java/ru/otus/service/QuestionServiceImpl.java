@@ -2,6 +2,8 @@ package ru.otus.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.convert.ConvertResult;
+import ru.otus.convert.ConvertTestQuestionService;
 import ru.otus.repository.QuestionDao;
 import ru.otus.domain.Result;
 import ru.otus.domain.UserData;
@@ -19,8 +21,7 @@ public class QuestionServiceImpl implements QuestionService {
     private final UserInteraction userInteraction;
 
     private final IOService ioService;
-
-    private final ApplicationMessageSource messageSource;
+    private final ConvertResult convertResult;
 
     @Override
     public void showAllQuestion() {
@@ -47,11 +48,6 @@ public class QuestionServiceImpl implements QuestionService {
     public void printResult(UserData userData, List<Result> results) {
         ioService.println("");
         ioService.println(userData.getFirstName() + " " + userData.getLastName());
-        results.forEach(result -> {
-            ioService.println(messageSource.getMessage("question") + ": " + result.getQuestion());
-            ioService.println(messageSource.getMessage("answer.user") + ": " + result.getAnswerUser());
-            ioService.println(messageSource.getMessage("answer.correct") + ": " + result.getCorrectAnswer());
-            ioService.println("");
-        });
+        results.forEach(result ->  ioService.print(convertResult.convert(result)));
     }
 }

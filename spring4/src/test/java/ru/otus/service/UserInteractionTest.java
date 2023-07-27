@@ -5,12 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import ru.otus.convert.ConvertTestQuestionService;
+import ru.otus.domain.Answer;
 import ru.otus.domain.Result;
 import ru.otus.domain.TestQuestion;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
@@ -43,8 +44,7 @@ public class UserInteractionTest {
     public void askQuestionTest() {
         TestQuestion testQuestion = new TestQuestion(
                 "Test Question 1?",
-                List.of("Answer 1", "Answer 2", "Correct Answer"),
-                "Correct Answer"
+                List.of(new Answer("Answer 1", false), new Answer("Answer 2", false), new Answer("Correct Answer", false), new Answer("Correct Answer", true))
         );
 
         given(convert.convert(any(TestQuestion.class)))
@@ -56,7 +56,7 @@ public class UserInteractionTest {
 
         var result = new Result(
                 testQuestion.getQuestion(),
-                "User Answer",
+                new Answer("User Answer", false),
                 testQuestion.getCorrectAnswer()
         );
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
+import ru.otus.domain.Answer;
 import ru.otus.repository.QuestionDao;
 import ru.otus.domain.Result;
 import ru.otus.domain.TestQuestion;
@@ -39,18 +40,15 @@ public class QuestionServiceTest {
         questions = List.of(
                 new TestQuestion(
                         "Test Answer 1?",
-                        List.of("1", "1", "1"),
-                        "1"
+                        List.of(new Answer("1", false), new Answer("1", false), new Answer("1", false), new Answer("4", true))
                 ),
                 new TestQuestion(
                         "Test Answer 2?",
-                        List.of("2", "2"),
-                        "2"
+                        List.of(new Answer("2", false), new Answer("2", false), new Answer("5", true))
                 ),
                 new TestQuestion(
                         "Test Answer 3?",
-                        List.of("3"),
-                        "3"
+                        List.of(new Answer("3", false), new Answer("6", true))
                 )
         );
     }

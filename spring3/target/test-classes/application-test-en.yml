@@ -1,0 +1,15 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  messages:
+    basename: "i18n/appmessages"
+    encoding: "UTF-8"
+
+command:
+  line:
+    runner:
+      enabled: false
+
+application:
+  delimiter: ";"
+  locale: en_EN
