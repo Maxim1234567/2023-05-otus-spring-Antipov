@@ -17,7 +17,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-Ы
+
       - name: Build application
         run: |
           mvn package --no-transfer-progress
