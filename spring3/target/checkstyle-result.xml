@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.9.1">
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\main\java\ru\otus\config\StreamConfig.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\main\java\ru\otus\dao\CsvQuestionDaoImpl.java">
+<error line="32" column="5" severity="error" message="Количество строк у метода getAllQuestions 27 (максимум 25)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\main\java\ru\otus\service\ApplicationMessageSource.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\main\java\ru\otus\service\ApplicationMessageSourceImpl.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\main\java\ru\otus\service\DemoInteractionImpl.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\main\java\ru\otus\service\IOService.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\main\java\ru\otus\service\IOServiceStreams.java">
+<error line="12" column="5" severity="error" message="&apos;VARIABLE_DEF&apos; должен быть отделён от предыдущей строки." source="com.puppycrawl.tools.checkstyle.checks.whitespace.EmptyLineSeparatorCheck"/>
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\main\java\ru\otus\service\UserInteractionImpl.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\main\java\ru\otus\service\utils\InputService.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\main\java\ru\otus\service\utils\OutputService.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\main\resources\i18n\appmessages_en.properties">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\main\resources\i18n\appmessages_ru_RU.properties">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\test\resources\i18n\appmessages_en.properties">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring3\src\test\resources\i18n\appmessages_ru_RU.properties">
+</file>
+</checkstyle>

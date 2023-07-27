@@ -3,10 +3,9 @@ package ru.otus.repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import ru.otus.domain.Answer;
 import ru.otus.domain.TestQuestion;
 import ru.otus.props.ApplicationProperties;
-import ru.otus.service.ResourceProvider;
+import ru.otus.domain.Answer;
 
 import java.util.List;
 import java.util.Locale;

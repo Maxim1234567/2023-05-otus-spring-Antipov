@@ -38,7 +38,6 @@ public class DemoInteractionTest {
         );
     }
 
-
     @Test
     public void interactionTest() {
         given(questionService.fillUserData())

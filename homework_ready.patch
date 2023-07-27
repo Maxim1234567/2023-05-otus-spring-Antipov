@@ -1,0 +1,1761 @@
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 4e0711d19c1191c32af7ccc2001a410a657cf46f)
++++ b/pom.xml	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -12,6 +12,7 @@
+         <module>spring1</module>
+         <module>spring2</module>
+         <module>spring3</module>
++        <module>spring4</module>
+     </modules>
+ 
+     <parent>
+Index: spring4/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/pom.xml b/spring4/pom.xml
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/pom.xml	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,49 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>spring-outs-05-2023</artifactId>
++        <groupId>ru.otus</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>spring4</artifactId>
++
++    <properties>
++        <maven.compiler.source>17</maven.compiler.source>
++        <maven.compiler.target>17</maven.compiler.target>
++        <spring.shell.version>3.0.0</spring.shell.version>
++    </properties>
++
++    <dependencies>
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter</artifactId>
++        </dependency>
++
++        <dependency>
++            <groupId>org.projectlombok</groupId>
++            <artifactId>lombok</artifactId>
++            <scope>provided</scope>
++        </dependency>
++
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-test</artifactId>
++            <scope>test</scope>
++        </dependency>
++
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-aop</artifactId>
++        </dependency>
++
++        <dependency>
++            <groupId>org.springframework.shell</groupId>
++            <artifactId>spring-shell-starter</artifactId>
++            <version>${spring.shell.version}</version>
++        </dependency>
++    </dependencies>
++</project>
+\ No newline at end of file
+Index: spring4/src/main/java/ru/otus/DemoApplication.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/DemoApplication.java b/spring4/src/main/java/ru/otus/DemoApplication.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/DemoApplication.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,11 @@
++package ru.otus;
++
++import org.springframework.boot.SpringApplication;
++import org.springframework.boot.autoconfigure.SpringBootApplication;
++
++@SpringBootApplication
++public class DemoApplication {
++    public static void main(String[] args) {
++        SpringApplication.run(DemoApplication.class, args);
++    }
++}
+Index: spring4/src/main/java/ru/otus/commandlinerunners/StartApplication.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/commandlinerunners/StartApplication.java b/spring4/src/main/java/ru/otus/commandlinerunners/StartApplication.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/commandlinerunners/StartApplication.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,24 @@
++package ru.otus.commandlinerunners;
++
++import lombok.RequiredArgsConstructor;
++import org.springframework.boot.CommandLineRunner;
++import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
++import org.springframework.stereotype.Component;
++import ru.otus.service.DemoInteraction;
++
++@ConditionalOnProperty(
++        prefix = "command.line.runner",
++        value = "enabled",
++        havingValue = "true",
++        matchIfMissing = true
++)
++@Component
++@RequiredArgsConstructor
++public class StartApplication implements CommandLineRunner {
++    private final DemoInteraction interaction;
++
++    @Override
++    public void run(String... args) throws Exception {
++        interaction.interaction();
++    }
++}
+Index: spring4/src/main/java/ru/otus/config/ApplicationConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/config/ApplicationConfig.java b/spring4/src/main/java/ru/otus/config/ApplicationConfig.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/config/ApplicationConfig.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,10 @@
++package ru.otus.config;
++
++import org.springframework.boot.context.properties.EnableConfigurationProperties;
++import org.springframework.context.annotation.Configuration;
++import ru.otus.props.ApplicationProperties;
++
++@Configuration
++@EnableConfigurationProperties(ApplicationProperties.class)
++public class ApplicationConfig {
++}
+Index: spring4/src/main/java/ru/otus/config/AspectConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/config/AspectConfig.java b/spring4/src/main/java/ru/otus/config/AspectConfig.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/config/AspectConfig.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,9 @@
++package ru.otus.config;
++
++import org.springframework.context.annotation.Configuration;
++import org.springframework.context.annotation.EnableAspectJAutoProxy;
++
++@EnableAspectJAutoProxy
++@Configuration
++public class AspectConfig {
++}
+Index: spring4/src/main/java/ru/otus/config/IOServiceStreamConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/config/IOServiceStreamConfig.java b/spring4/src/main/java/ru/otus/config/IOServiceStreamConfig.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/config/IOServiceStreamConfig.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,16 @@
++package ru.otus.config;
++
++import org.springframework.context.annotation.Bean;
++import org.springframework.context.annotation.Configuration;
++import ru.otus.service.IOService;
++import ru.otus.service.IOServiceStreams;
++
++import java.io.PrintStream;
++
++@Configuration
++public class IOServiceStreamConfig {
++    @Bean
++    public IOService ioService() {
++        return new IOServiceStreams(new PrintStream(System.out), System.in);
++    }
++}
+Index: spring4/src/main/java/ru/otus/dao/CsvQuestionDao.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/dao/CsvQuestionDao.java b/spring4/src/main/java/ru/otus/dao/CsvQuestionDao.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/dao/CsvQuestionDao.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,9 @@
++package ru.otus.dao;
++
++import ru.otus.domain.TestQuestion;
++
++import java.util.List;
++
++public interface CsvQuestionDao {
++    List<TestQuestion> getAllQuestions();
++}
+Index: spring4/src/main/java/ru/otus/dao/CsvQuestionDaoImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/dao/CsvQuestionDaoImpl.java b/spring4/src/main/java/ru/otus/dao/CsvQuestionDaoImpl.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/dao/CsvQuestionDaoImpl.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,59 @@
++package ru.otus.dao;
++
++import org.springframework.stereotype.Repository;
++import ru.otus.domain.TestQuestion;
++import ru.otus.props.ApplicationProperties;
++import ru.otus.service.ApplicationMessageSource;
++
++import java.util.ArrayList;
++import java.util.List;
++import java.util.Scanner;
++import java.util.Objects;
++import java.util.Arrays;
++
++@Repository
++public class CsvQuestionDaoImpl implements CsvQuestionDao {
++    private final ApplicationMessageSource messageSource;
++
++    private final ApplicationProperties props;
++
++    private final String nameFileQuestions;
++
++    public CsvQuestionDaoImpl(
++            ApplicationMessageSource messageSource,
++            ApplicationProperties props
++    ) {
++        this.messageSource = messageSource;
++        this.props = props;
++        this.nameFileQuestions = this.messageSource.getMessage("file-question");
++    }
++
++    @Override
++    public List<TestQuestion> getAllQuestions() {
++        List<TestQuestion> testQuestions = new ArrayList<>();
++
++        try(Scanner scanner = new Scanner(
++                Objects.requireNonNull(CsvQuestionDaoImpl.class.getResourceAsStream(nameFileQuestions)),
++                "UTF-8"
++        )) {
++            while (scanner.hasNextLine()) {
++                String line = scanner.nextLine();
++
++                String[] data = line.split(props.getDelimiter());
++
++                String question = data[0];
++                List<String> answers = Arrays.stream(data).skip(1).toList();
++
++                testQuestions.add(
++                        new TestQuestion(
++                                question,
++                                answers.subList(0, answers.size() - 1),
++                                answers.get(answers.size() - 1)
++                        )
++                );
++            }
++        }
++
++        return testQuestions;
++    }
++}
+Index: spring4/src/main/java/ru/otus/domain/Result.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/domain/Result.java b/spring4/src/main/java/ru/otus/domain/Result.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/domain/Result.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,16 @@
++package ru.otus.domain;
++
++import lombok.EqualsAndHashCode;
++import lombok.Getter;
++import lombok.RequiredArgsConstructor;
++
++@Getter
++@RequiredArgsConstructor
++@EqualsAndHashCode
++public class Result {
++    private final String question;
++
++    private final String answerUser;
++
++    private final String correctAnswer;
++}
+Index: spring4/src/main/java/ru/otus/domain/TestQuestion.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/domain/TestQuestion.java b/spring4/src/main/java/ru/otus/domain/TestQuestion.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/domain/TestQuestion.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,20 @@
++package ru.otus.domain;
++
++import lombok.EqualsAndHashCode;
++import lombok.Getter;
++import lombok.RequiredArgsConstructor;
++import lombok.ToString;
++
++import java.util.List;
++
++@RequiredArgsConstructor
++@Getter
++@EqualsAndHashCode
++@ToString
++public class TestQuestion {
++    private final String question;
++
++    private final List<String> answers;
++
++    private final String correctAnswer;
++}
+Index: spring4/src/main/java/ru/otus/domain/UserData.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/domain/UserData.java b/spring4/src/main/java/ru/otus/domain/UserData.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/domain/UserData.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,12 @@
++package ru.otus.domain;
++
++import lombok.Getter;
++import lombok.RequiredArgsConstructor;
++
++@Getter
++@RequiredArgsConstructor
++public class UserData {
++    private final String firstName;
++
++    private final String lastName;
++}
+Index: spring4/src/main/java/ru/otus/logging/Logging.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/logging/Logging.java b/spring4/src/main/java/ru/otus/logging/Logging.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/logging/Logging.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,11 @@
++package ru.otus.logging;
++
++import java.lang.annotation.ElementType;
++import java.lang.annotation.Retention;
++import java.lang.annotation.RetentionPolicy;
++import java.lang.annotation.Target;
++
++@Target(ElementType.METHOD)
++@Retention(RetentionPolicy.RUNTIME)
++public @interface Logging {
++}
+Index: spring4/src/main/java/ru/otus/logging/LoggingAspect.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/logging/LoggingAspect.java b/spring4/src/main/java/ru/otus/logging/LoggingAspect.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/logging/LoggingAspect.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,21 @@
++package ru.otus.logging;
++
++import org.aspectj.lang.ProceedingJoinPoint;
++import org.aspectj.lang.annotation.Around;
++import org.aspectj.lang.annotation.Aspect;
++import org.springframework.stereotype.Component;
++
++@Aspect
++@Component
++public class LoggingAspect {
++    @Around("@annotation(ru.otus.logging.Logging)")
++    public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
++        System.out.println("Start work method: " + joinPoint.getSignature().getName());
++
++        Object result = joinPoint.proceed();
++
++        System.out.println("End work method: " + joinPoint.getSignature().getName());
++
++        return result;
++    }
++}
+Index: spring4/src/main/java/ru/otus/props/ApplicationProperties.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/props/ApplicationProperties.java b/spring4/src/main/java/ru/otus/props/ApplicationProperties.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/props/ApplicationProperties.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,19 @@
++package ru.otus.props;
++
++import lombok.Getter;
++import org.springframework.boot.context.properties.ConfigurationProperties;
++
++import java.util.Locale;
++
++@ConfigurationProperties(prefix = "application")
++@Getter
++public class ApplicationProperties {
++    private final String delimiter;
++
++    private final Locale locale;
++
++    public ApplicationProperties(String delimiter, Locale locale) {
++        this.delimiter = delimiter;
++        this.locale = locale;
++    }
++}
+Index: spring4/src/main/java/ru/otus/service/ApplicationMessageSource.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/ApplicationMessageSource.java b/spring4/src/main/java/ru/otus/service/ApplicationMessageSource.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/ApplicationMessageSource.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,5 @@
++package ru.otus.service;
++
++public interface ApplicationMessageSource {
++    String getMessage(String property);
++}
+Index: spring4/src/main/java/ru/otus/service/ApplicationMessageSourceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/ApplicationMessageSourceImpl.java b/spring4/src/main/java/ru/otus/service/ApplicationMessageSourceImpl.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/ApplicationMessageSourceImpl.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,18 @@
++package ru.otus.service;
++
++import lombok.RequiredArgsConstructor;
++import org.springframework.context.MessageSource;
++import org.springframework.stereotype.Component;
++import ru.otus.props.ApplicationProperties;
++
++@Component
++@RequiredArgsConstructor
++public class ApplicationMessageSourceImpl implements ApplicationMessageSource {
++    private final MessageSource messageSource;
++
++    private final ApplicationProperties props;
++
++    public String getMessage(String property) {
++        return messageSource.getMessage(property, new String[]{}, props.getLocale());
++    }
++}
+Index: spring4/src/main/java/ru/otus/service/ConvertTestQuestionService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/ConvertTestQuestionService.java b/spring4/src/main/java/ru/otus/service/ConvertTestQuestionService.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/ConvertTestQuestionService.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,7 @@
++package ru.otus.service;
++
++import ru.otus.domain.TestQuestion;
++
++public interface ConvertTestQuestionService {
++    String convert(TestQuestion question);
++}
+Index: spring4/src/main/java/ru/otus/service/ConvertTestQuestionServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/ConvertTestQuestionServiceImpl.java b/spring4/src/main/java/ru/otus/service/ConvertTestQuestionServiceImpl.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/ConvertTestQuestionServiceImpl.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,25 @@
++package ru.otus.service;
++
++import org.springframework.stereotype.Component;
++import ru.otus.domain.TestQuestion;
++
++@Component
++public class ConvertTestQuestionServiceImpl implements ConvertTestQuestionService {
++    @Override
++    public String convert(TestQuestion question) {
++        StringBuilder questionAsString = new StringBuilder();
++
++        questionAsString.append(question.getQuestion())
++                .append(": \n");
++
++        for(int i = 0; i < question.getAnswers().size(); i++) {
++            questionAsString.append("\t")
++                    .append(i + 1)
++                    .append(". ")
++                    .append(question.getAnswers().get(i))
++                    .append("\n");
++        }
++
++        return questionAsString.toString();
++    }
++}
+Index: spring4/src/main/java/ru/otus/service/DemoInteraction.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/DemoInteraction.java b/spring4/src/main/java/ru/otus/service/DemoInteraction.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/DemoInteraction.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,5 @@
++package ru.otus.service;
++
++public interface DemoInteraction {
++    void interaction();
++}
+Index: spring4/src/main/java/ru/otus/service/DemoInteractionImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/DemoInteractionImpl.java b/spring4/src/main/java/ru/otus/service/DemoInteractionImpl.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/DemoInteractionImpl.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,33 @@
++package ru.otus.service;
++
++import lombok.RequiredArgsConstructor;
++import org.springframework.stereotype.Service;
++import ru.otus.domain.Result;
++import ru.otus.domain.UserData;
++
++import java.util.List;
++
++@Service
++@RequiredArgsConstructor
++public class DemoInteractionImpl implements DemoInteraction {
++    private final QuestionService questionService;
++
++    private final IOService ioService;
++
++    private final ApplicationMessageSource messageSource;
++
++    @Override
++    public void interaction() {
++        UserData userData = questionService.fillUserData();
++        List<Result> results = questionService.askUserQuestions();
++
++        ioService.println("");
++        ioService.println(userData.getFirstName() + " " + userData.getLastName());
++        results.forEach(result -> {
++            ioService.println(messageSource.getMessage("question") + ": " + result.getQuestion());
++            ioService.println(messageSource.getMessage("answer.user") + ": " + result.getAnswerUser());
++            ioService.println(messageSource.getMessage("answer.correct") + ": " + result.getCorrectAnswer());
++            ioService.println("");
++        });
++    }
++}
+Index: spring4/src/main/java/ru/otus/service/IOService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/IOService.java b/spring4/src/main/java/ru/otus/service/IOService.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/IOService.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,7 @@
++package ru.otus.service;
++
++import ru.otus.service.utils.InputService;
++import ru.otus.service.utils.OutputService;
++
++public interface IOService extends InputService, OutputService {
++}
+Index: spring4/src/main/java/ru/otus/service/IOServiceStreams.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/IOServiceStreams.java b/spring4/src/main/java/ru/otus/service/IOServiceStreams.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/IOServiceStreams.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,30 @@
++package ru.otus.service;
++
++import java.io.InputStream;
++import java.io.PrintStream;
++import java.util.Scanner;
++
++public class IOServiceStreams implements IOService {
++    private final PrintStream output;
++    private final Scanner input;
++
++    public IOServiceStreams(PrintStream output, InputStream input) {
++        this.output = output;
++        this.input = new Scanner(input);
++    }
++
++    @Override
++    public void println(String line) {
++        output.println(line);
++    }
++
++    @Override
++    public void print(String line) {
++        output.print(line);
++    }
++
++    @Override
++    public String readLine() {
++        return input.nextLine();
++    }
++}
+Index: spring4/src/main/java/ru/otus/service/QuestionService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/QuestionService.java b/spring4/src/main/java/ru/otus/service/QuestionService.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/QuestionService.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,14 @@
++package ru.otus.service;
++
++import ru.otus.domain.Result;
++import ru.otus.domain.UserData;
++
++import java.util.List;
++
++public interface QuestionService {
++    void showAllQuestion();
++
++    UserData fillUserData();
++
++    List<Result> askUserQuestions();
++}
+Index: spring4/src/main/java/ru/otus/service/QuestionServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/QuestionServiceImpl.java b/spring4/src/main/java/ru/otus/service/QuestionServiceImpl.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/QuestionServiceImpl.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,46 @@
++package ru.otus.service;
++
++import lombok.RequiredArgsConstructor;
++import org.springframework.stereotype.Service;
++import ru.otus.dao.CsvQuestionDao;
++import ru.otus.domain.Result;
++import ru.otus.domain.UserData;
++
++import java.util.ArrayList;
++import java.util.List;
++
++@RequiredArgsConstructor
++@Service
++public class QuestionServiceImpl implements QuestionService {
++    private final ConvertTestQuestionService convertTestQuestionService;
++
++    private final CsvQuestionDao csvQuestionDao;
++
++    private final UserInteraction userInteraction;
++
++    private final IOService ioService;
++
++    @Override
++    public void showAllQuestion() {
++        csvQuestionDao.getAllQuestions().forEach(q ->
++                ioService.println(convertTestQuestionService.convert(q))
++        );
++    }
++
++    @Override
++    public UserData fillUserData() {
++        String firstName = userInteraction.askFirstName();
++        String lastName = userInteraction.askLastName();
++
++        return new UserData(firstName, lastName);
++    }
++
++    @Override
++    public List<Result> askUserQuestions() {
++        List<Result> results = new ArrayList<>();
++
++        csvQuestionDao.getAllQuestions().forEach(question -> results.add(userInteraction.askQuestion(question)));
++
++        return results;
++    }
++}
+Index: spring4/src/main/java/ru/otus/service/UserInteraction.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/UserInteraction.java b/spring4/src/main/java/ru/otus/service/UserInteraction.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/UserInteraction.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,12 @@
++package ru.otus.service;
++
++import ru.otus.domain.Result;
++import ru.otus.domain.TestQuestion;
++
++public interface UserInteraction {
++    String askFirstName();
++
++    String askLastName();
++
++    Result askQuestion(TestQuestion question);
++}
+Index: spring4/src/main/java/ru/otus/service/UserInteractionImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/UserInteractionImpl.java b/spring4/src/main/java/ru/otus/service/UserInteractionImpl.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/UserInteractionImpl.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,46 @@
++package ru.otus.service;
++
++import lombok.RequiredArgsConstructor;
++import org.springframework.stereotype.Service;
++import ru.otus.domain.Result;
++import ru.otus.domain.TestQuestion;
++import ru.otus.logging.Logging;
++
++@Service
++@RequiredArgsConstructor
++public class UserInteractionImpl implements UserInteraction {
++    private final ConvertTestQuestionService convert;
++
++    private final IOService ioService;
++
++    private final ApplicationMessageSource messageSource;
++
++    @Override
++    @Logging
++    public String askFirstName() {
++        ioService.print(messageSource.getMessage("user.name"));
++
++        return ioService.readLine();
++    }
++
++    @Override
++    @Logging
++    public String askLastName() {
++        ioService.print(messageSource.getMessage("user.lastname"));
++
++        return ioService.readLine();
++    }
++
++    @Override
++    @Logging
++    public Result askQuestion(TestQuestion question) {
++        ioService.println(convert.convert(question));
++        ioService.print(messageSource.getMessage("user.answer"));
++
++        return new Result(
++                question.getQuestion(),
++                ioService.readLine(),
++                question.getCorrectAnswer()
++        );
++    }
++}
+Index: spring4/src/main/java/ru/otus/service/utils/InputService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/utils/InputService.java b/spring4/src/main/java/ru/otus/service/utils/InputService.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/utils/InputService.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,7 @@
++package ru.otus.service.utils;
++
++public interface InputService {
++    void println(String line);
++
++    void print(String line);
++}
+Index: spring4/src/main/java/ru/otus/service/utils/OutputService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/service/utils/OutputService.java b/spring4/src/main/java/ru/otus/service/utils/OutputService.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/service/utils/OutputService.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,5 @@
++package ru.otus.service.utils;
++
++public interface OutputService {
++    String readLine();
++}
+Index: spring4/src/main/java/ru/otus/shell/ApplicationEventsCommands.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/java/ru/otus/shell/ApplicationEventsCommands.java b/spring4/src/main/java/ru/otus/shell/ApplicationEventsCommands.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/java/ru/otus/shell/ApplicationEventsCommands.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,65 @@
++package ru.otus.shell;
++
++import lombok.RequiredArgsConstructor;
++import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
++import org.springframework.shell.Availability;
++import org.springframework.shell.standard.ShellComponent;
++import org.springframework.shell.standard.ShellMethod;
++import org.springframework.shell.standard.ShellMethodAvailability;
++import ru.otus.domain.Result;
++import ru.otus.domain.UserData;
++import ru.otus.service.ApplicationMessageSource;
++import ru.otus.service.DemoInteraction;
++import ru.otus.service.IOService;
++import ru.otus.service.QuestionService;
++
++import java.util.List;
++
++@ShellComponent
++@RequiredArgsConstructor
++public class ApplicationEventsCommands {
++    private final QuestionService questionService;
++
++    private final IOService ioService;
++
++    private final ApplicationMessageSource messageSource;
++
++    private UserData userData;
++    private List<Result> results;
++
++    @ShellMethod(value = "Login Command", key = {"l", "login"})
++    public String login() {
++        userData = questionService.fillUserData();
++        return "Logged In";
++    }
++
++    @ShellMethod(value = "Pass the Test command", key = {"p", "pass"})
++    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
++    public String passTest() {
++        results = questionService.askUserQuestions();
++
++        return "Test passed";
++    }
++
++    @ShellMethod(value = "Show result command", key = {"s", "show"})
++    @ShellMethodAvailability(value = "isTestPassed")
++    public String showResult() {
++        ioService.println(userData.getFirstName() + " " + userData.getLastName());
++        results.forEach(result -> {
++            ioService.println(messageSource.getMessage("question") + ": " + result.getQuestion());
++            ioService.println(messageSource.getMessage("answer.user") + ": " + result.getAnswerUser());
++            ioService.println(messageSource.getMessage("answer.correct") + ": " + result.getCorrectAnswer());
++            ioService.println("");
++        });
++
++        return "Result";
++    }
++
++    private Availability isTestPassed() {
++        return results == null ? Availability.unavailable("Pass the test first") : Availability.available();
++    }
++
++    private Availability isPublishEventCommandAvailable() {
++        return userData == null ? Availability.unavailable("Login first") : Availability.available();
++    }
++}
+Index: spring4/src/main/resources/application.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/resources/application.yml b/spring4/src/main/resources/application.yml
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/resources/application.yml	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,16 @@
++spring:
++  messages:
++    basename: "i18n/appmessages"
++    encoding: "UTF-8"
++
++application:
++  delimiter: ";"
++  locale: ru_RU
++
++command:
++  line:
++    runner:
++      enabled: false
++  shell:
++    runner:
++      enabled: true
+\ No newline at end of file
+Index: spring4/src/main/resources/banner.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/resources/banner.txt b/spring4/src/main/resources/banner.txt
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/resources/banner.txt	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,6 @@
++________   ___________   _____   ________
++\______ \  \_   _____/  /     \  \_____  \
++ |    |  \  |    __)_  /  \ /  \  /   |   \
++ |    `   \ |        \/    Y    \/    |    \
++/_______  //_______  /\____|__  /\_______  /
++        \/         \/         \/         \/
+\ No newline at end of file
+Index: spring4/src/main/resources/i18n/appmessages_en.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/resources/i18n/appmessages_en.properties b/spring4/src/main/resources/i18n/appmessages_en.properties
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/resources/i18n/appmessages_en.properties	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,7 @@
++file-question=/question-en.csv
++question=Question
++answer.user=Your Answer
++answer.correct=Correct Answer
++user.name=Enter your First Name: 
++user.lastname=Enter your Last Name: 
++user.answer=Enter your answer: 
+\ No newline at end of file
+Index: spring4/src/main/resources/i18n/appmessages_ru_RU.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/resources/i18n/appmessages_ru_RU.properties b/spring4/src/main/resources/i18n/appmessages_ru_RU.properties
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/resources/i18n/appmessages_ru_RU.properties	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,7 @@
++file-question=/question-ru.csv
++question=Вопрос
++answer.user=Ответ пользователя
++answer.correct=Корректный ответ
++user.name=Введите имя: 
++user.lastname=Введите фамилию: 
++user.answer=Введите ответ: 
+\ No newline at end of file
+Index: spring4/src/main/resources/question-en.csv
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/resources/question-en.csv b/spring4/src/main/resources/question-en.csv
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/resources/question-en.csv	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,5 @@
++How much will be 1 + 1?;0;1;2;3;2
++How much will be 2 + 2?;0;2;4;6;8;4
++How much will be 3 + 3?;0;3;6;6
++How much will be 4 + 4?;0;4;8;12;16;8
++How much will be 5 + 5?;5;10;10
+\ No newline at end of file
+Index: spring4/src/main/resources/question-ru.csv
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/main/resources/question-ru.csv b/spring4/src/main/resources/question-ru.csv
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/main/resources/question-ru.csv	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,5 @@
++Сколько будет 1 + 1?;0;1;2;3;2
++Сколько будет 2 + 2?;0;2;4;6;8;4
++Сколько будет 3 + 3?;0;3;6;6
++Сколько будет 4 + 4?;0;4;8;12;16;8
++Сколько будет 5 + 5?;5;10;10
+\ No newline at end of file
+Index: spring4/src/test/java/ru/otus/DemoApplicationTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/java/ru/otus/DemoApplicationTest.java b/spring4/src/test/java/ru/otus/DemoApplicationTest.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/java/ru/otus/DemoApplicationTest.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,116 @@
++package ru.otus;
++
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.boot.test.context.SpringBootTest;
++import org.springframework.boot.test.context.TestConfiguration;
++import org.springframework.boot.test.mock.mockito.MockBean;
++import org.springframework.context.annotation.Bean;
++import org.springframework.test.context.ActiveProfiles;
++import ru.otus.domain.Result;
++import ru.otus.domain.TestQuestion;
++import ru.otus.service.DemoInteraction;
++import ru.otus.service.IOService;
++import ru.otus.service.IOServiceStreams;
++import ru.otus.service.UserInteractionImpl;
++
++import java.io.ByteArrayOutputStream;
++import java.io.PrintStream;
++import java.io.UnsupportedEncodingException;
++import java.util.List;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.mockito.ArgumentMatchers.eq;
++import static org.mockito.BDDMockito.given;
++
++@SpringBootTest
++@ActiveProfiles("test-en")
++public class DemoApplicationTest {
++    private static ByteArrayOutputStream baos = new ByteArrayOutputStream();
++    private static final String TEXT_WILL_BE = "\n" +
++            "Maxim Antipov\n" +
++            "Question: Test Answer 1?\n" +
++            "Your Answer: 1\n" +
++            "Correct Answer: 4\n" +
++            "\n" +
++            "Question: Test Answer 2?\n" +
++            "Your Answer: 2\n" +
++            "Correct Answer: 5\n" +
++            "\n" +
++            "Question: Test Answer 3?\n" +
++            "Your Answer: 3\n" +
++            "Correct Answer: 6\n" +
++            "\n";
++
++    @MockBean
++    private UserInteractionImpl userInteraction;
++
++    @Autowired
++    private DemoInteraction interaction;
++
++    @TestConfiguration
++    static class DemoTestConfiguration {
++        @Bean
++        public IOService ioService() {
++            return new IOServiceStreams(new PrintStream(baos), System.in);
++        }
++    }
++
++    @BeforeEach
++    public void setUp() {
++        TestQuestion question1 = new TestQuestion(
++                "Test Answer 1?",
++                List.of("1", "1", "1"),
++                "4"
++        );
++
++        Result result1 = new Result(
++                question1.getQuestion(),
++                "1",
++                question1.getCorrectAnswer()
++        );
++
++        TestQuestion question2 = new TestQuestion(
++                "Test Answer 2?",
++                List.of("2", "2"),
++                "5"
++        );
++
++        Result result2 = new Result(
++                question2.getQuestion(),
++                "2",
++                question2.getCorrectAnswer()
++        );
++
++        TestQuestion question3 = new TestQuestion(
++                "Test Answer 3?",
++                List.of("3"),
++                "6"
++        );
++
++        Result result3 = new Result(
++                question3.getQuestion(),
++                "3",
++                question3.getCorrectAnswer()
++        );
++
++        given(userInteraction.askFirstName())
++                .willReturn("Maxim");
++        given(userInteraction.askLastName())
++                .willReturn("Antipov");
++
++        given(userInteraction.askQuestion(eq(question1)))
++                .willReturn(result1);
++        given(userInteraction.askQuestion(eq(question2)))
++                .willReturn(result2);
++        given(userInteraction.askQuestion(eq(question3)))
++                .willReturn(result3);
++    }
++
++    @Test
++    public void shouldHaveCorrectOutput() throws UnsupportedEncodingException {
++        interaction.interaction();
++        assertEquals(baos.toString().replace("\r", ""), TEXT_WILL_BE);
++    }
++}
+Index: spring4/src/test/java/ru/otus/dao/CsvQuestionDaoEnTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/java/ru/otus/dao/CsvQuestionDaoEnTest.java b/spring4/src/test/java/ru/otus/dao/CsvQuestionDaoEnTest.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/java/ru/otus/dao/CsvQuestionDaoEnTest.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,64 @@
++package ru.otus.dao;
++
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.springframework.context.support.ResourceBundleMessageSource;
++import ru.otus.domain.TestQuestion;
++import ru.otus.props.ApplicationProperties;
++import ru.otus.service.ApplicationMessageSource;
++import ru.otus.service.ApplicationMessageSourceImpl;
++
++import java.util.List;
++import java.util.Locale;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++
++public class CsvQuestionDaoEnTest {
++    private CsvQuestionDao csvQuestionDao;
++    private List<TestQuestion> questions;
++
++    @BeforeEach
++    public void setUp() {
++        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
++        messageSource.setBasenames("i18n/appmessages");
++        messageSource.setDefaultEncoding("UTF-8");
++
++        ApplicationProperties applicationProperties = new ApplicationProperties(
++                ";", new Locale("en")
++        );
++
++        ApplicationMessageSource applicationMessageSource = new ApplicationMessageSourceImpl(
++                messageSource,
++                applicationProperties
++        );
++
++        csvQuestionDao = new CsvQuestionDaoImpl(
++                applicationMessageSource,
++                applicationProperties
++        );
++
++        questions = List.of(
++                new TestQuestion(
++                        "Test Answer 1?",
++                        List.of("1", "1", "1"),
++                        "4"
++                ),
++                new TestQuestion(
++                        "Test Answer 2?",
++                        List.of("2", "2"),
++                        "5"
++                ),
++                new TestQuestion(
++                        "Test Answer 3?",
++                        List.of("3"),
++                        "6"
++                )
++        );
++    }
++
++    @Test
++    void correctParseFileCsv() {
++        List<TestQuestion> result = csvQuestionDao.getAllQuestions();
++        assertEquals(result, questions);
++    }
++}
+Index: spring4/src/test/java/ru/otus/dao/CsvQuestionDaoRuTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/java/ru/otus/dao/CsvQuestionDaoRuTest.java b/spring4/src/test/java/ru/otus/dao/CsvQuestionDaoRuTest.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/java/ru/otus/dao/CsvQuestionDaoRuTest.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,65 @@
++package ru.otus.dao;
++
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.springframework.context.support.ResourceBundleMessageSource;
++import ru.otus.domain.TestQuestion;
++import ru.otus.props.ApplicationProperties;
++import ru.otus.service.ApplicationMessageSource;
++import ru.otus.service.ApplicationMessageSourceImpl;
++
++import java.util.List;
++import java.util.Locale;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++
++public class CsvQuestionDaoRuTest {
++
++    private CsvQuestionDao csvQuestionDao;
++    private List<TestQuestion> questions;
++
++    @BeforeEach
++    public void setUp() {
++        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
++        messageSource.setBasenames("i18n/appmessages");
++        messageSource.setDefaultEncoding("UTF-8");
++
++        ApplicationProperties applicationProperties = new ApplicationProperties(
++                ";", new Locale("ru")
++        );
++
++        ApplicationMessageSource applicationMessageSource = new ApplicationMessageSourceImpl(
++                messageSource,
++                applicationProperties
++        );
++
++        csvQuestionDao = new CsvQuestionDaoImpl(
++                applicationMessageSource,
++                applicationProperties
++        );
++
++        questions = List.of(
++                new TestQuestion(
++                        "Тестовый вопрос 1?",
++                        List.of("1", "1", "1"),
++                        "4"
++                ),
++                new TestQuestion(
++                        "Тестовый вопрос 2?",
++                        List.of("2", "2"),
++                        "5"
++                ),
++                new TestQuestion(
++                        "Тестовый вопрос 3?",
++                        List.of("3"),
++                        "6"
++                )
++        );
++    }
++
++    @Test
++    void correctParseFileCsv() {
++        List<TestQuestion> result = csvQuestionDao.getAllQuestions();
++        assertEquals(result, questions);
++    }
++}
+Index: spring4/src/test/java/ru/otus/service/ConvertTestQuestionServiceTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/java/ru/otus/service/ConvertTestQuestionServiceTest.java b/spring4/src/test/java/ru/otus/service/ConvertTestQuestionServiceTest.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/java/ru/otus/service/ConvertTestQuestionServiceTest.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,37 @@
++package ru.otus.service;
++
++import org.junit.jupiter.api.Test;
++import ru.otus.domain.TestQuestion;
++
++import java.util.List;
++
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++public class ConvertTestQuestionServiceTest {
++    private final String QUESTION = "Test Question?";
++    private final String ANSWER1 = "Test Answer 1";
++    private final String ANSWER2 = "Test Answer 2";
++    private final String ANSWER3 = "Test Answer 3";
++
++    private final String CORRECT_ANSWER = "CORRECT ANSWER";
++
++    private ConvertTestQuestionService convertTestQuestionService
++            = new ConvertTestQuestionServiceImpl();
++    private TestQuestion question = new TestQuestion(
++            QUESTION,
++            List.of(ANSWER1, ANSWER2, ANSWER3),
++            CORRECT_ANSWER
++    );
++
++    @Test
++    void correctConvertQuestionToString() {
++        String result = convertTestQuestionService.convert(question);
++
++        assertTrue(result.contains(QUESTION));
++        assertTrue(result.contains(ANSWER1));
++        assertTrue(result.contains(ANSWER2));
++        assertTrue(result.contains(ANSWER3));
++        assertFalse(result.contains(CORRECT_ANSWER));
++    }
++}
+Index: spring4/src/test/java/ru/otus/service/DemoInteractionTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/java/ru/otus/service/DemoInteractionTest.java b/spring4/src/test/java/ru/otus/service/DemoInteractionTest.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/java/ru/otus/service/DemoInteractionTest.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,75 @@
++package ru.otus.service;
++
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.boot.test.context.SpringBootTest;
++import org.springframework.boot.test.mock.mockito.MockBean;
++import org.springframework.test.context.ActiveProfiles;
++import ru.otus.domain.Result;
++import ru.otus.domain.UserData;
++
++import java.util.List;
++
++import static org.mockito.ArgumentMatchers.eq;
++import static org.mockito.BDDMockito.given;
++import static org.mockito.Mockito.times;
++import static org.mockito.Mockito.verify;
++
++@SpringBootTest
++@ActiveProfiles("test-en")
++public class DemoInteractionTest {
++    @MockBean
++    private QuestionService questionService;
++    @MockBean
++    private  IOService ioService;
++
++    @MockBean
++    private ApplicationMessageSource messageSource;
++
++    @Autowired
++    private DemoInteractionImpl demoInteraction;
++
++    private UserData userData;
++    private List<Result> results;
++
++    @BeforeEach
++    public void setUp() {
++        userData = new UserData("Maxim", "Antipov");
++        results = List.of(
++                new Result("Question 1?", "Answer user 1", "Correct answer 1"),
++                new Result("Question 2?", "Answer user 2", "Correct answer 2"),
++                new Result("Question 3?", "Answer user 3", "Correct answer 3")
++        );
++    }
++
++    @Test
++    public void interactionTest() {
++        given(questionService.fillUserData())
++                .willReturn(userData);
++        given(questionService.askUserQuestions())
++                .willReturn(results);
++        given(messageSource.getMessage(eq("question")))
++                .willReturn("Question");
++        given(messageSource.getMessage(eq("answer.user")))
++                .willReturn("Your Answer");
++        given(messageSource.getMessage(eq("answer.correct")))
++                .willReturn("Correct Answer");
++
++        demoInteraction.interaction();
++
++        verify(ioService, times(1 + results.size()))
++                .println(eq(""));
++        verify(ioService, times(1))
++                .println(eq(userData.getFirstName() + " " + userData.getLastName()));
++
++        results.forEach(result -> {
++            verify(ioService, times(1))
++                    .println(eq("Question: " + result.getQuestion()));
++            verify(ioService, times(1))
++                    .println(eq("Your Answer: " + result.getAnswerUser()));
++            verify(ioService, times(1))
++                    .println(eq("Correct Answer: " + result.getCorrectAnswer()));
++        });
++    }
++}
+Index: spring4/src/test/java/ru/otus/service/QuestionServiceTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/java/ru/otus/service/QuestionServiceTest.java b/spring4/src/test/java/ru/otus/service/QuestionServiceTest.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/java/ru/otus/service/QuestionServiceTest.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,91 @@
++package ru.otus.service;
++
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.boot.test.context.SpringBootTest;
++import org.springframework.boot.test.mock.mockito.MockBean;
++import org.springframework.test.context.ActiveProfiles;
++import ru.otus.dao.CsvQuestionDao;
++import ru.otus.domain.Result;
++import ru.otus.domain.TestQuestion;
++import ru.otus.domain.UserData;
++
++import java.util.List;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertNotNull;
++import static org.mockito.ArgumentMatchers.any;
++import static org.mockito.BDDMockito.given;
++import static org.mockito.Mockito.times;
++import static org.mockito.Mockito.verify;
++
++@SpringBootTest
++@ActiveProfiles("test-en")
++public class QuestionServiceTest {
++    @MockBean
++    private CsvQuestionDao csvQuestionDao;
++
++    @MockBean
++    private UserInteraction userInteraction;
++
++    @Autowired
++    private QuestionServiceImpl questionService;
++
++    private List<TestQuestion> questions;
++
++    @BeforeEach
++    public void setUp() {
++        questions = List.of(
++                new TestQuestion(
++                        "Test Answer 1?",
++                        List.of("1", "1", "1"),
++                        "1"
++                ),
++                new TestQuestion(
++                        "Test Answer 2?",
++                        List.of("2", "2"),
++                        "2"
++                ),
++                new TestQuestion(
++                        "Test Answer 3?",
++                        List.of("3"),
++                        "3"
++                )
++        );
++    }
++
++    @Test
++    public void enterFirstAndLastNameUser() {
++        given(userInteraction.askFirstName())
++                .willReturn("Maxim");
++
++        given(userInteraction.askLastName())
++                .willReturn("Antipov");
++
++        UserData userData = questionService.fillUserData();
++
++        verify(userInteraction, times(1)).askFirstName();
++        verify(userInteraction, times(1)).askLastName();
++
++        assertEquals(userData.getFirstName(), "Maxim");
++        assertEquals(userData.getLastName(), "Antipov");
++
++        assertNotNull(userData);
++        assertNotNull(userData.getFirstName());
++        assertNotNull(userData.getLastName());
++    }
++
++    @Test
++    public void askQuestion() {
++        given(csvQuestionDao.getAllQuestions())
++                .willReturn(questions);
++
++        List<Result> result = questionService.askUserQuestions();
++
++        verify(userInteraction, times(questions.size())).askQuestion(any(TestQuestion.class));
++
++        assertNotNull(result);
++        assertEquals(result.size(), questions.size());
++    }
++}
+Index: spring4/src/test/java/ru/otus/service/UserInteractionTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/java/ru/otus/service/UserInteractionTest.java b/spring4/src/test/java/ru/otus/service/UserInteractionTest.java
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/java/ru/otus/service/UserInteractionTest.java	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,89 @@
++package ru.otus.service;
++
++import org.junit.jupiter.api.Test;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.boot.test.context.SpringBootTest;
++import org.springframework.boot.test.mock.mockito.MockBean;
++import org.springframework.test.context.ActiveProfiles;
++import ru.otus.domain.Result;
++import ru.otus.domain.TestQuestion;
++
++import java.util.List;
++
++import static org.assertj.core.api.Assertions.assertThat;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.mockito.ArgumentMatchers.*;
++import static org.mockito.BDDMockito.given;
++import static org.mockito.Mockito.times;
++import static org.mockito.Mockito.verify;
++
++@SpringBootTest
++@ActiveProfiles("test-en")
++public class UserInteractionTest {
++    @MockBean
++    private ConvertTestQuestionService convert;
++
++    @MockBean
++    private IOService ioService;
++
++    @MockBean
++    private ApplicationMessageSource messageSource;
++
++    @Autowired
++    private UserInteractionImpl userInteraction;
++
++    @Test
++    public void askFirstNameTest() {
++        given(ioService.readLine())
++                .willReturn("Maxim");
++
++        assertThat(userInteraction.askFirstName())
++                .isEqualTo("Maxim");
++
++        verify(ioService, times(1))
++                .readLine();
++    }
++
++    @Test
++    public void askLastNameTest() {
++        given(ioService.readLine())
++                .willReturn("Antipov");
++
++        assertThat(userInteraction.askLastName())
++                .isEqualTo("Antipov");
++
++        verify(ioService, times(1))
++                .readLine();
++    }
++
++    @Test
++    public void askQuestionTest() {
++        TestQuestion testQuestion = new TestQuestion(
++                "Test Question 1?",
++                List.of("Answer 1", "Answer 2", "Correct Answer"),
++                "Correct Answer"
++        );
++
++        given(convert.convert(any(TestQuestion.class)))
++                .willReturn(testQuestion.getQuestion());
++        given(ioService.readLine())
++                .willReturn("User Answer");
++        given(messageSource.getMessage(eq("user.answer")))
++                .willReturn("Enter your answer: ");
++
++        var result = new Result(
++                testQuestion.getQuestion(),
++                "User Answer",
++                testQuestion.getCorrectAnswer()
++        );
++
++        var response = userInteraction.askQuestion(testQuestion);
++
++        assertEquals(result, response);
++
++        verify(ioService, times(1))
++                .println(anyString());
++        verify(ioService, times(1))
++                .print(anyString());
++    }
++}
+Index: spring4/src/test/resources/application-test-en.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/resources/application-test-en.yml b/spring4/src/test/resources/application-test-en.yml
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/resources/application-test-en.yml	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,18 @@
++spring:
++  main:
++    allow-bean-definition-overriding: true
++  messages:
++    basename: "i18n/appmessages"
++    encoding: "UTF-8"
++  shell:
++    interactive:
++      enabled: false
++
++command:
++  line:
++    runner:
++      enabled: false
++
++application:
++  delimiter: ";"
++  locale: en_EN
+\ No newline at end of file
+Index: spring4/src/test/resources/application-test-ru.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/resources/application-test-ru.yml b/spring4/src/test/resources/application-test-ru.yml
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/resources/application-test-ru.yml	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,16 @@
++spring:
++  shell:
++    interactive:
++      enabled: false
++  messages:
++    basename: "i18n/appmessages"
++    encoding: "UTF-8"
++
++command:
++  line:
++    runner:
++      enabled: false
++
++application:
++  delimiter: ";"
++  locale: ru_RU
+\ No newline at end of file
+Index: spring4/src/test/resources/i18n/appmessages_en.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/resources/i18n/appmessages_en.properties b/spring4/src/test/resources/i18n/appmessages_en.properties
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/resources/i18n/appmessages_en.properties	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,7 @@
++file-question=/question-test-en.csv
++question=Question
++answer.user=Your Answer
++answer.correct=Correct Answer
++user.name=Enter your First Name: 
++user.lastname=Enter your Last Name: 
++user.answer=Enter your answer: 
+\ No newline at end of file
+Index: spring4/src/test/resources/i18n/appmessages_ru_RU.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/resources/i18n/appmessages_ru_RU.properties b/spring4/src/test/resources/i18n/appmessages_ru_RU.properties
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/resources/i18n/appmessages_ru_RU.properties	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,7 @@
++file-question=/question-test-ru.csv
++question=Вопрос
++answer.user=Ответ пользователя
++answer.correct=Корректный ответ
++user.name=Введите имя: 
++user.lastname=Введите фамилию: 
++user.answer=Введите ответ: 
+\ No newline at end of file
+Index: spring4/src/test/resources/question-test-en.csv
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/resources/question-test-en.csv b/spring4/src/test/resources/question-test-en.csv
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/resources/question-test-en.csv	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,3 @@
++Test Answer 1?;1;1;1;4
++Test Answer 2?;2;2;5
++Test Answer 3?;3;6
+\ No newline at end of file
+Index: spring4/src/test/resources/question-test-ru.csv
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/spring4/src/test/resources/question-test-ru.csv b/spring4/src/test/resources/question-test-ru.csv
+new file mode 100644
+--- /dev/null	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
++++ b/spring4/src/test/resources/question-test-ru.csv	(revision bb79800f9506d172cadd16463538cfb93b7e2fdc)
+@@ -0,0 +1,3 @@
++Тестовый вопрос 1?;1;1;1;4
++Тестовый вопрос 2?;2;2;5
++Тестовый вопрос 3?;3;6
+\ No newline at end of file
+diff --git a/spring4/src/main/resources/i18n/appmessages.properties b/spring4/src/main/resources/i18n/appmessages.properties
+new file mode 100644
+diff --git a/spring4/src/test/resources/i18n/appmessages.properties b/spring4/src/test/resources/i18n/appmessages.properties
+new file mode 100644

@@ -1,9 +1,9 @@
 package ru.otus.repository;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.otus.domain.Answer;
 import ru.otus.domain.TestQuestion;
+import lombok.RequiredArgsConstructor;
+import ru.otus.domain.Answer;
 import ru.otus.service.ResourceProvider;
 import ru.otus.service.SettingsProvider;
 

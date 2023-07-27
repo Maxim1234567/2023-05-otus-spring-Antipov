@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.9.1">
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\dao\CsvQuestionDaoImpl.java">
+<error line="26" column="5" severity="error" message="Количество строк у метода getAllQuestions 26 (максимум 25)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+</file>
+</checkstyle>
