@@ -21,7 +21,6 @@ public class QuestionServiceImpl implements QuestionService {
     private final UserInteraction userInteraction;
 
     private final IOService ioService;
-
     private final ConvertResult convertResult;
 
     @Override
