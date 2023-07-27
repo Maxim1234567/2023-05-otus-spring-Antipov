@@ -1,0 +1,5 @@
+ru\otus\service\QuestionServiceTest.class
+ru\otus\dao\CsvQuestionDaoImplTest.class
+ru\otus\service\ConvertTestQuestionServiceTest.class
+ru\otus\service\DemoInteractionTest.class
+ru\otus\service\UserInteractionTest.class

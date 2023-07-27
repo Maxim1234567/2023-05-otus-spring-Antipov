@@ -1,0 +1,76 @@
+INSERT INTO GENRE (ID, GENRE) VALUES (100, 'Fiction');
+INSERT INTO GENRE (ID, GENRE) VALUES (200, 'Novel');
+INSERT INTO GENRE (ID, GENRE) VALUES (300, 'Thriller');
+INSERT INTO GENRE (ID, GENRE) VALUES (400, 'Tale');
+INSERT INTO GENRE (ID, GENRE) VALUES (500, 'Comedy');
+INSERT INTO GENRE (ID, GENRE) VALUES (600, 'Drama');
+INSERT INTO GENRE (ID, GENRE) VALUES (700, 'Popular science literature');
+INSERT INTO GENRE (ID, GENRE) VALUES (800, 'Art and culture');
+INSERT INTO GENRE (ID, GENRE) VALUES (900, 'Reference books and professional literature');
+INSERT INTO GENRE (ID, GENRE) VALUES (1000, 'Hobbies, skills');
+INSERT INTO GENRE (ID, GENRE) VALUES (1100, 'Modern domestic prose');
+
+-----------------------------------------------------------------------------------------
+
+INSERT INTO AUTHOR (ID, FIRST_NAME, LAST_NAME, AGE, YEAR_BIRTHDATE) VALUES
+(
+    100, 'Herbert', 'Shieldt', 72, 1951
+);
+
+INSERT INTO AUTHOR (ID, FIRST_NAME, LAST_NAME, AGE, YEAR_BIRTHDATE) VALUES
+(
+    200, 'Ivan', 'Efremov', 64, 1908
+);
+
+INSERT INTO AUTHOR (ID, FIRST_NAME, LAST_NAME, AGE, YEAR_BIRTHDATE) VALUES
+(
+    300, 'Isaac', 'Asimov', 72, 1919
+);
+
+INSERT INTO AUTHOR (ID, FIRST_NAME, LAST_NAME, AGE, YEAR_BIRTHDATE) VALUES (
+    400, 'Irvine', 'Welsh', 64, 1958
+);
+
+INSERT INTO AUTHOR (ID, FIRST_NAME, LAST_NAME, AGE, YEAR_BIRTHDATE) VALUES (
+    500, 'Lyubov', 'Voronkova', 70, 1906
+);
+-----------------------------------------------------------------------------------------
+
+INSERT INTO BOOK (ID, NAME, YEAR_ISSUE, NUMBER_PAGES) VALUES
+(
+    100, 'Java. Complete guide', 2022, 1344
+);
+
+INSERT INTO BOOK (ID, NAME, YEAR_ISSUE, NUMBER_PAGES) VALUES
+(
+    200, 'Starships. Andromeda''s nebula', 1987, 400
+);
+
+INSERT INTO BOOK (ID, NAME, YEAR_ISSUE, NUMBER_PAGES) VALUES
+(
+    300, 'FOUNDATION', 2022, 320
+);
+
+INSERT INTO BOOK (ID, NAME, YEAR_ISSUE, NUMBER_PAGES) VALUES
+(
+    400, 'Alice''s Adventures in Wonderland', 1865, 225
+);
+
+-----------------------------------------------------------------------------------------
+
+INSERT INTO BOOK_GENRE (BOOK_ID, GENRE_ID) VALUES (100, 900);
+INSERT INTO BOOK_GENRE (BOOK_ID, GENRE_ID) VALUES (100, 1000);
+
+INSERT INTO BOOK_GENRE (BOOK_ID, GENRE_ID) VALUES (200, 600);
+INSERT INTO BOOK_GENRE (BOOK_ID, GENRE_ID) VALUES (200, 700);
+INSERT INTO BOOK_GENRE (BOOK_ID, GENRE_ID) VALUES (200, 200);
+
+INSERT INTO BOOK_GENRE (BOOK_ID, GENRE_ID) VALUES (300, 600);
+INSERT INTO BOOK_GENRE (BOOK_ID, GENRE_ID) VALUES (300, 700);
+INSERT INTO BOOK_GENRE (BOOK_ID, GENRE_ID) VALUES (300, 200);
+
+-----------------------------------------------------------------------------------------
+
+INSERT INTO BOOK_AUTHOR (BOOK_ID, AUTHOR_ID) VALUES (100, 100);
+INSERT INTO BOOK_AUTHOR (BOOK_ID, AUTHOR_ID) VALUES (200, 200);
+INSERT INTO BOOK_AUTHOR (BOOK_ID, AUTHOR_ID) VALUES (300, 300);

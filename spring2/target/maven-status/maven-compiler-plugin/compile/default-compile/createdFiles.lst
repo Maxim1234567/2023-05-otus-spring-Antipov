@@ -1,0 +1,16 @@
+ru\otus\dao\CsvQuestionDaoImpl.class
+ru\otus\service\ConvertTestQuestionServiceImpl.class
+ru\otus\service\UserInteraction.class
+ru\otus\service\DemoInteraction.class
+ru\otus\dao\CsvQuestionDao.class
+ru\otus\service\IOService.class
+ru\otus\domain\Result.class
+ru\otus\DemoApplication.class
+ru\otus\service\QuestionService.class
+ru\otus\service\UserInteractionImpl.class
+ru\otus\domain\UserData.class
+ru\otus\service\QuestionServiceImpl.class
+ru\otus\service\DemoInteractionImpl.class
+ru\otus\service\IOServiceImpl.class
+ru\otus\domain\TestQuestion.class
+ru\otus\service\ConvertTestQuestionService.class
