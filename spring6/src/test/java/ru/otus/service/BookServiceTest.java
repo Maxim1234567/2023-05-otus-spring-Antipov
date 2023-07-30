@@ -4,19 +4,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import ru.otus.Utils;
 import ru.otus.convert.BookConvertBookDto;
-import ru.otus.domain.Author;
-import ru.otus.domain.Book;
-import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
+import ru.otus.dto.CommentDto;
 import ru.otus.dto.GenreDto;
-import ru.otus.exception.AuthorNotFound;
-import ru.otus.exception.BookNotFound;
-import ru.otus.exception.GenreNotFound;
+import ru.otus.exception.NotFoundException;
 
 import java.util.List;
 
@@ -39,6 +34,10 @@ public class BookServiceTest {
             ),
             List.of(
                     new AuthorDto(300L, "Isaac", "Asimov", 72, 1919)
+            ),
+            List.of(
+                    new CommentDto(400L, "Isaac Asimov Top", 300L),
+                    new CommentDto(500L, "The best book in the world", 300L)
             )
     );
 
@@ -54,6 +53,11 @@ public class BookServiceTest {
                     ),
                     List.of(
                             new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951)
+                    ),
+                    List.of(
+                            new CommentDto(100L, "Good Book!", 100L),
+                            new CommentDto(200L, "Very Interesting!", 100L),
+                            new CommentDto(300L, "I cried when I read it", 100L)
                     )
             ),
             new BookDto(
@@ -68,6 +72,9 @@ public class BookServiceTest {
                     ),
                     List.of(
                             new AuthorDto(200L, "Ivan", "Efremov", 64, 1908)
+                    ),
+                    List.of(
+                            new CommentDto(600L, "I read it, it's cool", 200L)
                     )
             ),
             new BookDto(
@@ -82,6 +89,10 @@ public class BookServiceTest {
                     ),
                     List.of(
                             new AuthorDto(300L, "Isaac", "Asimov", 72, 1919)
+                    ),
+                    List.of(
+                            new CommentDto(400L, "Isaac Asimov Top", 300L),
+                            new CommentDto(500L, "The best book in the world", 300L)
                     )
             ),
             new BookDto(
@@ -89,6 +100,7 @@ public class BookServiceTest {
                     "Alice's Adventures in Wonderland",
                     1865,
                     225,
+                    List.of(),
                     List.of(),
                     List.of()
             )
@@ -106,7 +118,8 @@ public class BookServiceTest {
                     new AuthorDto(
                             null, "Lyubov", "Voronkova", 70, 1906
                     )
-            )
+            ),
+            List.of()
     );
 
     private static final BookDto NOT_EXISTS_BOOK = new BookDto(
@@ -121,7 +134,8 @@ public class BookServiceTest {
                     new AuthorDto(
                             500L, "Lyubov", "Voronkova", 70, 1906
                     )
-            )
+            ),
+            List.of()
     );
 
     @Autowired
@@ -171,6 +185,12 @@ public class BookServiceTest {
         assertDoesNotThrow(() -> bookService.delete(book));
     }
 
+    @DisplayName("correctly update book")
+    @Test
+    public void shouldCorrectUpdateBook() {
+
+    }
+
     private void assertEqualsBook(BookDto book1, BookDto book2) {
         assertThat(book1).isNotNull()
                 .matches(r -> r.getName().equals(book2.getName()))
@@ -184,12 +204,8 @@ public class BookServiceTest {
     }
 
     @Test
-    public void shouldCorrectReturnEmptyBookDtoIfAuthorNotExists() {
-        BookDto expected = BookDto.builder()
-                .genres(List.of())
-                .authors(List.of()).build();
-        BookDto result = bookService.getBookById(1111L);
-
-        assertEquals(expected, result);
+    @DisplayName("should throws NotFoundException if book not exists")
+    public void shouldThrowNotFoundExceptionIfBookNotExists() {
+        assertThrows(NotFoundException.class, () -> bookService.getBookById(1111L));
     }
 }

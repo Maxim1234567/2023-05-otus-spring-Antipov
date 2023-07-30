@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.convert.AuthorConvertAuthorDto;
 import ru.otus.convert.AuthorDtoConvertAuthor;
 import ru.otus.dto.AuthorDto;
+import ru.otus.exception.NotFoundException;
 import ru.otus.repository.AuthorRepositoryJpa;
 import ru.otus.domain.Author;
 import ru.otus.service.AuthorService;
@@ -43,7 +44,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     @Transactional(readOnly = true)
     public AuthorDto getAuthorById(Long id) {
-        Author author = authorRepository.findById(id).orElse(new Author());
+        Author author = authorRepository.findById(id).orElseThrow(NotFoundException::new);
         return convertAuthorDto.convert(author);
     }
 }

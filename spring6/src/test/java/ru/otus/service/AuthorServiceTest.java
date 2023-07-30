@@ -8,12 +8,12 @@ import org.springframework.test.context.ActiveProfiles;
 import ru.otus.Utils;
 import ru.otus.domain.Author;
 import ru.otus.dto.AuthorDto;
+import ru.otus.exception.NotFoundException;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Service to work with author should")
 @SpringBootTest
@@ -40,7 +40,7 @@ public class AuthorServiceTest {
 
     @DisplayName("should correct save author")
     @Test
-    public void shouldCorrectSaveGenre() {
+    public void shouldCorrectSaveAuthor() {
         AuthorDto author = authorService.save(NOT_EXISTS_AUTHOR);
         List<AuthorDto> authors = authorService.getAll();
         authorService.delete(author);
@@ -50,7 +50,7 @@ public class AuthorServiceTest {
 
     @DisplayName("should correct return all authors")
     @Test
-    public void shouldCorrectReturnAllGenres() {
+    public void shouldCorrectReturnAllAuthors() {
         List<AuthorDto> authors = authorService.getAll();
 
         Utils.assertEqualsAuthorListDto(EXPECTED_AUTHORS, authors);
@@ -58,7 +58,7 @@ public class AuthorServiceTest {
 
     @DisplayName("should correct delete author")
     @Test
-    public void shouldCorrectDeleteGenre() {
+    public void shouldCorrectDeleteAuthor() {
         AuthorDto author = authorService.save(NOT_EXISTS_AUTHOR);
         List<AuthorDto> authorsWithNotExistsGenre = authorService.getAll();
 
@@ -79,10 +79,8 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void shouldCorrectReturnEmptyAuthorDtoIfAuthorNotExists() {
-        AuthorDto expected = new AuthorDto();
-        AuthorDto result = authorService.getAuthorById(111L);
-
-        assertEquals(expected, result);
+    @DisplayName("should throws NotFoundException if author not exists")
+    public void shouldThrowsNotFoundExceptionIfAuthorNotExists() {
+        assertThrows(NotFoundException.class, () -> authorService.getAuthorById(111L));
     }
 }

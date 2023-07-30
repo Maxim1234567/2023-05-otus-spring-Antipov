@@ -8,6 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 import ru.otus.Utils;
 import ru.otus.domain.Genre;
 import ru.otus.dto.GenreDto;
+import ru.otus.exception.NotFoundException;
 
 import java.util.List;
 
@@ -80,9 +81,8 @@ public class GenreServiceTest {
     }
 
     @Test
-    public void shouldCorrectReturnEmptyGenreDtoIfAuthorNotExists() {
-        GenreDto expected = new GenreDto();
-        GenreDto result = genreService.getGenreById(111L);
-        assertEquals(expected, result);
+    @DisplayName("should throws NotFoundException if genre not exists")
+    public void shouldThrowsNotFoundExceptionIfGenreNotExists() {
+        assertThrows(NotFoundException.class, () -> genreService.getGenreById(111L));
     }
 }

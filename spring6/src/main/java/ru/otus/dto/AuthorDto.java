@@ -5,8 +5,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Builder
-@Data
 @EqualsAndHashCode
 public class AuthorDto {
     private Long id;

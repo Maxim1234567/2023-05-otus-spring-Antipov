@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Import;
 import ru.otus.Utils;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
+import ru.otus.domain.Comment;
 import ru.otus.domain.Genre;
 
 import java.util.List;
@@ -42,6 +43,10 @@ public class BookRepositoryJpaTest {
             ),
             List.of(
                     new Author(300L, "Isaac", "Asimov", 72, 1919)
+            ),
+            List.of(
+                    new Comment(400L, "Isaac Asimov Top", 300L),
+                    new Comment(500L, "The best book in the world", 300L)
             )
     );
 
@@ -57,6 +62,11 @@ public class BookRepositoryJpaTest {
                     ),
                     List.of(
                             new Author(100L, "Herbert", "Shieldt", 72, 1951)
+                    ),
+                    List.of(
+                            new Comment(100L, "Good Book!", 100L),
+                            new Comment(200L, "Very Interesting!", 100L),
+                            new Comment(300L, "I cried when I read it", 100L)
                     )
             ),
             new Book(
@@ -71,6 +81,9 @@ public class BookRepositoryJpaTest {
                     ),
                     List.of(
                             new Author(200L, "Ivan", "Efremov", 64, 1908)
+                    ),
+                    List.of(
+                            new Comment(600L, "I read it, it's cool", 200L)
                     )
             ),
             new Book(
@@ -85,6 +98,10 @@ public class BookRepositoryJpaTest {
                     ),
                     List.of(
                             new Author(300L, "Isaac", "Asimov", 72, 1919)
+                    ),
+                    List.of(
+                            new Comment(400L, "Isaac Asimov Top", 300L),
+                            new Comment(500L, "The best book in the world", 300L)
                     )
             ),
             new Book(
@@ -92,6 +109,7 @@ public class BookRepositoryJpaTest {
                     "Alice's Adventures in Wonderland",
                     1865,
                     225,
+                    List.of(),
                     List.of(),
                     List.of()
             )
@@ -109,7 +127,8 @@ public class BookRepositoryJpaTest {
                     new Author(
                             null, "Lyubov", "Voronkova", 70, 1906
                     )
-            )
+            ),
+            List.of()
     );
 
     @Autowired
@@ -161,10 +180,17 @@ public class BookRepositoryJpaTest {
     public void shouldCorrectUpdateBook() {
         Book exceptedBook = new Book(
                 EXISTING_BOOK.getId(), "NEW NAME", 2012, 121,
-                List.of(new Genre(100L, "Fiction"), new Genre(200L, "Novel"), new Genre(300L, "Thriller")),
+                List.of(
+                        new Genre(100L, "Fiction"),
+                        new Genre(200L, "Novel"),
+                        new Genre(300L, "Thriller")
+                ),
                 List.of(
                         new Author(100L, "Herbert", "Shieldt", 72, 1951),
                         new Author(200L, "Ivan", "Efremov", 64, 1908)
+                ),
+                List.of(
+                        new Comment(400L, "New Comment", 300L)
                 )
         );
 

@@ -8,7 +8,8 @@ import lombok.*;
 @Setter
 @Builder
 @EqualsAndHashCode
-public class GenreDto {
+public class CommentDto {
     private Long id;
-    private String genre;
+    private String comments;
+    private Long bookId;
 }

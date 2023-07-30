@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.convert.GenreConvertGenreDto;
 import ru.otus.convert.GenreDtoConvertGenre;
 import ru.otus.dto.GenreDto;
+import ru.otus.exception.NotFoundException;
 import ru.otus.repository.GenreRepositoryJpa;
 import ru.otus.domain.Genre;
 import ru.otus.service.GenreService;
@@ -43,7 +44,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     @Transactional(readOnly = true)
     public GenreDto getGenreById(Long id) {
-        Genre genre = genreRepository.findById(id).orElse(new Genre());
+        Genre genre = genreRepository.findById(id).orElseThrow(NotFoundException::new);
         return convertGenreDto.convert(genre);
     }
 }

@@ -54,7 +54,7 @@ public class UserInteractionImpl implements UserInteraction {
         ioService.print("Enter number pages: ");
         int numberPages = Integer.parseInt(ioService.readLine());
 
-        return new BookDto(null, name, yearIssue, numberPages, new ArrayList<>(), new ArrayList<>());
+        return new BookDto(null, name, yearIssue, numberPages, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     @Override

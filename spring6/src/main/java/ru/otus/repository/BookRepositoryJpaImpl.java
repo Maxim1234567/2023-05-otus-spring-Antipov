@@ -33,7 +33,7 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
     @Override
     public List<Book> findByIds(List<Long> ids) {
         TypedQuery<Book> query = em.createQuery(
-                "select b from Book b where b.id in (:ids)",
+                "select b from Book b left join b.comments where b.id in (:ids)",
                 Book.class
         );
         query.setParameter("ids", ids);
@@ -43,7 +43,7 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
 
     @Override
     public List<Book> findAll() {
-        return em.createQuery("select b from Book b", Book.class).getResultList();
+        return em.createQuery("select b from Book b left join b.comments", Book.class).getResultList();
     }
 
     @Override

@@ -7,8 +7,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Builder
-@Data
 @EqualsAndHashCode
 public class BookDto {
     private Long id;
@@ -17,4 +17,5 @@ public class BookDto {
     private Integer numberPages;
     private List<GenreDto> genres;
     private List<AuthorDto> authors;
+    private List<CommentDto> comments;
 }

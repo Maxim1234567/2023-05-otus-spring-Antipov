@@ -1,22 +1,24 @@
 package ru.otus.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
+@EqualsAndHashCode
 @Entity
 @Table(name = "COMMENT")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "comments")
     private String comments;
+
+    @Column(name = "book_id", nullable = false, updatable = false)
+    private Long bookId;
 }
