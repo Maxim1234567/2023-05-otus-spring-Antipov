@@ -4,7 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.Utils;
 import ru.otus.domain.Author;
 import ru.otus.dto.AuthorDto;
@@ -17,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Service to work with author should")
 @SpringBootTest
-@ActiveProfiles("author")
+@Transactional
 public class AuthorServiceTest {
     private static final AuthorDto EXISTING_AUTHOR = new AuthorDto(
             400L, "Irvine", "Welsh", 64, 1958

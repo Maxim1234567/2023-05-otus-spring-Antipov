@@ -4,7 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.Utils;
 import ru.otus.convert.BookConvertBookDto;
 import ru.otus.dto.AuthorDto;
@@ -20,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Service to work with book should")
 @SpringBootTest
-@ActiveProfiles("book")
+@Transactional
 public class BookServiceTest {
     private static final BookDto EXISTING_BOOK = new BookDto(
             300L,
@@ -140,9 +142,6 @@ public class BookServiceTest {
 
     @Autowired
     private BookService bookService;
-
-    @Autowired
-    private BookConvertBookDto convertBook;
 
     @DisplayName("correctly return book with genres and authors")
     @Test

@@ -46,6 +46,13 @@ public class ApplicationEventsCommands {
         return "";
     }
 
+    @ShellMethod(value = "Show book comments", key = {"comm", "comments"})
+    public String showComments(String stringBookId) {
+        long bookId = Long.parseLong(stringBookId);
+        libraryFacade.showCommentsByBook(bookId);
+        return "";
+    }
+
     @ShellMethod(value = "Delete book", key = {"d", "delete"})
     public String deleteBook() {
         libraryFacade.deleteBook();
@@ -67,6 +74,13 @@ public class ApplicationEventsCommands {
     @ShellMethod(value = "Create book", key = {"cb", "create-book"})
     public String createBook() {
         libraryFacade.createBook();
+        return "";
+    }
+
+    @ShellMethod(value = "Create comments", key = {"cc", "create-comment"})
+    public String createComment(String stringBookId) {
+        long bookId = Long.parseLong(stringBookId);
+        libraryFacade.createComment(bookId);
         return "";
     }
 }

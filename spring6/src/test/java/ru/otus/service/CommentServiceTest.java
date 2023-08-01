@@ -4,7 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dto.CommentDto;
 import ru.otus.exception.NotFoundException;
 
@@ -15,7 +17,7 @@ import static ru.otus.Utils.assertEqualsCommentListDto;
 
 @DisplayName("Service to work with comment should")
 @SpringBootTest
-@ActiveProfiles("comment")
+@Transactional
 public class CommentServiceTest {
     private static final CommentDto EXISTING_COMMENT = new CommentDto(
             100L, "Good Book!", 100L
@@ -65,10 +67,10 @@ public class CommentServiceTest {
         CommentDto commentSave = commentService.save(NOT_EXISTS_COMMENT);
         CommentDto commentBeforeDelete = commentService.getCommentById(commentSave.getId());
         commentService.delete(commentSave);
-        CommentDto commentAfterDelete = commentService.getCommentById(commentSave.getId());
+
+        assertThrows(NotFoundException.class, () -> commentService.getCommentById(commentSave.getId()));
 
         assertEquals(commentSave, commentBeforeDelete);
-        assertEquals(commentAfterDelete, new CommentDto());
     }
 
     @DisplayName(" should throws NotFoundException if comment not exists")

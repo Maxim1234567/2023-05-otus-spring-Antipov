@@ -7,6 +7,7 @@ import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
+import ru.otus.dto.CommentDto;
 import ru.otus.dto.GenreDto;
 import ru.otus.service.DomainConvert;
 import ru.otus.service.IOService;
@@ -26,7 +27,7 @@ public class ShowDomainImpl implements ShowDomain {
     }
 
     @Override
-    public void showListBook(List<BookDto> books) {
+    public void showBooks(List<BookDto> books) {
         books.forEach(this::showBook);
     }
 
@@ -36,7 +37,7 @@ public class ShowDomainImpl implements ShowDomain {
     }
 
     @Override
-    public void showListAuthor(List<AuthorDto> authors) {
+    public void showAuthors(List<AuthorDto> authors) {
         authors.forEach(this::showAuthor);
     }
 
@@ -46,7 +47,14 @@ public class ShowDomainImpl implements ShowDomain {
     }
 
     @Override
-    public void showListGenre(List<GenreDto> genres) {
+    public void showGenres(List<GenreDto> genres) {
         genres.forEach(this::showGenre);
+    }
+
+    @Override
+    public void showComments(List<CommentDto> comments) {
+        comments.forEach(
+                c -> ioService.println(domainConvert.convertCommentToString(c))
+        );
     }
 }
