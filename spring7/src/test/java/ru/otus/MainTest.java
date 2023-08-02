@@ -8,11 +8,13 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
+import ru.otus.dto.CommentDto;
 import ru.otus.dto.GenreDto;
 import ru.otus.service.IOService;
 import ru.otus.service.LibraryFacade;
@@ -27,9 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
-@ActiveProfiles("integration")
+@Transactional
 public class MainTest {
-
     private static final String TEXT_WILL_BE = "Create genre!\n" +
             "Create author!\n" +
             "Create book!\n" +
@@ -66,22 +67,29 @@ public class MainTest {
             "----------------------------------------\n" +
             "  100. | Herbert Shieldt | 1951 | 72\n" +
             "----------------------------------------\n" +
-            "  900. | Reference books and professional literature  1000. | Hobbies, skills\n" +
+            "  900. | Reference books and professional literature  1000. | Hobbies, skills----------------------------------------\n" +
+            "  100. | Good Book!  200. | Very Interesting!  300. | I cried when I read it\n" +
             "\n" +
             "200. | Starships. Andromeda's nebula | 1987 | 400\n" +
             "----------------------------------------\n" +
             "  200. | Ivan Efremov | 1908 | 64\n" +
             "----------------------------------------\n" +
-            "  200. | Novel  600. | Drama  700. | Popular science literature\n" +
+            "  200. | Novel  600. | Drama  700. | Popular science literature----------------------------------------\n" +
+            "  600. | I read it, it's cool\n" +
             "\n" +
             "300. | FOUNDATION | 2022 | 320\n" +
             "----------------------------------------\n" +
             "  300. | Isaac Asimov | 1919 | 72\n" +
             "----------------------------------------\n" +
-            "  200. | Novel  600. | Drama  700. | Popular science literature\n" +
+            "  200. | Novel  600. | Drama  700. | Popular science literature----------------------------------------\n" +
+            "  400. | Isaac Asimov Top  500. | The best book in the world\n" +
             "\n" +
             "400. | Alice's Adventures in Wonderland | 1865 | 225\n" +
-            "\n\n";
+            "\n" +
+            "\n" +
+            "Create comment!\n" +
+            "Show all comments by bookId 1\n" +
+            "1. | Great Book!\n";
 
     private static final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -94,7 +102,11 @@ public class MainTest {
     );
 
     private static final BookDto book = new BookDto(
-            null, "uni corn", 2023, 320, List.of(), List.of()
+            null, "uni corn", 2023, 320, List.of(), List.of(), List.of()
+    );
+
+    private static final CommentDto comment = new CommentDto(
+            null, "Great Book!", 1L
     );
 
     @MockBean
@@ -122,6 +134,9 @@ public class MainTest {
         given(userInteraction.createBook())
                 .willReturn(book);
 
+        given(userInteraction.createComment())
+                .willReturn(comment);
+
         given(userInteraction.getId())
                 .willReturn(1L, -1L, 1L, -1L);
     }
@@ -135,6 +150,10 @@ public class MainTest {
         libraryFacade.createBook();
 
         libraryFacade.showBooks();
+
+        libraryFacade.createComment(1L);
+
+        libraryFacade.showCommentsByBook(1L);
 
         assertEquals(baos.toString().replace("\r", ""), TEXT_WILL_BE);
     }

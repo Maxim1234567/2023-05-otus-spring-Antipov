@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.Utils;
 import ru.otus.domain.Genre;
 import ru.otus.dto.GenreDto;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Service to work with genre should")
 @SpringBootTest
-@ActiveProfiles("genre")
+@Transactional
 public class GenreServiceTest {
 
     private static final GenreDto NOT_EXISTING_GENRE = new GenreDto(null, "Not Exist Genre");

@@ -5,6 +5,7 @@ import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
+import ru.otus.dto.CommentDto;
 import ru.otus.dto.GenreDto;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface ShowDomain {
     void showGenre(GenreDto genre);
 
     void showListGenre(List<GenreDto> genres);
+
+    void showComments(List<CommentDto> comments);
 }

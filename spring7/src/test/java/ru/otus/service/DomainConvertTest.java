@@ -8,6 +8,7 @@ import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
+import ru.otus.dto.CommentDto;
 import ru.otus.dto.GenreDto;
 import ru.otus.service.impl.DomainConvertImpl;
 
@@ -21,21 +22,26 @@ public class DomainConvertTest {
 
     private final String exceptedGenreToString = "100. | Fiction";
     private final String exceptedAuthorToString = "100. | Herbert Shieldt | 1951 | 72";
+    private final String exceptedCommentToString = "100. | Cool Book!";
     private final String exceptedBookToString = new StringBuilder()
             .append("100. | Java. Complete guide | 2022 | 1344\n")
             .append(SEPARATOR + "\n")
             .append("  100. | Herbert Shieldt | 1951 | 72\n")
             .append(SEPARATOR + "\n")
             .append("  100. | Fiction")
+            .append(SEPARATOR + "\n")
+            .append("  100. | Cool Book!")
             .append("\n")
             .toString();
 
     private final GenreDto genre = new GenreDto(100L, "Fiction");
     private final AuthorDto author = new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951);
+    private final CommentDto comment = new CommentDto(100L, "Cool Book!", 100L);
     private final BookDto book = new BookDto(
             100L, "Java. Complete guide", 2022, 1344,
             List.of(genre),
-            List.of(author)
+            List.of(author),
+            List.of(comment)
     );
 
     private DomainConvert domainConvert;

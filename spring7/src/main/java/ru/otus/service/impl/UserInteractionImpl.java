@@ -7,6 +7,7 @@ import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
+import ru.otus.dto.CommentDto;
 import ru.otus.dto.GenreDto;
 import ru.otus.service.IOService;
 import ru.otus.service.UserInteraction;
@@ -54,7 +55,15 @@ public class UserInteractionImpl implements UserInteraction {
         ioService.print("Enter number pages: ");
         int numberPages = Integer.parseInt(ioService.readLine());
 
-        return new BookDto(null, name, yearIssue, numberPages, new ArrayList<>(), new ArrayList<>());
+        return new BookDto(null, name, yearIssue, numberPages, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    }
+
+    @Override
+    public CommentDto createComment() {
+        ioService.print("Enter comments: ");
+        String comment = ioService.readLine();
+
+        return new CommentDto(null, comment, null);
     }
 
     @Override

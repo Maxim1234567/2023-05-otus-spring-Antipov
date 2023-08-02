@@ -2,9 +2,11 @@ package ru.otus;
 
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
+import ru.otus.domain.Comment;
 import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
+import ru.otus.dto.CommentDto;
 import ru.otus.dto.GenreDto;
 
 import java.util.Comparator;
@@ -31,6 +33,20 @@ public class Utils {
         assertIterableEquals(
                 authors1.stream().sorted(Comparator.comparing(Author::getId)).toList(),
                 authors2.stream().sorted(Comparator.comparing(Author::getId)).toList()
+        );
+    }
+
+    public static void assertEqualsCommentList(List<Comment> comments1, List<Comment> comments2) {
+        assertIterableEquals(
+                comments1.stream().sorted(Comparator.comparing(Comment::getId)).toList(),
+                comments2.stream().sorted(Comparator.comparing(Comment::getId)).toList()
+        );
+    }
+
+    public static void assertEqualsCommentListDto(List<CommentDto> comments1, List<CommentDto> comments2) {
+        assertIterableEquals(
+                comments1.stream().sorted(Comparator.comparing(CommentDto::getId)).toList(),
+                comments2.stream().sorted(Comparator.comparing(CommentDto::getId)).toList()
         );
     }
 

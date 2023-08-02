@@ -17,4 +17,5 @@ public class BookDto {
     private Integer numberPages;
     private List<GenreDto> genres;
     private List<AuthorDto> authors;
+    private List<CommentDto> comments;
 }

@@ -35,11 +35,8 @@ public class GenreRepositoryJpaTest {
             new Genre(1100L, "Modern domestic prose")
     );
 
-//    @Autowired
-//    private GenreRepositoryJpaImpl genreRepository;
     @Autowired
     private GenreRepository genreRepository;
-
 
     @DisplayName("correctly save the genre without a given ID in the database")
     @Test
