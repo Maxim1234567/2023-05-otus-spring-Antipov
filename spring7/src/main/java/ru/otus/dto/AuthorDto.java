@@ -7,7 +7,6 @@ import lombok.*;
 @Getter
 @Builder
 @Data
-@EqualsAndHashCode
 public class AuthorDto {
     private Long id;
     private String firstName;

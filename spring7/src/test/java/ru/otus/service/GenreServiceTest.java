@@ -4,15 +4,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.Utils;
-import ru.otus.domain.Genre;
 import ru.otus.dto.GenreDto;
+import ru.otus.exception.NotFoundException;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.otus.Utils.assertEqualsGenreDto;
+import static ru.otus.Utils.assertEqualsGenreListDto;
 
 @DisplayName("Service to work with genre should")
 @SpringBootTest
@@ -20,8 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GenreServiceTest {
 
     private static final GenreDto NOT_EXISTING_GENRE = new GenreDto(null, "Not Exist Genre");
-
-    private static final GenreDto EXISTING_GENRE = new GenreDto(400L, "Tale");
 
     private static final List<GenreDto> EXPECTED_GENRES = List.of(
             new GenreDto(100L, "Fiction"),
@@ -43,32 +41,27 @@ public class GenreServiceTest {
     @DisplayName("should correct save genre")
     @Test
     public void shouldCorrectSaveGenre() {
-        GenreDto genre = genreService.save(NOT_EXISTING_GENRE);
-        List<GenreDto> genres = genreService.getAll();
-        genreService.delete(genre);
+        GenreDto expected = genreService.save(NOT_EXISTING_GENRE);
+        GenreDto result = genreService.getGenreById(expected.getId());
+        genreService.delete(expected);
 
-        assertTrue(genres.contains(genre));
+        assertEqualsGenreDto(expected, result);
     }
 
     @DisplayName("should correct return all genres")
     @Test
     public void shouldCorrectReturnAllGenres() {
         List<GenreDto> genres = genreService.getAll();
-
-        Utils.assertEqualsGenreListDto(EXPECTED_GENRES, genres);
+        assertEqualsGenreListDto(EXPECTED_GENRES, genres);
     }
 
     @DisplayName("should correct delete genre")
     @Test
     public void shouldCorrectDeleteGenre() {
         GenreDto genre = genreService.save(NOT_EXISTING_GENRE);
-        List<GenreDto> genresWithNotExistsGenre = genreService.getAll();
 
-        genreService.delete(genre);
-        List<GenreDto> genresWithoutNotExistsGenre = genreService.getAll();
-
-        assertTrue(genresWithNotExistsGenre.contains(genre));
-        Utils.assertEqualsGenreListDto(EXPECTED_GENRES, genresWithoutNotExistsGenre);
+        assertDoesNotThrow(() -> genreService.delete(genre));
+        assertThrows(NotFoundException.class, (() -> genreService.getGenreById(genre.getId())));
     }
 
     @DisplayName("should correct return genre")
@@ -77,13 +70,12 @@ public class GenreServiceTest {
         GenreDto excepted = EXPECTED_GENRES.get(0);
         GenreDto result = genreService.getGenreById(excepted.getId());
 
-        assertEquals(excepted, result);
+        assertEqualsGenreDto(excepted, result);
     }
 
     @Test
-    public void shouldCorrectReturnEmptyGenreDtoIfAuthorNotExists() {
-        GenreDto expected = new GenreDto();
-        GenreDto result = genreService.getGenreById(111L);
-        assertEquals(expected, result);
+    @DisplayName("should throws NotFoundException if genre not exists")
+    public void shouldThrowsNotFoundExceptionIfGenreNotExists() {
+        assertThrows(NotFoundException.class, () -> genreService.getGenreById(111L));
     }
 }

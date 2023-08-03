@@ -7,7 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 @Builder
-@EqualsAndHashCode
 @Entity
 @Table(name = "AUTHOR")
 public class Author {

@@ -4,10 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.Utils;
-import ru.otus.convert.BookConvertBookDto;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
@@ -18,6 +15,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.otus.Utils.assertEqualsBookDto;
+import static ru.otus.Utils.assertEqualsBookListDto;
 
 @DisplayName("Service to work with book should")
 @SpringBootTest
@@ -146,34 +145,34 @@ public class BookServiceTest {
     @Test
     public void shouldCorrectReturnBookWithGenreAndAuthors() {
         BookDto result = bookService.getBookById(EXISTING_BOOK.getId());
-        assertEquals(EXISTING_BOOK, result);
+        assertEqualsBookDto(EXISTING_BOOK, result);
     }
 
     @DisplayName("correctly return all books")
     @Test
     public void shouldCorrectReturnAllBooks() {
         List<BookDto> result = bookService.getAllBooks();
-        Utils.assertEqualsBookListDto(EXPECTED_BOOK, result);
+        assertEqualsBookListDto(EXPECTED_BOOK, result);
     }
 
     @DisplayName("correctly save book with not exists authors and genres")
     @Test
     public void shouldCorrectSaveBookWithNotExistsAuthorAndGenre() {
-        BookDto book = bookService.save(NOT_EXISTS_BOOK_WITH_NOT_EXISTS_AUTHOR_AND_GENRE);
-        BookDto result = bookService.getBookById(book.getId());
-        bookService.delete(book);
+        BookDto expected = bookService.save(NOT_EXISTS_BOOK_WITH_NOT_EXISTS_AUTHOR_AND_GENRE);
+        BookDto result = bookService.getBookById(expected.getId());
+        bookService.delete(expected);
 
-        assertEqualsBook(result, NOT_EXISTS_BOOK_WITH_NOT_EXISTS_AUTHOR_AND_GENRE);
+        assertEqualsBookDto(expected, result);
     }
 
     @DisplayName("correctly save book with authors and genres")
     @Test
     public void shouldCorrectSaveBookWithAuthorAndGenre() {
-        BookDto book = bookService.save(NOT_EXISTS_BOOK);
-        BookDto result = bookService.getBookById(book.getId());
-        bookService.delete(book);
+        BookDto expected = bookService.save(NOT_EXISTS_BOOK);
+        BookDto result = bookService.getBookById(expected.getId());
+        bookService.delete(expected);
 
-        assertEqualsBook(result, NOT_EXISTS_BOOK);
+        assertEqualsBookDto(expected, result);
     }
 
     @DisplayName("correctly delete book with author and genre")
@@ -181,24 +180,13 @@ public class BookServiceTest {
     public void shouldCorrectDeleteBookWithAuthorAndGenre() {
         BookDto book = bookService.save(NOT_EXISTS_BOOK);
         assertDoesNotThrow(() -> bookService.delete(book));
+        assertThrows(NotFoundException.class, () -> bookService.getBookById(book.getId()));
     }
 
     @DisplayName("correctly update book")
     @Test
     public void shouldCorrectUpdateBook() {
 
-    }
-
-    private void assertEqualsBook(BookDto book1, BookDto book2) {
-        assertThat(book1).isNotNull()
-                .matches(r -> r.getName().equals(book2.getName()))
-                .matches(r -> r.getNumberPages().equals(book2.getNumberPages()))
-                .matches(r -> r.getYearIssue().equals(book2.getYearIssue()))
-                .matches(r -> r.getAuthors().get(0).getAge() == book2.getAuthors().get(0).getAge())
-                .matches(r -> r.getAuthors().get(0).getFirstName().equals(book2.getAuthors().get(0).getFirstName()))
-                .matches(r -> r.getAuthors().get(0).getLastName().equals(book2.getAuthors().get(0).getLastName()))
-                .matches(r -> r.getAuthors().get(0).getYearBirthdate() == book2.getAuthors().get(0).getYearBirthdate())
-                .matches(r -> r.getGenres().get(0).getGenre().equals(book2.getGenres().get(0).getGenre()));
     }
 
     @Test
