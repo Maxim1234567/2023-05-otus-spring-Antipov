@@ -7,11 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.domain.Author;
-import ru.otus.domain.Book;
-import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
@@ -30,6 +27,7 @@ import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 @Transactional
+@Rollback
 public class MainTest {
     private static final String TEXT_WILL_BE = "Create genre!\n" +
             "Create author!\n" +

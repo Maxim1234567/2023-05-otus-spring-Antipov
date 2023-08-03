@@ -4,17 +4,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import ru.otus.Utils;
 import ru.otus.domain.Genre;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.otus.Utils.assertEqualsGenre;
+import static ru.otus.Utils.assertEqualsGenreList;
 
 @DisplayName("Dao to work with genres should")
 @DataJpaTest
@@ -54,7 +51,7 @@ public class GenreRepositoryJpaTest {
     public void shouldCorrectReturnExceptedGenreList() {
         List<Genre> genres = genreRepository.findAll();
 
-        Utils.assertEqualsGenreList(EXPECTED_GENRES, genres);
+        assertEqualsGenreList(EXPECTED_GENRES, genres);
     }
 
     @DisplayName("correctly return the genres by book id")
@@ -64,7 +61,7 @@ public class GenreRepositoryJpaTest {
         List<Genre> expected = List.of(EXPECTED_GENRES.get(8), EXPECTED_GENRES.get(9));
 
         List<Genre> result = genreRepository.findByBookId(bookId);
-        Utils.assertEqualsGenreList(expected, result);
+        assertEqualsGenreList(expected, result);
     }
 
     @DisplayName("correctly return the genres by book ids")
@@ -74,7 +71,7 @@ public class GenreRepositoryJpaTest {
         List<Genre> expected = List.of(EXPECTED_GENRES.get(8), EXPECTED_GENRES.get(9), EXPECTED_GENRES.get(5), EXPECTED_GENRES.get(6), EXPECTED_GENRES.get(1));
 
         List<Genre> result = genreRepository.findByBookIds(bookIds);
-        Utils.assertEqualsGenreList(expected, result);
+        assertEqualsGenreList(expected, result);
     }
 
     @DisplayName("correctly return the genre by id")
@@ -82,7 +79,7 @@ public class GenreRepositoryJpaTest {
     public void shouldCorrectReturnGenreById() {
         Genre genre = genreRepository.findById(EXISTING_GENRE.getId()).get();
 
-        assertEquals(EXISTING_GENRE, genre);
+        assertEqualsGenre(EXISTING_GENRE, genre);
     }
 
     @DisplayName("correctly return the genres by ids")
@@ -92,11 +89,14 @@ public class GenreRepositoryJpaTest {
 
         Random random = new Random();
 
-        Genre genre1 = EXPECTED_GENRES.get(0);
-        Genre genre2 = EXPECTED_GENRES.get(1);
-        Genre genre3 = EXPECTED_GENRES.get(2);
+        Genre genre1 = EXPECTED_GENRES.get(random.nextInt(EXPECTED_GENRES.size()));
+        Genre genre2 = EXPECTED_GENRES.get(random.nextInt(EXPECTED_GENRES.size()));
+        Genre genre3 = EXPECTED_GENRES.get(random.nextInt(EXPECTED_GENRES.size()));
 
-        List<Genre> excepted = List.of(genre1, genre2, genre3);
+        Set<Genre> excepted = new HashSet<>();
+        excepted.add(genre1);
+        excepted.add(genre2);
+        excepted.add(genre3);
 
         ids.add(genre1.getId());
         ids.add(genre2.getId());
@@ -104,7 +104,7 @@ public class GenreRepositoryJpaTest {
 
         List<Genre> result = genreRepository.findByIds(ids);
 
-        Utils.assertEqualsGenreList(excepted, result);
+        assertEqualsGenreList(excepted.stream().toList(), result);
     }
 
     @DisplayName("correctly delete a genre by its id")

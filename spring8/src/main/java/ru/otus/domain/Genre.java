@@ -9,7 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 @Builder
-@EqualsAndHashCode
 @Entity
 @Table(name = "GENRE")
 public class Genre {
