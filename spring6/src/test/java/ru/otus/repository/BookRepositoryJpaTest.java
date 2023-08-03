@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import ru.otus.Utils;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Comment;
@@ -18,7 +17,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static ru.otus.Utils.assertEqualsBook;
+import static ru.otus.Utils.assertEqualsBookList;
 
 @DisplayName("Dao to work with book should")
 @DataJpaTest
@@ -141,7 +141,7 @@ public class BookRepositoryJpaTest {
     @Test
     public void shouldCorrectReturnBookById() {
         Book book = bookRepository.findById(EXISTING_BOOK.getId()).get();
-        assertEquals(EXISTING_BOOK, book);
+        assertEqualsBook(EXISTING_BOOK, book);
     }
 
     @DisplayName("correctly return the books by id")
@@ -156,14 +156,14 @@ public class BookRepositoryJpaTest {
 
         List<Book> result = bookRepository.findByIds(ids);
 
-        Utils.assertEqualsBookList(EXPECTED_BOOK, result);
+        assertEqualsBookList(EXPECTED_BOOK, result);
     }
 
     @DisplayName("correctly return all books")
     @Test
     public void shouldCorrectReturnAllBooks() {
         List<Book> result = bookRepository.findAll();
-        Utils.assertEqualsBookList(EXPECTED_BOOK, result);
+        assertEqualsBookList(EXPECTED_BOOK, result);
     }
 
     @DisplayName("correctly save book")
@@ -172,7 +172,7 @@ public class BookRepositoryJpaTest {
         Book book = bookRepository.save(NOT_EXISTS_BOOK);
         Book result = bookRepository.findById(book.getId()).get();
 
-        assertEquals(book, result);
+        assertEqualsBook(book, result);
     }
 
     @DisplayName("correctly update book")
@@ -197,7 +197,7 @@ public class BookRepositoryJpaTest {
         Book book = bookRepository.save(exceptedBook);
         Book result = bookRepository.findById(book.getId()).get();
 
-        assertEquals(exceptedBook, result);
+        assertEqualsBook(exceptedBook, result);
     }
 
     @DisplayName("correctly delete book")

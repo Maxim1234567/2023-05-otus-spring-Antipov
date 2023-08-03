@@ -8,7 +8,6 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode
 @Entity
 @Table(name = "COMMENT")
 public class Comment {

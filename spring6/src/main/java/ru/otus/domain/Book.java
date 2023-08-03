@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode
 @Entity
 @Table(name = "BOOK")
 public class Book implements Cloneable {

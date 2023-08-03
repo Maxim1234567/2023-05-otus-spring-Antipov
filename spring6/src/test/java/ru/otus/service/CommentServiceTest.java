@@ -4,8 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dto.CommentDto;
 import ru.otus.exception.NotFoundException;
@@ -13,6 +11,7 @@ import ru.otus.exception.NotFoundException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.otus.Utils.assertEqualsCommentDto;
 import static ru.otus.Utils.assertEqualsCommentListDto;
 
 @DisplayName("Service to work with comment should")
@@ -43,7 +42,7 @@ public class CommentServiceTest {
         List<CommentDto> comments = commentService.getAllCommentsByBookId(200L);
         commentService.delete(comment);
 
-        assertTrue(comments.contains(comment));
+        assertEqualsCommentDto(comment, comments.stream().filter(c -> c.getId().equals(comment.getId())).findFirst().get());
     }
 
     @DisplayName(" should correct return all comments by book id")
@@ -58,7 +57,7 @@ public class CommentServiceTest {
     @Test
     public void shouldCorrectReturnComment() {
         CommentDto comment = commentService.getCommentById(EXISTING_COMMENT.getId());
-        assertEquals(EXISTING_COMMENT, comment);
+        assertEqualsCommentDto(EXISTING_COMMENT, comment);
     }
 
     @DisplayName(" should correct delete comment")
@@ -70,7 +69,7 @@ public class CommentServiceTest {
 
         assertThrows(NotFoundException.class, () -> commentService.getCommentById(commentSave.getId()));
 
-        assertEquals(commentSave, commentBeforeDelete);
+        assertEqualsCommentDto(commentSave, commentBeforeDelete);
     }
 
     @DisplayName(" should throws NotFoundException if comment not exists")

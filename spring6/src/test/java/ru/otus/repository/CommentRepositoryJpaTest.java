@@ -12,6 +12,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ru.otus.Utils.assertEqualsComment;
 import static ru.otus.Utils.assertEqualsCommentList;
 
 @DisplayName("Dao to work with comment should")
@@ -42,7 +43,7 @@ public class CommentRepositoryJpaTest {
         Optional<Comment> result = commentRepository.findById(comment.getId());
 
         assertTrue(result.isPresent());
-        assertEquals(comment, result.get());
+        assertEqualsComment(comment, result.get());
     }
 
     @DisplayName(" correctly update comment")
@@ -53,7 +54,7 @@ public class CommentRepositoryJpaTest {
         commentRepository.save(comment);
         Comment updateComment = commentRepository.findById(EXISTING_COMMENT.getId()).get();
 
-        assertEquals(comment, updateComment);
+        assertEqualsComment(comment, updateComment);
     }
 
     @DisplayName(" correctly delete comment")
@@ -63,7 +64,7 @@ public class CommentRepositoryJpaTest {
         commentRepository.deleteById(EXISTING_COMMENT.getId());
         Optional<Comment> deleteComment = commentRepository.findById(EXISTING_COMMENT.getId());
 
-        assertEquals(comment.get(), EXISTING_COMMENT);
+        assertEqualsComment(comment.get(), EXISTING_COMMENT);
         assertTrue(deleteComment.isEmpty());
     }
 
@@ -73,7 +74,7 @@ public class CommentRepositoryJpaTest {
         Optional<Comment> comment = commentRepository.findById(EXISTING_COMMENT.getId());
 
         assertTrue(comment.isPresent());
-        assertEquals(comment.get(), EXISTING_COMMENT);
+        assertEqualsComment(comment.get(), EXISTING_COMMENT);
     }
 
     @DisplayName(" correctly return all comments by book id")

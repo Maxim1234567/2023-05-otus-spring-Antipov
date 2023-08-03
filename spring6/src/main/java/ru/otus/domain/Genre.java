@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode
 @Entity
 @Table(name = "GENRE")
 public class Genre {

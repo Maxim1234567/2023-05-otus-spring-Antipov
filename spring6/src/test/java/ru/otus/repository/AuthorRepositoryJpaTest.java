@@ -5,14 +5,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import ru.otus.Utils;
 import ru.otus.domain.Author;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static ru.otus.Utils.assertEqualsAuthor;
+import static ru.otus.Utils.assertEqualsAuthorList;
 
 @DisplayName("Dao to work with authors should")
 @DataJpaTest
@@ -43,14 +43,14 @@ public class AuthorRepositoryJpaTest {
         Author author = authorRepository.save(NOT_EXISTS_AUTHOR);
         Author result = authorRepository.findById(author.getId()).get();
 
-        assertEquals(author, result);
+        assertEqualsAuthor(author, result);
     }
 
     @DisplayName("correctly return author by id")
     @Test
     public void shouldCorrectReturnAuthorById() {
         Author result = authorRepository.findById(EXISTING_AUTHOR.getId()).get();
-        assertEquals(EXISTING_AUTHOR, result);
+        assertEqualsAuthor(EXISTING_AUTHOR, result);
     }
 
     @DisplayName("correctly return authors by ids")
@@ -71,14 +71,14 @@ public class AuthorRepositoryJpaTest {
         );
 
         List<Author> result = authorRepository.findByIds(authorIds);
-        Utils.assertEqualsAuthorList(excepted, result);
+        assertEqualsAuthorList(excepted, result);
     }
 
     @DisplayName("correctly returns the expected list of authors")
     @Test
     public void shouldCorrectReturnExceptedAuthorList() {
         List<Author> result = authorRepository.findAll();
-        Utils.assertEqualsAuthorList(EXPECTED_AUTHORS, result);
+        assertEqualsAuthorList(EXPECTED_AUTHORS, result);
     }
 
     @DisplayName("correctly return the authors by book id")
@@ -86,7 +86,7 @@ public class AuthorRepositoryJpaTest {
     public void shouldCorrectReturnAuthorsByBookId() {
         long bookId = 100L;
         List<Author> result = authorRepository.findByBookId(bookId);
-        Utils.assertEqualsAuthorList(List.of(EXPECTED_AUTHORS.get(0)), result);
+        assertEqualsAuthorList(List.of(EXPECTED_AUTHORS.get(0)), result);
     }
 
     @DisplayName("correctly return the authors by book ids")
@@ -94,7 +94,7 @@ public class AuthorRepositoryJpaTest {
     public void shouldCorrectReturnAuthorsByBookIds() {
         List<Long> bookIds = List.of(100L, 200L, 300L);
         List<Author> result = authorRepository.findByBookIds(bookIds);
-        Utils.assertEqualsAuthorList(List.of(EXPECTED_AUTHORS.get(0), EXPECTED_AUTHORS.get(1), EXPECTED_AUTHORS.get(2)), result);
+        assertEqualsAuthorList(List.of(EXPECTED_AUTHORS.get(0), EXPECTED_AUTHORS.get(1), EXPECTED_AUTHORS.get(2)), result);
     }
 
     @DisplayName("correctly delete a genre by its id")
