@@ -9,7 +9,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 @Table(name = "BOOK")
@@ -39,6 +40,7 @@ public class Book implements Cloneable {
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
 
+    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "BOOK_ID")
     private List<Comment> comments;

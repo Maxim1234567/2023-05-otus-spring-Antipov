@@ -227,7 +227,8 @@ public class BookRepositoryJpaTest {
                 .allMatch(b -> Objects.nonNull(b.getNumberPages()))
                 .allMatch(b -> Objects.nonNull(b.getYearIssue()))
                 .allMatch(b -> Objects.nonNull(b.getAuthors()) && b.getAuthors().size() >= 0)
-                .allMatch(b -> Objects.nonNull(b.getGenres()) && b.getGenres().size() >= 0);
+                .allMatch(b -> Objects.nonNull(b.getGenres()) && b.getGenres().size() >= 0)
+                .allMatch(b -> Objects.nonNull(b.getComments()) && b.getComments().size() >= 0);
 
         assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
     }

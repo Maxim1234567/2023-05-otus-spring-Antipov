@@ -10,6 +10,7 @@ import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
 import ru.otus.dto.GenreDto;
 import ru.otus.exception.NotFoundException;
+import ru.otus.exception.ValidationErrorException;
 
 import java.util.List;
 
@@ -122,6 +123,58 @@ public class BookServiceTest {
             List.of()
     );
 
+    private static final BookDto NOT_EXISTS_BOOK_WITH_AUTHOR_ID_NULL = new BookDto(
+            null,
+            "Son of Zeus",
+            2023,
+            1024,
+            List.of(),
+            List.of(
+                    new AuthorDto(
+                            null, "Lyubov", "Voronkova", 70, 1906
+                    )
+            ),
+            List.of()
+    );
+
+    private static final BookDto NOT_EXISTS_BOOK_WITH_GENRE_ID_NULL = new BookDto(
+            null,
+            "Son of Zeus",
+            2023,
+            1024,
+            List.of(
+                    new GenreDto(null, "Modern domestic prose")
+            ),
+            List.of(),
+            List.of()
+    );
+
+    private static final BookDto NOT_EXISTS_BOOK_WITH_NOT_EXISTS_ID_AUTHOR = new BookDto(
+            null,
+            "Son of Zeus",
+            2023,
+            1024,
+            List.of(),
+            List.of(
+                    new AuthorDto(
+                            222L, "Lyubov", "Voronkova", 70, 1906
+                    )
+            ),
+            List.of()
+    );
+
+    private static final BookDto NOT_EXISTS_BOOK_WITH_NOT_EXISTS_ID_GENRE = new BookDto(
+            null,
+            "Son of Zeus",
+            2023,
+            1024,
+            List.of(
+                    new GenreDto(222L, "Modern domestic prose")
+            ),
+            List.of(),
+            List.of()
+    );
+
     private static final BookDto NOT_EXISTS_BOOK = new BookDto(
             null,
             "Son of Zeus",
@@ -148,31 +201,35 @@ public class BookServiceTest {
         assertEqualsBookDto(EXISTING_BOOK, result);
     }
 
+    @DisplayName("throws ValidationError if author id is null")
+    @Test
+    public void shouldThrowsIfAuthorIdIsNull() {
+        assertThrows(ValidationErrorException.class, () -> bookService.save(NOT_EXISTS_BOOK_WITH_AUTHOR_ID_NULL));
+    }
+
+    @DisplayName("throws ValidationError if genre id is null")
+    @Test
+    public void shouldThrowsIfGenreIdIsNull() {
+        assertThrows(ValidationErrorException.class, () -> bookService.save(NOT_EXISTS_BOOK_WITH_GENRE_ID_NULL));
+    }
+
+    @DisplayName("throws NotFoundException if author id is not exists")
+    @Test
+    public void shouldThrowsIfAuthorIdIsNotExists() {
+        assertThrows(NotFoundException.class, () -> bookService.save(NOT_EXISTS_BOOK_WITH_NOT_EXISTS_ID_AUTHOR));
+    }
+
+    @DisplayName("throws NotFoundException if genre id is not exists")
+    @Test
+    public void shouldThrowsIfGenreIdIsNotExists() {
+        assertThrows(NotFoundException.class, () -> bookService.save(NOT_EXISTS_BOOK_WITH_NOT_EXISTS_ID_GENRE));
+    }
+
     @DisplayName("correctly return all books")
     @Test
     public void shouldCorrectReturnAllBooks() {
         List<BookDto> result = bookService.getAllBooks();
         assertEqualsBookListDto(EXPECTED_BOOK, result);
-    }
-
-    @DisplayName("correctly save book with not exists authors and genres")
-    @Test
-    public void shouldCorrectSaveBookWithNotExistsAuthorAndGenre() {
-        BookDto expected = bookService.save(NOT_EXISTS_BOOK_WITH_NOT_EXISTS_AUTHOR_AND_GENRE);
-        BookDto result = bookService.getBookById(expected.getId());
-        bookService.delete(expected);
-
-        assertEqualsBookDto(expected, result);
-    }
-
-    @DisplayName("correctly save book with authors and genres")
-    @Test
-    public void shouldCorrectSaveBookWithAuthorAndGenre() {
-        BookDto expected = bookService.save(NOT_EXISTS_BOOK);
-        BookDto result = bookService.getBookById(expected.getId());
-        bookService.delete(expected);
-
-        assertEqualsBookDto(expected, result);
     }
 
     @DisplayName("correctly delete book with author and genre")

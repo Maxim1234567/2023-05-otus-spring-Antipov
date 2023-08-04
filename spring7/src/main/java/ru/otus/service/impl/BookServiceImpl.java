@@ -10,6 +10,7 @@ import ru.otus.domain.Comment;
 import ru.otus.domain.Genre;
 import ru.otus.dto.BookDto;
 import ru.otus.exception.NotFoundException;
+import ru.otus.exception.ValidationErrorException;
 import ru.otus.repository.AuthorRepository;
 import ru.otus.domain.Book;
 import ru.otus.repository.BookRepository;
@@ -54,17 +55,18 @@ public class BookServiceImpl implements BookService {
     public BookDto save(BookDto book) {
         Book bookDomain = convertBook.convert(book);
 
+        bookDomain.getAuthors().forEach(this::checkValidation);
+        bookDomain.getGenres().forEach(this::checkValidation);
+
         List<Author> authors = authorRepository.findByIds(
                 bookDomain.getAuthors().stream()
                         .map(Author::getId)
                         .filter(Objects::nonNull)
                         .toList()
         );
-        authors.addAll(
-                bookDomain.getAuthors().stream()
-                        .filter(a -> Objects.isNull(a.getId()))
-                        .toList()
-        );
+
+        if(authors.size() != bookDomain.getAuthors().size())
+            throw new NotFoundException();
 
         List<Genre> genres = genreRepository.findByIds(
                 bookDomain.getGenres().stream()
@@ -72,27 +74,12 @@ public class BookServiceImpl implements BookService {
                         .filter(Objects::nonNull)
                         .toList()
         );
-        genres.addAll(
-                bookDomain.getGenres().stream()
-                        .filter(g -> Objects.isNull(g.getId()))
-                        .toList()
-        );
 
-        List<Comment> comments = commentRepository.findByIds(
-                bookDomain.getComments().stream()
-                        .map(Comment::getId)
-                        .filter(Objects::nonNull)
-                        .toList()
-        );
-        comments.addAll(
-                bookDomain.getComments().stream()
-                        .filter(c -> Objects.isNull(c.getId()))
-                        .toList()
-        );
+        if(genres.size() != bookDomain.getGenres().size())
+            throw new NotFoundException();
 
         bookDomain.setAuthors(authors);
         bookDomain.setGenres(genres);
-        bookDomain.setComments(comments);
 
         Book bookSave = bookRepository.save(bookDomain);
 
@@ -103,5 +90,15 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void delete(BookDto book) {
         bookRepository.deleteById(book.getId());
+    }
+
+    private void checkValidation(Author author) {
+        if(Objects.isNull(author.getId()))
+            throw new ValidationErrorException("ID author is null");
+    }
+
+    private void checkValidation(Genre genre) {
+        if(Objects.isNull(genre.getId()))
+            throw new ValidationErrorException("ID genre is null");
     }
 }
