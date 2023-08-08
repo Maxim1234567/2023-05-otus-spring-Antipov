@@ -13,6 +13,7 @@ import ru.otus.service.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -34,10 +35,10 @@ public class LibraryFacadeImpl implements LibraryFacade {
     @Override
     public void updateBook() {
         ioService.print("Enter book id: ");
-        Long id = userInteraction.getId();
+        String id = userInteraction.getId();
         BookDto book = createBook("Update book!");
         BookDto updateBook = new BookDto(
-                id,
+                null,
                 book.getName(),
                 book.getYearIssue(),
                 book.getNumberPages(),
@@ -55,15 +56,15 @@ public class LibraryFacadeImpl implements LibraryFacade {
 
         showGenres();
         ioService.println("Choice genre. For exit enter -1!");
-        Long id;
-        while ((id = userInteraction.getId()) != -1) {
+        String id;
+        while (!Objects.equals(id = userInteraction.getId(), "-1")) {
             GenreDto genre = genreService.getGenreById(id);
             genres.add(genre);
         }
 
         showAuthors();
         ioService.println("Choice author. For exit enter -1!");
-        while ((id = userInteraction.getId()) != -1) {
+        while (!Objects.equals(id = userInteraction.getId(), "-1")) {
             AuthorDto author = authorService.getAuthorById(id);
             authors.add(author);
         }
@@ -90,7 +91,7 @@ public class LibraryFacadeImpl implements LibraryFacade {
     }
 
     @Override
-    public void createComment(long bookId) {
+    public void createComment(String bookId) {
         ioService.println("Create comment!");
         CommentDto comment = userInteraction.createComment();
         comment.setBookId(bookId);
@@ -99,7 +100,7 @@ public class LibraryFacadeImpl implements LibraryFacade {
 
     @Override
     public void showBook() {
-        Long id = userInteraction.getId();
+        String id = userInteraction.getId();
         BookDto book = bookService.getBookById(id);
         showDomain.showBook(book);
     }
@@ -113,7 +114,7 @@ public class LibraryFacadeImpl implements LibraryFacade {
 
     @Override
     public void showAuthor() {
-        Long id = userInteraction.getId();
+        String id = userInteraction.getId();
         AuthorDto author = authorService.getAuthorById(id);
         showDomain.showAuthor(author);
     }
@@ -127,7 +128,7 @@ public class LibraryFacadeImpl implements LibraryFacade {
 
     @Override
     public void showGenre() {
-        Long id = userInteraction.getId();
+        String id = userInteraction.getId();
         GenreDto genre = genreService.getGenreById(id);
         showDomain.showGenre(genre);
     }
@@ -140,7 +141,7 @@ public class LibraryFacadeImpl implements LibraryFacade {
     }
 
     @Override
-    public void showCommentsByBook(long bookId) {
+    public void showCommentsByBook(String bookId) {
         ioService.println("Show all comments by bookId " + bookId);
         List<CommentDto> comments = commentService.getAllCommentsByBookId(bookId);
         showDomain.showComments(comments);
@@ -148,7 +149,7 @@ public class LibraryFacadeImpl implements LibraryFacade {
 
     @Override
     public void deleteBook() {
-        Long id = userInteraction.getId();
+        String id = userInteraction.getId();
         BookDto book = bookService.getBookById(id);
         bookService.delete(book);
     }

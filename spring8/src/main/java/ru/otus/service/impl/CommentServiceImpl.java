@@ -37,14 +37,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = true)
-    public CommentDto getCommentById(long id) {
+    public CommentDto getCommentById(String id) {
         Comment comment = commentRepository.findById(id).orElseThrow(NotFoundException::new);
         return convertCommentDto.convert(comment);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<CommentDto> getAllCommentsByBookId(long bookId) {
+    public List<CommentDto> getAllCommentsByBookId(String bookId) {
         return commentRepository.findAllByBookId(bookId).stream().map(convertCommentDto::convert).toList();
     }
 }

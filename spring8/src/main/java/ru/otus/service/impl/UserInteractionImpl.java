@@ -67,8 +67,8 @@ public class UserInteractionImpl implements UserInteraction {
     }
 
     @Override
-    public Long getId() {
+    public String getId() {
         ioService.print("Enter id: ");
-        return Long.parseLong(ioService.readLine());
+        return ioService.readLine();
     }
 }

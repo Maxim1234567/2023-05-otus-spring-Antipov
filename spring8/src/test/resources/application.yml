@@ -1,13 +1,24 @@
 spring:
   main:
     allow-bean-definition-overriding: true
+  data:
+    mongodb:
+      username: springboot
+      password: pivotal
+      database: library
+      port: 27017
+      host: localhost
+      authentication-database: admin
+      uri: mongodb://springboot:pivotal@localhost:27017/library?authSource=admin&authMechanism=SCRAM-SHA-1
   shell:
     interactive:
       enabled: false
-  datasource:
-    url: jdbc:h2:mem:testdb
-  jpa:
-    generate-ddl: false
-    hibernate:
-      ddl-auto: none
-    show-sql: true
+
+mongock:
+  runner-type: "ApplicationRunner"
+  change-logs-scan-package:
+    - ru.otus.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local

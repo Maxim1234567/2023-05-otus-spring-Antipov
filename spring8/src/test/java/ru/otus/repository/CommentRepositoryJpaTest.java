@@ -3,6 +3,7 @@ package ru.otus.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import ru.otus.domain.Comment;
 
@@ -15,20 +16,20 @@ import static ru.otus.Utils.assertEqualsComment;
 import static ru.otus.Utils.assertEqualsCommentList;
 
 @DisplayName("Dao to work with comment should")
-@DataJpaTest
+@DataMongoTest
 public class CommentRepositoryJpaTest {
     private static final Comment EXISTING_COMMENT = new Comment(
-            100L, "Good Book!", 100L
+            "100", "Good Book!", "100"
     );
 
     private static final List<Comment> EXPECTED_COMMENTS_BY_BOOK_ID = List.of(
-            new Comment(100L, "Good Book!", 100L),
-            new Comment(200L, "Very Interesting!", 100L),
-            new Comment(300L, "I cried when I read it", 100L)
+            new Comment("100", "Good Book!", "100"),
+            new Comment("200", "Very Interesting!", "100"),
+            new Comment("300", "I cried when I read it", "100")
     );
 
     private static final Comment NOT_EXISTS_COMMENT = new Comment(
-            null, "Read the book many times", 200L
+            null, "Read the book many times", "200"
     );
 
     @Autowired
@@ -39,6 +40,7 @@ public class CommentRepositoryJpaTest {
     public void shouldCorrectSaveComment() {
         Comment comment = commentRepository.save(NOT_EXISTS_COMMENT);
         Optional<Comment> result = commentRepository.findById(comment.getId());
+        commentRepository.delete(comment);
 
         assertTrue(result.isPresent());
         assertEqualsComment(comment, result.get());
@@ -51,6 +53,7 @@ public class CommentRepositoryJpaTest {
         comment.setComments("NEW COMMENT");
         commentRepository.save(comment);
         Comment updateComment = commentRepository.findById(EXISTING_COMMENT.getId()).get();
+        commentRepository.save(EXISTING_COMMENT);
 
         assertEqualsComment(comment, updateComment);
     }
@@ -61,6 +64,7 @@ public class CommentRepositoryJpaTest {
         Optional<Comment> comment = commentRepository.findById(EXISTING_COMMENT.getId());
         commentRepository.deleteById(EXISTING_COMMENT.getId());
         Optional<Comment> deleteComment = commentRepository.findById(EXISTING_COMMENT.getId());
+        commentRepository.save(comment.get());
 
         assertEqualsComment(comment.get(), EXISTING_COMMENT);
         assertTrue(deleteComment.isEmpty());
@@ -78,20 +82,19 @@ public class CommentRepositoryJpaTest {
     @DisplayName(" correctly return all comments by book id")
     @Test
     public void shouldCorrectFindAllCommentsByBookId() {
-        List<Comment> comments = commentRepository.findAllByBookId(100L);
+        List<Comment> comments = commentRepository.findAllByBookId("100");
         assertEqualsCommentList(EXPECTED_COMMENTS_BY_BOOK_ID, comments);
     }
 
     @DisplayName(" correctly return comments by ids")
     @Test
     public void shouldCorrectReturnCommentsByIds() {
-        List<Long> commentIds = EXPECTED_COMMENTS_BY_BOOK_ID
+        List<String> commentIds = EXPECTED_COMMENTS_BY_BOOK_ID
                 .stream()
                 .map(Comment::getId)
                 .toList();
 
-        List<Comment> comments = commentRepository
-                .findByIds(commentIds);
+        List<Comment> comments = commentRepository.findByIds(commentIds);
 
         assertEqualsCommentList(EXPECTED_COMMENTS_BY_BOOK_ID, comments);
     }

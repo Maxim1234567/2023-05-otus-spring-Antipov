@@ -34,11 +34,11 @@ public class DomainConvertTest {
             .append("\n")
             .toString();
 
-    private final GenreDto genre = new GenreDto(100L, "Fiction");
-    private final AuthorDto author = new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951);
-    private final CommentDto comment = new CommentDto(100L, "Cool Book!", 100L);
+    private final GenreDto genre = new GenreDto("100", "Fiction");
+    private final AuthorDto author = new AuthorDto("100", "Herbert", "Shieldt", 72, 1951);
+    private final CommentDto comment = new CommentDto("100", "Cool Book!", "100");
     private final BookDto book = new BookDto(
-            100L, "Java. Complete guide", 2022, 1344,
+            "100", "Java. Complete guide", 2022, 1344,
             List.of(genre),
             List.of(author),
             List.of(comment)

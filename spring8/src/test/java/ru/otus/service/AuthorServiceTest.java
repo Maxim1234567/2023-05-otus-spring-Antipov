@@ -1,13 +1,21 @@
 package ru.otus.service;
 
+import com.github.cloudyrock.spring.v5.EnableMongock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dto.AuthorDto;
 import ru.otus.exception.NotFoundException;
+import ru.otus.repository.AuthorRepository;
+import ru.otus.service.impl.IOServiceStreams;
 
+import java.io.PrintStream;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,18 +24,17 @@ import static ru.otus.Utils.assertEqualsAuthorListDto;
 
 @DisplayName("Service to work with author should")
 @SpringBootTest
-@Transactional
 public class AuthorServiceTest {
     private static final AuthorDto EXISTING_AUTHOR = new AuthorDto(
-            400L, "Irvine", "Welsh", 64, 1958
+            "400", "Irvine", "Welsh", 64, 1958
     );
 
     private static final List<AuthorDto> EXPECTED_AUTHORS = List.of(
-            new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951),
-            new AuthorDto(200L, "Ivan", "Efremov", 64, 1908),
-            new AuthorDto(300L, "Isaac", "Asimov", 72, 1919),
-            new AuthorDto(400L, "Irvine", "Welsh", 64, 1958),
-            new AuthorDto(500L, "Lyubov", "Voronkova", 70, 1906)
+            new AuthorDto("100", "Herbert", "Shieldt", 72, 1951),
+            new AuthorDto("200", "Ivan", "Efremov", 64, 1908),
+            new AuthorDto("300", "Isaac", "Asimov", 72, 1919),
+            new AuthorDto("400", "Irvine", "Welsh", 64, 1958),
+            new AuthorDto("500", "Lyubov", "Voronkova", 70, 1906)
     );
 
     private static final AuthorDto NOT_EXISTS_AUTHOR = new AuthorDto(
@@ -76,6 +83,6 @@ public class AuthorServiceTest {
     @Test
     @DisplayName("should throws NotFoundException if author not exists")
     public void shouldThrowsNotFoundExceptionIfAuthorNotExists() {
-        assertThrows(NotFoundException.class, () -> authorService.getAuthorById(111L));
+        assertThrows(NotFoundException.class, () -> authorService.getAuthorById("111"));
     }
 }

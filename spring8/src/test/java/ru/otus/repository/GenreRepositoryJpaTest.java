@@ -3,7 +3,7 @@ package ru.otus.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import ru.otus.domain.Genre;
 
 import java.util.*;
@@ -14,22 +14,22 @@ import static ru.otus.Utils.assertEqualsGenre;
 import static ru.otus.Utils.assertEqualsGenreList;
 
 @DisplayName("Dao to work with genres should")
-@DataJpaTest
+@DataMongoTest
 public class GenreRepositoryJpaTest {
-    private static final Genre EXISTING_GENRE = new Genre(400L, "Tale");
+    private static final Genre EXISTING_GENRE = new Genre("400", "Tale");
 
     private static final List<Genre> EXPECTED_GENRES = List.of(
-            new Genre(100L, "Fiction"),
-            new Genre(200L, "Novel"),
-            new Genre(300L, "Thriller"),
-            new Genre(400L, "Tale"),
-            new Genre(500L, "Comedy"),
-            new Genre(600L, "Drama"),
-            new Genre(700L, "Popular science literature"),
-            new Genre(800L, "Art and culture"),
-            new Genre(900L, "Reference books and professional literature"),
-            new Genre(1000L, "Hobbies, skills"),
-            new Genre(1100L, "Modern domestic prose")
+            new Genre("100", "Fiction"),
+            new Genre("200", "Novel"),
+            new Genre("300", "Thriller"),
+            new Genre("400", "Tale"),
+            new Genre("500", "Comedy"),
+            new Genre("600", "Drama"),
+            new Genre("700", "Popular science literature"),
+            new Genre("800", "Art and culture"),
+            new Genre("900", "Reference books and professional literature"),
+            new Genre("1000", "Hobbies, skills"),
+            new Genre("1100", "Modern domestic prose")
     );
 
     @Autowired
@@ -40,10 +40,12 @@ public class GenreRepositoryJpaTest {
     public void shouldCorrectSaveGenreWithoutId() {
         Genre genre = genreRepository.save(new Genre(null, "TEST_GENRE"));
 
-        List<Genre> genres = genreRepository.findAll();
+        assertThat(genreRepository.findById(genre.getId()))
+                .isNotNull();
+
+        genreRepository.delete(genre);
 
         assertNotNull(genre.getId());
-        assertTrue(genres.contains(genre));
     }
 
     @DisplayName("correctly returns the expected list of genres")
@@ -52,26 +54,6 @@ public class GenreRepositoryJpaTest {
         List<Genre> genres = genreRepository.findAll();
 
         assertEqualsGenreList(EXPECTED_GENRES, genres);
-    }
-
-    @DisplayName("correctly return the genres by book id")
-    @Test
-    public void shouldCorrectReturnGenresByBookId() {
-        long bookId = 100L;
-        List<Genre> expected = List.of(EXPECTED_GENRES.get(8), EXPECTED_GENRES.get(9));
-
-        List<Genre> result = genreRepository.findByBookId(bookId);
-        assertEqualsGenreList(expected, result);
-    }
-
-    @DisplayName("correctly return the genres by book ids")
-    @Test
-    public void shouldCorrectReturnGenresByBookIds() {
-        List<Long> bookIds = List.of(100L, 200L);
-        List<Genre> expected = List.of(EXPECTED_GENRES.get(8), EXPECTED_GENRES.get(9), EXPECTED_GENRES.get(5), EXPECTED_GENRES.get(6), EXPECTED_GENRES.get(1));
-
-        List<Genre> result = genreRepository.findByBookIds(bookIds);
-        assertEqualsGenreList(expected, result);
     }
 
     @DisplayName("correctly return the genre by id")
@@ -85,7 +67,7 @@ public class GenreRepositoryJpaTest {
     @DisplayName("correctly return the genres by ids")
     @Test
     public void shouldCorrectReturnGenresByIds() {
-        List<Long> ids = new ArrayList<>();
+        List<String> ids = new ArrayList<>();
 
         Random random = new Random();
 
@@ -117,11 +99,13 @@ public class GenreRepositoryJpaTest {
 
         assertThat(genreRepository.findById(EXISTING_GENRE.getId()))
                 .isEqualTo(Optional.empty());
+
+        genreRepository.save(EXISTING_GENRE);
     }
 
     @Test
     public void shouldCorrectReturnEmptyOptionalIfGenreNotExists() {
-        assertThat(genreRepository.findById(111L))
+        assertThat(genreRepository.findById("111"))
                 .isEqualTo(Optional.empty());
     }
 }

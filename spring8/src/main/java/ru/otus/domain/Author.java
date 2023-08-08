@@ -1,28 +1,23 @@
 package ru.otus.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
 @Builder
-@Entity
-@Table(name = "AUTHOR")
+@Document(collection = "authors")
 public class Author {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "age")
     private int age;
 
-    @Column(name = "year_birthdate")
     private int yearBirthdate;
 }

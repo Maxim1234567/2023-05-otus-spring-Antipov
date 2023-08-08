@@ -18,6 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 public class Utils {
     public static void assertEqualsGenreList(List<Genre> genres1, List<Genre> genres2) {
+        if(genres1 == null && genres2 == null)
+            return;
+
         List<Genre> expected = genres1.stream().sorted(Comparator.comparing(Genre::getId)).toList();
         List<Genre> result = genres2.stream().sorted(Comparator.comparing(Genre::getId)).toList();
 
@@ -27,6 +30,9 @@ public class Utils {
     }
 
     public static void assertEqualsGenreListDto(List<GenreDto> genres1, List<GenreDto> genres2) {
+        if(genres1 == null && genres2 == null)
+            return;
+
         List<GenreDto> expected = genres1.stream().sorted(Comparator.comparing(GenreDto::getId)).toList();
         List<GenreDto> result = genres2.stream().sorted(Comparator.comparing(GenreDto::getId)).toList();
 
@@ -36,6 +42,9 @@ public class Utils {
     }
 
     public static void assertEqualsAuthorList(List<Author> authors1, List<Author> authors2) {
+        if(authors1 == null && authors2 == null)
+            return;
+
         List<Author> expected = authors1.stream().sorted(Comparator.comparing(Author::getId)).toList();
         List<Author> result = authors2.stream().sorted(Comparator.comparing(Author::getId)).toList();
 
@@ -45,6 +54,9 @@ public class Utils {
     }
 
     public static void assertEqualsAuthorListDto(List<AuthorDto> authors1, List<AuthorDto> authors2) {
+        if(authors1 == null && authors2 == null)
+            return;
+
         List<AuthorDto> expected = authors1.stream().sorted(Comparator.comparing(AuthorDto::getId)).toList();
         List<AuthorDto> result = authors2.stream().sorted(Comparator.comparing(AuthorDto::getId)).toList();
 
@@ -54,6 +66,9 @@ public class Utils {
     }
 
     public static void assertEqualsCommentList(List<Comment> comments1, List<Comment> comments2) {
+        if(comments1 == null && comments2 == null)
+            return;
+
         List<Comment> expected = comments1.stream().sorted(Comparator.comparing(Comment::getId)).toList();
         List<Comment> result = comments2.stream().sorted(Comparator.comparing(Comment::getId)).toList();
 
@@ -63,6 +78,9 @@ public class Utils {
     }
 
     public static void assertEqualsCommentListDto(List<CommentDto> comments1, List<CommentDto> comments2) {
+        if(comments1 == null && comments2 == null)
+            return;
+
         List<CommentDto> expected = comments1.stream().sorted(Comparator.comparing(CommentDto::getId)).toList();
         List<CommentDto> result = comments2.stream().sorted(Comparator.comparing(CommentDto::getId)).toList();
 
@@ -72,6 +90,9 @@ public class Utils {
     }
 
     public static void assertEqualsBookList(List<Book> books1, List<Book> books2) {
+        if(books1 == null && books2 == null)
+            return;
+
         List<Book> expected = books1.stream().sorted(Comparator.comparing(Book::getId)).toList();
         List<Book> result = books2.stream().sorted(Comparator.comparing(Book::getId)).toList();
 
@@ -81,6 +102,9 @@ public class Utils {
     }
 
     public static void assertEqualsBookListDto(List<BookDto> books1, List<BookDto> books2) {
+        if(books1 == null && books2 == null)
+            return;
+
         List<BookDto> expected = books1.stream().sorted(Comparator.comparing(BookDto::getId)).toList();
         List<BookDto> result = books2.stream().sorted(Comparator.comparing(BookDto::getId)).toList();
 

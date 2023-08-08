@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @Builder
 public class CommentDto {
-    private Long id;
+    private String id;
     private String comments;
-    private Long bookId;
+    private String bookId;
 }

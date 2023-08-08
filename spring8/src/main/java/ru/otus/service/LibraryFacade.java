@@ -7,7 +7,7 @@ public interface LibraryFacade {
 
     void createGenre();
 
-    void createComment(long bookId);
+    void createComment(String bookId);
 
     void updateBook();
 
@@ -23,7 +23,7 @@ public interface LibraryFacade {
 
     void showGenres();
 
-    void showCommentsByBook(long bookId);
+    void showCommentsByBook(String bookId);
 
     void deleteBook();
 }

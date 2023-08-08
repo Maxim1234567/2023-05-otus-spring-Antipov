@@ -12,5 +12,5 @@ public interface AuthorService {
 
     void delete(AuthorDto author);
 
-    AuthorDto getAuthorById(Long id);
+    AuthorDto getAuthorById(String id);
 }

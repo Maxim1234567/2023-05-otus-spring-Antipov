@@ -16,23 +16,22 @@ import static ru.otus.Utils.assertEqualsGenreListDto;
 
 @DisplayName("Service to work with genre should")
 @SpringBootTest
-@Transactional
 public class GenreServiceTest {
 
     private static final GenreDto NOT_EXISTING_GENRE = new GenreDto(null, "Not Exist Genre");
 
     private static final List<GenreDto> EXPECTED_GENRES = List.of(
-            new GenreDto(100L, "Fiction"),
-            new GenreDto(200L, "Novel"),
-            new GenreDto(300L, "Thriller"),
-            new GenreDto(400L, "Tale"),
-            new GenreDto(500L, "Comedy"),
-            new GenreDto(600L, "Drama"),
-            new GenreDto(700L, "Popular science literature"),
-            new GenreDto(800L, "Art and culture"),
-            new GenreDto(900L, "Reference books and professional literature"),
-            new GenreDto(1000L, "Hobbies, skills"),
-            new GenreDto(1100L, "Modern domestic prose")
+            new GenreDto("100", "Fiction"),
+            new GenreDto("200", "Novel"),
+            new GenreDto("300", "Thriller"),
+            new GenreDto("400", "Tale"),
+            new GenreDto("500", "Comedy"),
+            new GenreDto("600", "Drama"),
+            new GenreDto("700", "Popular science literature"),
+            new GenreDto("800", "Art and culture"),
+            new GenreDto("900", "Reference books and professional literature"),
+            new GenreDto("1000", "Hobbies, skills"),
+            new GenreDto("1100", "Modern domestic prose")
     );
 
     @Autowired
@@ -76,6 +75,6 @@ public class GenreServiceTest {
     @Test
     @DisplayName("should throws NotFoundException if genre not exists")
     public void shouldThrowsNotFoundExceptionIfGenreNotExists() {
-        assertThrows(NotFoundException.class, () -> genreService.getGenreById(111L));
+        assertThrows(NotFoundException.class, () -> genreService.getGenreById("111"));
     }
 }

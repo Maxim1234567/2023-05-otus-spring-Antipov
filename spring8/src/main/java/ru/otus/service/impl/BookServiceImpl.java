@@ -33,12 +33,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
-    public BookDto getBookById(long id) {
+    public BookDto getBookById(String id) {
         Book book = bookRepository.findById(id).orElseThrow(NotFoundException::new);
-
-        book.getGenres();
-        book.getAuthors();
-        book.getComments();
 
         return convertBookDto.convert(book);
     }
@@ -78,21 +74,8 @@ public class BookServiceImpl implements BookService {
                         .toList()
         );
 
-        List<Comment> comments = commentRepository.findByIds(
-                bookDomain.getComments().stream()
-                        .map(Comment::getId)
-                        .filter(Objects::nonNull)
-                        .toList()
-        );
-        comments.addAll(
-                bookDomain.getComments().stream()
-                        .filter(c -> Objects.isNull(c.getId()))
-                        .toList()
-        );
-
         bookDomain.setAuthors(authors);
         bookDomain.setGenres(genres);
-        bookDomain.setComments(comments);
 
         Book bookSave = bookRepository.save(bookDomain);
 

@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @Data
 public class AuthorDto {
-    private Long id;
+    private String id;
     private String firstName;
     private String lastName;
     private int age;

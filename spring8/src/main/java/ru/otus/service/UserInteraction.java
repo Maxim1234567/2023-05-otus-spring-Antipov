@@ -17,5 +17,5 @@ public interface UserInteraction {
 
     CommentDto createComment();
 
-    Long getId();
+    String getId();
 }

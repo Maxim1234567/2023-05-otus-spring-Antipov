@@ -26,14 +26,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
-@Transactional
-@Rollback
 public class MainTest {
     private static final String TEXT_WILL_BE = "Create genre!\n" +
             "Create author!\n" +
             "Create book!\n" +
             "Show all genres\n" +
-            "1. | Psychology\n" +
             "100. | Fiction\n" +
             "200. | Novel\n" +
             "300. | Thriller\n" +
@@ -45,22 +42,17 @@ public class MainTest {
             "900. | Reference books and professional literature\n" +
             "1000. | Hobbies, skills\n" +
             "1100. | Modern domestic prose\n" +
+            "1. | Psychology\n" +
             "Choice genre. For exit enter -1!\n" +
             "Show all authors\n" +
-            "1. | Jen Sincero | 1965 | 57\n" +
             "100. | Herbert Shieldt | 1951 | 72\n" +
             "200. | Ivan Efremov | 1908 | 64\n" +
             "300. | Isaac Asimov | 1919 | 72\n" +
             "400. | Irvine Welsh | 1958 | 64\n" +
             "500. | Lyubov Voronkova | 1906 | 70\n" +
+            "1. | Jen Sincero | 1965 | 57\n" +
             "Choice author. For exit enter -1!\n" +
             "Show all books\n" +
-            "1. | uni corn | 2023 | 320\n" +
-            "----------------------------------------\n" +
-            "  1. | Jen Sincero | 1965 | 57\n" +
-            "----------------------------------------\n" +
-            "  1. | Psychology\n" +
-            "\n" +
             "100. | Java. Complete guide | 2022 | 1344\n" +
             "----------------------------------------\n" +
             "  100. | Herbert Shieldt | 1951 | 72\n" +
@@ -72,18 +64,24 @@ public class MainTest {
             "----------------------------------------\n" +
             "  200. | Ivan Efremov | 1908 | 64\n" +
             "----------------------------------------\n" +
-            "  200. | Novel  600. | Drama  700. | Popular science literature----------------------------------------\n" +
+            "  600. | Drama  700. | Popular science literature  200. | Novel----------------------------------------\n" +
             "  600. | I read it, it's cool\n" +
             "\n" +
             "300. | FOUNDATION | 2022 | 320\n" +
             "----------------------------------------\n" +
             "  300. | Isaac Asimov | 1919 | 72\n" +
             "----------------------------------------\n" +
-            "  200. | Novel  600. | Drama  700. | Popular science literature----------------------------------------\n" +
+            "  600. | Drama  700. | Popular science literature  200. | Novel----------------------------------------\n" +
             "  400. | Isaac Asimov Top  500. | The best book in the world\n" +
             "\n" +
             "400. | Alice's Adventures in Wonderland | 1865 | 225\n" +
             "\n" +
+            "\n" +
+            "1. | uni corn | 2023 | 320\n" +
+            "----------------------------------------\n" +
+            "  1. | Jen Sincero | 1965 | 57\n" +
+            "----------------------------------------\n" +
+            "  1. | Psychology\n" +
             "\n" +
             "Create comment!\n" +
             "Show all comments by bookId 1\n" +
@@ -92,19 +90,19 @@ public class MainTest {
     private static final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
     private static final GenreDto genre = new GenreDto(
-            null, "Psychology"
+            "1", "Psychology"
     );
 
     private static final AuthorDto author = new AuthorDto(
-            null, "Jen", "Sincero", 57, 1965
+            "1", "Jen", "Sincero", 57, 1965
     );
 
     private static final BookDto book = new BookDto(
-            null, "uni corn", 2023, 320, List.of(), List.of(), List.of()
+            "1", "uni corn", 2023, 320, List.of(), List.of(), List.of()
     );
 
     private static final CommentDto comment = new CommentDto(
-            null, "Great Book!", 1L
+            "1", "Great Book!", "1"
     );
 
     @MockBean
@@ -136,7 +134,7 @@ public class MainTest {
                 .willReturn(comment);
 
         given(userInteraction.getId())
-                .willReturn(1L, -1L, 1L, -1L);
+                .willReturn("1", "-1", "1", "-1");
     }
 
     @Test
@@ -149,9 +147,9 @@ public class MainTest {
 
         libraryFacade.showBooks();
 
-        libraryFacade.createComment(1L);
+        libraryFacade.createComment("1");
 
-        libraryFacade.showCommentsByBook(1L);
+        libraryFacade.showCommentsByBook("1");
 
         assertEquals(baos.toString().replace("\r", ""), TEXT_WILL_BE);
     }

@@ -8,6 +8,6 @@ import lombok.*;
 @Builder
 @Data
 public class GenreDto {
-    private Long id;
+    private String id;
     private String genre;
 }
