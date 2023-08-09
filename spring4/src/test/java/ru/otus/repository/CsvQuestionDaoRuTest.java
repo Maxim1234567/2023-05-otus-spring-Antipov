@@ -19,35 +19,35 @@ public class CsvQuestionDaoRuTest {
 
 //    @BeforeEach
     public void setUp() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasenames("i18n/appmessages");
-        messageSource.setDefaultEncoding("UTF-8");
-
-        ApplicationProperties applicationProperties = new ApplicationProperties(
-                ";", new Locale("ru"), "/question-test-ru.csv"
-        );
-
-        questionDao = new CsvQuestionDao(applicationProperties, applicationProperties);
-
-        questions = List.of(
-                new TestQuestion(
-                        "Тестовый вопрос 1?",
-                        List.of(new Answer("1", false), new Answer("1", false), new Answer("1", false), new Answer("4", true))
-                ),
-                new TestQuestion(
-                        "Тестовый вопрос 2?",
-                        List.of(new Answer("2", false), new Answer("2", false), new Answer("5", true))
-                ),
-                new TestQuestion(
-                        "Тестовый вопрос 3?",
-                        List.of(new Answer("3", false), new Answer("6", true))
-                )
-        );
+//        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+//        messageSource.setBasenames("i18n/appmessages");
+//        messageSource.setDefaultEncoding("UTF-8");
+//
+//        ApplicationProperties applicationProperties = new ApplicationProperties(
+//                ";", new Locale("ru"), "/question-test-ru.csv"
+//        );
+//
+//        questionDao = new CsvQuestionDao(applicationProperties, applicationProperties);
+//
+//        questions = List.of(
+//                new TestQuestion(
+//                        "Тестовый вопрос 1?",
+//                        List.of(new Answer("1", false), new Answer("1", false), new Answer("1", false), new Answer("4", true))
+//                ),
+//                new TestQuestion(
+//                        "Тестовый вопрос 2?",
+//                        List.of(new Answer("2", false), new Answer("2", false), new Answer("5", true))
+//                ),
+//                new TestQuestion(
+//                        "Тестовый вопрос 3?",
+//                        List.of(new Answer("3", false), new Answer("6", true))
+//                )
+//        );
     }
 
 //    @Test
     void correctParseFileCsv() {
-        List<TestQuestion> result = questionDao.getAllQuestions();
-        assertEquals(questions, questions);
+//        List<TestQuestion> result = questionDao.getAllQuestions();
+//        assertEquals(questions, questions);
     }
 }
