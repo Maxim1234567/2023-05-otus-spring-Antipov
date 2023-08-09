@@ -4,8 +4,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import ru.otus.domain.Book;
 import ru.otus.domain.Comment;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,17 +20,62 @@ import static ru.otus.Utils.assertEqualsCommentList;
 @DataJpaTest
 public class CommentRepositoryJpaTest {
     private static final Comment EXISTING_COMMENT = new Comment(
-            100L, "Good Book!", 100L
+            100L, "Good Book!",
+            Book.builder()
+                    .id(100L)
+                    .name("Java. Complete guide")
+                    .yearIssue(2022)
+                    .numberPages(1344)
+                    .authors(Collections.emptyList())
+                    .genres(Collections.emptyList())
+                    .comments(Collections.emptyList())
+                    .build()
     );
 
     private static final List<Comment> EXPECTED_COMMENTS_BY_BOOK_ID = List.of(
-            new Comment(100L, "Good Book!", 100L),
-            new Comment(200L, "Very Interesting!", 100L),
-            new Comment(300L, "I cried when I read it", 100L)
+            new Comment(100L, "Good Book!",
+                    Book.builder()
+                            .id(100L)
+                            .name("Java. Complete guide")
+                            .yearIssue(2022)
+                            .numberPages(1344)
+                            .authors(Collections.emptyList())
+                            .genres(Collections.emptyList())
+                            .comments(Collections.emptyList())
+                            .build()),
+            new Comment(200L, "Very Interesting!",
+                    Book.builder()
+                            .id(100L)
+                            .name("Java. Complete guide")
+                            .yearIssue(2022)
+                            .numberPages(1344)
+                            .authors(Collections.emptyList())
+                            .genres(Collections.emptyList())
+                            .comments(Collections.emptyList())
+                            .build()),
+            new Comment(300L, "I cried when I read it",
+                    Book.builder()
+                            .id(100L)
+                            .name("Java. Complete guide")
+                            .yearIssue(2022)
+                            .numberPages(1344)
+                            .authors(Collections.emptyList())
+                            .genres(Collections.emptyList())
+                            .comments(Collections.emptyList())
+                            .build())
     );
 
     private static final Comment NOT_EXISTS_COMMENT = new Comment(
-            null, "Read the book many times", 200L
+            null, "Read the book many times",
+            Book.builder()
+                    .id(200L)
+                    .name("Starships. Andromeda's nebula")
+                    .yearIssue(1987)
+                    .numberPages(400)
+                    .authors(Collections.emptyList())
+                    .genres(Collections.emptyList())
+                    .comments(Collections.emptyList())
+                    .build()
     );
 
     @Autowired

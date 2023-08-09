@@ -106,7 +106,16 @@ public class MainTest {
     );
 
     private static final CommentDto comment = new CommentDto(
-            null, "Great Book!", 1L
+            null, "Great Book!",
+            BookDto.builder()
+                    .id(1L)
+                    .name("uni corn")
+                    .yearIssue(2023)
+                    .numberPages(320)
+                    .authors(List.of())
+                    .genres(List.of())
+                    .comments(List.of())
+                    .build()
     );
 
     @MockBean

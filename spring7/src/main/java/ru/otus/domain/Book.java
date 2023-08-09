@@ -2,6 +2,7 @@ package ru.otus.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -14,6 +15,14 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "BOOK")
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "author-entity-graph",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "authors")
+                }
+        )
+})
 public class Book implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,13 +43,13 @@ public class Book implements Cloneable {
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;
 
-    @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "BOOK_AUTHOR", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
 
-    @Fetch(FetchMode.SUBSELECT)
+    @BatchSize(size = 10)
+    @Fetch(FetchMode.SELECT)
     @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "BOOK_ID")
     private List<Comment> comments;

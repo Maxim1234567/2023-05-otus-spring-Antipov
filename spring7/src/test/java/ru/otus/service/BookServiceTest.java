@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.domain.Book;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
@@ -12,6 +13,7 @@ import ru.otus.dto.GenreDto;
 import ru.otus.exception.NotFoundException;
 import ru.otus.exception.ValidationErrorException;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,8 +39,26 @@ public class BookServiceTest {
                     new AuthorDto(300L, "Isaac", "Asimov", 72, 1919)
             ),
             List.of(
-                    new CommentDto(400L, "Isaac Asimov Top", 300L),
-                    new CommentDto(500L, "The best book in the world", 300L)
+                    new CommentDto(400L, "Isaac Asimov Top",
+                            BookDto.builder()
+                                    .id(300L)
+                                    .name("FOUNDATION")
+                                    .yearIssue(2022)
+                                    .numberPages(320)
+                                    .authors(Collections.emptyList())
+                                    .genres(Collections.emptyList())
+                                    .comments(Collections.emptyList())
+                                    .build()),
+                    new CommentDto(500L, "The best book in the world",
+                            BookDto.builder()
+                                    .id(300L)
+                                    .name("FOUNDATION")
+                                    .yearIssue(2022)
+                                    .numberPages(320)
+                                    .authors(Collections.emptyList())
+                                    .genres(Collections.emptyList())
+                                    .comments(Collections.emptyList())
+                                    .build())
             )
     );
 
@@ -56,9 +76,36 @@ public class BookServiceTest {
                             new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951)
                     ),
                     List.of(
-                            new CommentDto(100L, "Good Book!", 100L),
-                            new CommentDto(200L, "Very Interesting!", 100L),
-                            new CommentDto(300L, "I cried when I read it", 100L)
+                            new CommentDto(100L, "Good Book!",
+                                    BookDto.builder()
+                                            .id(100L)
+                                            .name("Java. Complete guide")
+                                            .yearIssue(2022)
+                                            .numberPages(1344)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build()),
+                            new CommentDto(200L, "Very Interesting!",
+                                    BookDto.builder()
+                                            .id(100L)
+                                            .name("Java. Complete guide")
+                                            .yearIssue(2022)
+                                            .numberPages(1344)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build()),
+                            new CommentDto(300L, "I cried when I read it",
+                                    BookDto.builder()
+                                            .id(100L)
+                                            .name("Java. Complete guide")
+                                            .yearIssue(2022)
+                                            .numberPages(1344)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build())
                     )
             ),
             new BookDto(
@@ -75,7 +122,16 @@ public class BookServiceTest {
                             new AuthorDto(200L, "Ivan", "Efremov", 64, 1908)
                     ),
                     List.of(
-                            new CommentDto(600L, "I read it, it's cool", 200L)
+                            new CommentDto(600L, "I read it, it's cool",
+                                    BookDto.builder()
+                                            .id(200L)
+                                            .name("Starships. Andromeda's nebula")
+                                            .yearIssue(1987)
+                                            .numberPages(400)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build())
                     )
             ),
             new BookDto(
@@ -92,8 +148,26 @@ public class BookServiceTest {
                             new AuthorDto(300L, "Isaac", "Asimov", 72, 1919)
                     ),
                     List.of(
-                            new CommentDto(400L, "Isaac Asimov Top", 300L),
-                            new CommentDto(500L, "The best book in the world", 300L)
+                            new CommentDto(400L, "Isaac Asimov Top",
+                                    BookDto.builder()
+                                            .id(300L)
+                                            .name("FOUNDATION")
+                                            .yearIssue(2022)
+                                            .numberPages(320)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build()),
+                            new CommentDto(500L, "The best book in the world",
+                                    BookDto.builder()
+                                            .id(300L)
+                                            .name("FOUNDATION")
+                                            .yearIssue(2022)
+                                            .numberPages(320)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build())
                     )
             ),
             new BookDto(

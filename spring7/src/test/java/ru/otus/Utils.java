@@ -122,15 +122,26 @@ public class Utils {
     public static void assertEqualsComment(Comment expected, Comment result) {
         assertThat(expected).isNotNull()
                 .matches(c -> c.getId().equals(result.getId()))
-                .matches(c -> c.getComments().equals(result.getComments()))
-                .matches(c -> c.getBookId().equals(result.getBookId()));
+                .matches(c -> c.getComments().equals(result.getComments()));
+
+        assertThat(expected.getBook())
+                .matches(b -> b.getId().equals(result.getBook().getId()))
+                .matches(b -> b.getName().equals(result.getBook().getName()))
+                .matches(b -> b.getYearIssue().equals(result.getBook().getYearIssue()))
+                .matches(b -> b.getNumberPages().equals(result.getBook().getNumberPages()));
     }
 
     public static void assertEqualsCommentDto(CommentDto expected, CommentDto result) {
         assertThat(expected).isNotNull()
                 .matches(c -> c.getId().equals(result.getId()))
-                .matches(c -> c.getComments().equals(result.getComments()))
-                .matches(c -> c.getBookId().equals(result.getBookId()));
+                .matches(c -> c.getComments().equals(result.getComments()));
+
+
+        assertThat(expected.getBook())
+                .matches(b -> b.getId().equals(result.getBook().getId()))
+                .matches(b -> b.getName().equals(result.getBook().getName()))
+                .matches(b -> b.getYearIssue().equals(result.getBook().getYearIssue()))
+                .matches(b -> b.getNumberPages().equals(result.getBook().getNumberPages()));
     }
 
     public static void assertEqualsBook(Book expected, Book result) {

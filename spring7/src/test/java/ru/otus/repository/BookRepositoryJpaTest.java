@@ -11,6 +11,7 @@ import ru.otus.domain.Book;
 import ru.otus.domain.Comment;
 import ru.otus.domain.Genre;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -44,8 +45,26 @@ public class BookRepositoryJpaTest {
                     new Author(300L, "Isaac", "Asimov", 72, 1919)
             ),
             List.of(
-                    new Comment(400L, "Isaac Asimov Top", 300L),
-                    new Comment(500L, "The best book in the world", 300L)
+                    new Comment(400L, "Isaac Asimov Top",
+                            Book.builder()
+                                    .id(300L)
+                                    .name("FOUNDATION")
+                                    .yearIssue(2022)
+                                    .numberPages(320)
+                                    .authors(Collections.emptyList())
+                                    .genres(Collections.emptyList())
+                                    .comments(Collections.emptyList())
+                                    .build()),
+                    new Comment(500L, "The best book in the world",
+                            Book.builder()
+                                    .id(300L)
+                                    .name("FOUNDATION")
+                                    .yearIssue(2022)
+                                    .numberPages(320)
+                                    .authors(Collections.emptyList())
+                                    .genres(Collections.emptyList())
+                                    .comments(Collections.emptyList())
+                                    .build())
             )
     );
 
@@ -63,9 +82,36 @@ public class BookRepositoryJpaTest {
                             new Author(100L, "Herbert", "Shieldt", 72, 1951)
                     ),
                     List.of(
-                            new Comment(100L, "Good Book!", 100L),
-                            new Comment(200L, "Very Interesting!", 100L),
-                            new Comment(300L, "I cried when I read it", 100L)
+                            new Comment(100L, "Good Book!",
+                                    Book.builder()
+                                            .id(100L)
+                                            .name("Java. Complete guide")
+                                            .yearIssue(2022)
+                                            .numberPages(1344)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build()),
+                            new Comment(200L, "Very Interesting!",
+                                    Book.builder()
+                                            .id(100L)
+                                            .name("Java. Complete guide")
+                                            .yearIssue(2022)
+                                            .numberPages(1344)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build()),
+                            new Comment(300L, "I cried when I read it",
+                                    Book.builder()
+                                            .id(100L)
+                                            .name("Java. Complete guide")
+                                            .yearIssue(2022)
+                                            .numberPages(1344)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build())
                     )
             ),
             new Book(
@@ -82,7 +128,16 @@ public class BookRepositoryJpaTest {
                             new Author(200L, "Ivan", "Efremov", 64, 1908)
                     ),
                     List.of(
-                            new Comment(600L, "I read it, it's cool", 200L)
+                            new Comment(600L, "I read it, it's cool",
+                                    Book.builder()
+                                            .id(200L)
+                                            .name("Starships. Andromeda's nebula")
+                                            .yearIssue(1987)
+                                            .numberPages(400)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build())
                     )
             ),
             new Book(
@@ -99,8 +154,26 @@ public class BookRepositoryJpaTest {
                             new Author(300L, "Isaac", "Asimov", 72, 1919)
                     ),
                     List.of(
-                            new Comment(400L, "Isaac Asimov Top", 300L),
-                            new Comment(500L, "The best book in the world", 300L)
+                            new Comment(400L, "Isaac Asimov Top",
+                                    Book.builder()
+                                            .id(300L)
+                                            .name("FOUNDATION")
+                                            .yearIssue(2022)
+                                            .numberPages(320)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build()),
+                            new Comment(500L, "The best book in the world",
+                                    Book.builder()
+                                            .id(300L)
+                                            .name("FOUNDATION")
+                                            .yearIssue(2022)
+                                            .numberPages(320)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build())
                     )
             ),
             new Book(
@@ -189,7 +262,16 @@ public class BookRepositoryJpaTest {
                         new Author(200L, "Ivan", "Efremov", 64, 1908)
                 ),
                 List.of(
-                        new Comment(400L, "New Comment", 300L)
+                        new Comment(400L, "New Comment",
+                                Book.builder()
+                                        .id(300L)
+                                        .name("NEW NAME")
+                                        .yearIssue(2012)
+                                        .numberPages(121)
+                                        .authors(Collections.emptyList())
+                                        .genres(Collections.emptyList())
+                                        .comments(Collections.emptyList())
+                                        .build())
                 )
         );
 

@@ -10,5 +10,5 @@ import lombok.*;
 public class CommentDto {
     private Long id;
     private String comments;
-    private Long bookId;
+    private BookDto book;
 }

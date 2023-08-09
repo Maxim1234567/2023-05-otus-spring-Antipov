@@ -3,9 +3,6 @@ package ru.otus.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import ru.otus.domain.Author;
-import ru.otus.domain.Book;
-import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
@@ -36,7 +33,13 @@ public class DomainConvertTest {
 
     private final GenreDto genre = new GenreDto(100L, "Fiction");
     private final AuthorDto author = new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951);
-    private final CommentDto comment = new CommentDto(100L, "Cool Book!", 100L);
+    private final CommentDto comment = new CommentDto(100L, "Cool Book!",
+            BookDto.builder()
+                    .id(100L)
+                    .name("Java. Complete guide")
+                    .yearIssue(2022)
+                    .numberPages(1344)
+                    .build());
     private final BookDto book = new BookDto(
             100L, "Java. Complete guide", 2022, 1344,
             List.of(genre),

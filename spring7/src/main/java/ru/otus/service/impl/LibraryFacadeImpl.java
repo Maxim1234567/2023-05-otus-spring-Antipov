@@ -93,7 +93,8 @@ public class LibraryFacadeImpl implements LibraryFacade {
     public void createComment(long bookId) {
         ioService.println("Create comment!");
         CommentDto comment = userInteraction.createComment();
-        comment.setBookId(bookId);
+//        comment.setBookId(bookId);
+        comment.setBook(bookService.getBookById(bookId));
         commentService.save(comment);
     }
 

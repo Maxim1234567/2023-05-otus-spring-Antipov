@@ -18,6 +18,8 @@ public class Comment {
     @Column(name = "comments")
     private String comments;
 
-    @Column(name = "book_id", nullable = false, updatable = false)
-    private Long bookId;
+//    @Column(name = "book_id", nullable = false, updatable = false)
+//    private Long bookId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Book book;
 }
