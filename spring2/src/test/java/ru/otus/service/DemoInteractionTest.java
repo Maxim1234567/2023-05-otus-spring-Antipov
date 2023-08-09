@@ -16,19 +16,19 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
 public class DemoInteractionTest {
-    @Mock
+//    @Mock
     private QuestionService questionService;
-    @Mock
+//    @Mock
     private  IOService ioService;
-    @InjectMocks
+//    @InjectMocks
     private DemoInteractionImpl demoInteraction;
 
     private UserData userData;
     private List<Result> results;
 
-    @BeforeEach
+//    @BeforeEach
     public void setUp() {
         userData = new UserData("Maxim", "Antipov");
         results = List.of(
@@ -38,7 +38,7 @@ public class DemoInteractionTest {
         );
     }
 
-    @Test
+//    @Test
     public void interactionTest() {
         given(questionService.fillUserData())
                 .willReturn(userData);

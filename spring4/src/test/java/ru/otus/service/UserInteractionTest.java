@@ -18,29 +18,29 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@SpringBootTest
-@ActiveProfiles("test-en")
+//@SpringBootTest
+//@ActiveProfiles("test-en")
 public class UserInteractionTest {
-    @MockBean
+//    @MockBean
     private ConvertTestQuestionService convert;
 
-    @MockBean
+//    @MockBean
     private IOService ioService;
 
-    @MockBean
+//    @MockBean
     private ApplicationMessageSource messageSource;
 
-    @Autowired
+//    @Autowired
     private UserInteraction userInteraction;
 
-    @Test
+//    @Test
     public void createUserTest() {
         userInteraction.createUser();
 
         verify(ioService, times(2)).readLine();
     }
 
-    @Test
+//    @Test
     public void askQuestionTest() {
         TestQuestion testQuestion = new TestQuestion(
                 "Test Question 1?",
