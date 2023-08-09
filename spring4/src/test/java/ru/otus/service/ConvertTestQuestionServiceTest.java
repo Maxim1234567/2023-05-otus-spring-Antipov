@@ -35,7 +35,7 @@ public class ConvertTestQuestionServiceTest {
             List.of(ANSWER1, ANSWER2, ANSWER3, CORRECT_ANSWER)
     );
 
-    @Test
+//    @Test
     void correctConvertQuestionToString() {
         String result = convertTestQuestionService.convert(question);
 

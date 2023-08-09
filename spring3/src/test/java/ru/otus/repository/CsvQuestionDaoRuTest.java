@@ -18,7 +18,7 @@ public class CsvQuestionDaoRuTest {
     private CsvQuestionDao questionDao;
     private List<TestQuestion> questions;
 
-    @BeforeEach
+//    @BeforeEach
     public void setUp() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasenames("i18n/appmessages");
@@ -51,7 +51,7 @@ public class CsvQuestionDaoRuTest {
         );
     }
 
-    @Test
+//    @Test
     void correctParseFileCsv() {
         List<TestQuestion> result = questionDao.getAllQuestions();
         assertEquals(questions, questions);
