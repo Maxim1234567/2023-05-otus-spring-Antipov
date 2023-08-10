@@ -81,7 +81,6 @@ public class LibraryFacadeImpl implements LibraryFacade {
         BookDto book = userInteraction.createBook();
         book.setGenres(genres);
         book.setAuthors(authors);
-
         return book;
     }
 

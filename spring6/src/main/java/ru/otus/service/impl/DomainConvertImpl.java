@@ -16,7 +16,8 @@ public class DomainConvertImpl implements DomainConvert {
 
     @Override
     public String convertAuthorToString(AuthorDto author) {
-        return author.getId() + ". | " + author.getFirstName() + " " + author.getLastName() + " | " + author.getYearBirthdate() + " | " + author.getAge();
+        return author.getId() + ". | " + author.getFirstName() + " " + author.getLastName() + " | " +
+                author.getYearBirthdate() + " | " + author.getAge();
     }
 
     @Override
@@ -26,34 +27,42 @@ public class DomainConvertImpl implements DomainConvert {
 
     @Override
     public String convertBookToString(BookDto book) {
-        String bookString = book.getId() + ". | " + book.getName() + " | " + book.getYearIssue() + " | " + book.getNumberPages();
+        String bookString = book.getId() + ". | " + book.getName() + " | " +
+                book.getYearIssue() + " | " + book.getNumberPages();
 
         StringBuilder bookBuilder = new StringBuilder();
+
+        bookBuilder.append(bookString + "\n");
+
+        addBookBuilderAdditionalComponent(book, bookBuilder);
+
+        bookBuilder.append("\n");
+
+        return bookBuilder.toString();
+    }
+
+    private void addBookBuilderAdditionalComponent(BookDto book, StringBuilder bookBuilder) {
         StringBuilder authors = new StringBuilder();
         StringBuilder genres = new StringBuilder();
         StringBuilder comments = new StringBuilder();
 
         book.getAuthors().forEach(a -> authors.append("  " + convertAuthorToString(a)));
-
         book.getGenres().forEach(g -> genres.append("  " + convertGenreToString(g)));
-
         book.getComments().forEach(c -> comments.append("  " + convertCommentToString(c)));
 
-        bookBuilder.append(bookString + "\n");
         if (!book.getAuthors().isEmpty()) {
             bookBuilder.append("----------------------------------------\n");
             bookBuilder.append(authors + "\n");
         }
+
         if (!book.getGenres().isEmpty()) {
             bookBuilder.append("----------------------------------------\n");
             bookBuilder.append(genres);
         }
+
         if (!book.getComments().isEmpty()) {
             bookBuilder.append("----------------------------------------\n");
             bookBuilder.append(comments);
         }
-        bookBuilder.append("\n");
-
-        return bookBuilder.toString();
     }
 }

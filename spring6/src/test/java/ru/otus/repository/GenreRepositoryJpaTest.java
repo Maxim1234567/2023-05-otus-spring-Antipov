@@ -96,7 +96,10 @@ public class GenreRepositoryJpaTest {
         Genre genre2 = EXPECTED_GENRES.get(random.nextInt(EXPECTED_GENRES.size()));
         Genre genre3 = EXPECTED_GENRES.get(random.nextInt(EXPECTED_GENRES.size()));
 
-        Set<Genre> excepted = Set.of(genre1, genre2, genre3);
+        Set<Genre> excepted = new HashSet<>();
+        excepted.add(genre1);
+        excepted.add(genre2);
+        excepted.add(genre3);
 
         ids.add(genre1.getId());
         ids.add(genre2.getId());

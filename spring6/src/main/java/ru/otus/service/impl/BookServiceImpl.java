@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.convert.BookConvertBookDto;
 import ru.otus.convert.BookDtoConvertBook;
 import ru.otus.domain.Author;
-import ru.otus.domain.Comment;
 import ru.otus.domain.Genre;
 import ru.otus.dto.BookDto;
 import ru.otus.exception.NotFoundException;
@@ -59,44 +58,21 @@ public class BookServiceImpl implements BookService {
         Book bookDomain = convertBook.convert(book);
 
         List<Author> authors = authorRepository.findByIds(
-                bookDomain.getAuthors().stream()
-                        .map(Author::getId)
-                        .filter(Objects::nonNull)
-                        .toList()
+                bookDomain.getAuthors().stream().map(Author::getId).filter(Objects::nonNull).toList()
         );
         authors.addAll(
-                bookDomain.getAuthors().stream()
-                        .filter(a -> Objects.isNull(a.getId()))
-                        .toList()
+                bookDomain.getAuthors().stream().filter(a -> Objects.isNull(a.getId())).toList()
         );
 
         List<Genre> genres = genreRepository.findByIds(
-                bookDomain.getGenres().stream()
-                        .map(Genre::getId)
-                        .filter(Objects::nonNull)
-                        .toList()
+                bookDomain.getGenres().stream().map(Genre::getId).filter(Objects::nonNull).toList()
         );
         genres.addAll(
-                bookDomain.getGenres().stream()
-                        .filter(g -> Objects.isNull(g.getId()))
-                        .toList()
-        );
-
-        List<Comment> comments = commentRepository.findByIds(
-                bookDomain.getComments().stream()
-                        .map(Comment::getId)
-                        .filter(Objects::nonNull)
-                        .toList()
-        );
-        comments.addAll(
-                bookDomain.getComments().stream()
-                        .filter(c -> Objects.isNull(c.getId()))
-                        .toList()
+                bookDomain.getGenres().stream().filter(g -> Objects.isNull(g.getId())).toList()
         );
 
         bookDomain.setAuthors(authors);
         bookDomain.setGenres(genres);
-        bookDomain.setComments(comments);
 
         Book bookSave = bookRepository.save(bookDomain);
 
