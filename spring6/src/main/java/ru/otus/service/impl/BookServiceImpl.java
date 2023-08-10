@@ -17,7 +17,6 @@ import ru.otus.repository.CommentRepositoryJpa;
 import ru.otus.repository.GenreRepositoryJpa;
 import ru.otus.service.BookService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,10 +24,15 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepositoryJpa bookRepository;
+
     private final AuthorRepositoryJpa authorRepository;
+
     private final CommentRepositoryJpa commentRepository;
+
     private final GenreRepositoryJpa genreRepository;
+
     private final BookConvertBookDto convertBookDto;
+
     private final BookDtoConvertBook convertBook;
 
     @Override

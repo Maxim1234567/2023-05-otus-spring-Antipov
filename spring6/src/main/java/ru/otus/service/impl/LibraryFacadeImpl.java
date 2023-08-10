@@ -6,7 +6,14 @@ import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
 import ru.otus.dto.GenreDto;
-import ru.otus.service.*;
+import ru.otus.service.AuthorService;
+import ru.otus.service.IOService;
+import ru.otus.service.LibraryFacade;
+import ru.otus.service.GenreService;
+import ru.otus.service.BookService;
+import ru.otus.service.CommentService;
+import ru.otus.service.ShowDomain;
+import ru.otus.service.UserInteraction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +22,17 @@ import java.util.List;
 @Service
 public class LibraryFacadeImpl implements LibraryFacade {
     private final IOService ioService;
+
     private final AuthorService authorService;
+
     private final GenreService genreService;
+
     private final BookService bookService;
+
     private final CommentService commentService;
+
     private final ShowDomain showDomain;
+
     private final UserInteraction userInteraction;
 
     @Override

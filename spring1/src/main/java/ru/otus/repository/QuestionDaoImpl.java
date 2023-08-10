@@ -4,11 +4,16 @@ import lombok.RequiredArgsConstructor;
 import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 public class QuestionDaoImpl implements QuestionDao {
     private final String nameFileQuestions;
+
     private final String delimiter;
 
     public List<Question> getAllQuestions() {

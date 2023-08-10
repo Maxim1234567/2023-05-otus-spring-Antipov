@@ -2,9 +2,6 @@ package ru.otus.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.otus.domain.Author;
-import ru.otus.domain.Book;
-import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
@@ -19,6 +16,7 @@ import java.util.List;
 @Service
 public class ShowDomainImpl implements ShowDomain {
     private final DomainConvert domainConvert;
+
     private final IOService ioService;
 
     @Override

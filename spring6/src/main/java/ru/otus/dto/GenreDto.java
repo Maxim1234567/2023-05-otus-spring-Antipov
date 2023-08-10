@@ -1,6 +1,10 @@
 package ru.otus.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Builder;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -9,5 +13,6 @@ import lombok.*;
 @Builder
 public class GenreDto {
     private Long id;
+
     private String genre;
 }

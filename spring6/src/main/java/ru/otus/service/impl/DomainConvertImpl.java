@@ -1,9 +1,6 @@
 package ru.otus.service.impl;
 
 import org.springframework.stereotype.Service;
-import ru.otus.domain.Author;
-import ru.otus.domain.Book;
-import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;

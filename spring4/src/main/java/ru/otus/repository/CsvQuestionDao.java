@@ -17,6 +17,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class CsvQuestionDao implements QuestionDao {
     private final ResourceProvider resourceProvider;
+
     private final SettingsProvider settingsProvider;
 
     @Override

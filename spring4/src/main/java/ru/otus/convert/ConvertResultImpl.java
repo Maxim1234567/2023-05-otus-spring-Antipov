@@ -9,6 +9,7 @@ import ru.otus.service.ApplicationMessageSource;
 @RequiredArgsConstructor
 public class ConvertResultImpl implements ConvertResult {
     private final ApplicationMessageSource messageSource;
+
     private final ConvertAnswer convertAnswer;
 
     @Override

@@ -17,7 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepositoryJpa authorRepository;
+
     private final AuthorDtoConvertAuthor convertAuthor;
+
     private final AuthorConvertAuthorDto convertAuthorDto;
 
     @Override
