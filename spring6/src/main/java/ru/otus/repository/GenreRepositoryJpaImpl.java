@@ -20,7 +20,7 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
 
     @Override
     public Genre save(Genre genre) {
-        if(Objects.isNull(genre.getId())) {
+        if (Objects.isNull(genre.getId())) {
             em.persist(genre);
             return genre;
         } else {

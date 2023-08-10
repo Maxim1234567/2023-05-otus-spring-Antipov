@@ -43,15 +43,15 @@ public class DomainConvertImpl implements DomainConvert {
         book.getComments().forEach(c -> comments.append("  " + convertCommentToString(c)));
 
         bookBuilder.append(bookString + "\n");
-        if(!book.getAuthors().isEmpty()) {
+        if (!book.getAuthors().isEmpty()) {
             bookBuilder.append("----------------------------------------\n");
             bookBuilder.append(authors + "\n");
         }
-        if(!book.getGenres().isEmpty()) {
+        if (!book.getGenres().isEmpty()) {
             bookBuilder.append("----------------------------------------\n");
             bookBuilder.append(genres);
         }
-        if(!book.getComments().isEmpty()) {
+        if (!book.getComments().isEmpty()) {
             bookBuilder.append("----------------------------------------\n");
             bookBuilder.append(comments);
         }

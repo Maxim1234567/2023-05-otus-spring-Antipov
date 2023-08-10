@@ -140,7 +140,7 @@ public class BookRepositoryJdbcImpl implements BookRepositoryJdbc {
     private void saveRelationBookAndGenres(long bookId, List<Long> genreIds) {
         SqlParameterSource[] parameters = new SqlParameterSource[genreIds.size()];
 
-        for(int i = 0; i < genreIds.size(); i++) {
+        for (int i = 0; i < genreIds.size(); i++) {
             SqlParameterSource parameter = new MapSqlParameterSource()
                     .addValue("book_id", bookId)
                     .addValue("genre_id", genreIds.get(i));
@@ -167,7 +167,7 @@ public class BookRepositoryJdbcImpl implements BookRepositoryJdbc {
     private void saveRelationBookAndAuthors(long bookId, List<Long> authorIds) {
         SqlParameterSource[] parameters = new SqlParameterSource[authorIds.size()];
 
-        for(int i = 0; i < authorIds.size(); i++) {
+        for (int i = 0; i < authorIds.size(); i++) {
             SqlParameterSource parameter = new MapSqlParameterSource()
                     .addValue("book_id", bookId)
                     .addValue("author_id", authorIds.get(i));
@@ -206,18 +206,18 @@ public class BookRepositoryJdbcImpl implements BookRepositoryJdbc {
     }
 
     private void mergeAuthor(Map<Long, Book> books, List<Author> authors, List<BookAuthorRelation> relations) {
-         Map<Long, Author> authorsMap = authors.stream().collect(Collectors.toMap(Author::getId, Function.identity()));
-         relations.forEach(r -> {
-             if(books.containsKey(r.getBookId()) && authorsMap.containsKey(r.getAuthorId())) {
-                 books.get(r.getBookId()).getAuthors().add(authorsMap.get(r.getAuthorId()));
-             }
-         });
+        Map<Long, Author> authorsMap = authors.stream().collect(Collectors.toMap(Author::getId, Function.identity()));
+        relations.forEach(r -> {
+            if (books.containsKey(r.getBookId()) && authorsMap.containsKey(r.getAuthorId())) {
+                books.get(r.getBookId()).getAuthors().add(authorsMap.get(r.getAuthorId()));
+            }
+        });
     }
 
     private void mergeGenre(Map<Long, Book> books, List<Genre> genres, List<BookGenreRelation> relations) {
         Map<Long, Genre> genreMap = genres.stream().collect(Collectors.toMap(Genre::getId, Function.identity()));
         relations.forEach(r -> {
-            if(books.containsKey(r.getBookId()) && genreMap.containsKey(r.getGenreId())) {
+            if (books.containsKey(r.getBookId()) && genreMap.containsKey(r.getGenreId())) {
                 books.get(r.getBookId()).getGenres().add(genreMap.get(r.getGenreId()));
             }
         });

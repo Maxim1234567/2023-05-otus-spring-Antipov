@@ -48,6 +48,6 @@ public class QuestionServiceImpl implements QuestionService {
     public void printResult(UserData userData, List<Result> results) {
         ioService.println("");
         ioService.println(userData.getFirstName() + " " + userData.getLastName());
-        results.forEach(result ->  ioService.print(convertResult.convert(result)));
+        results.forEach(result -> ioService.print(convertResult.convert(result)));
     }
 }

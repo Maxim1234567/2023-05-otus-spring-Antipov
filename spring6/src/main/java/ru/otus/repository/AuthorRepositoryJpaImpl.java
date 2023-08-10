@@ -20,7 +20,7 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
 
     @Override
     public Author save(Author author) {
-        if(Objects.isNull(author.getId())) {
+        if (Objects.isNull(author.getId())) {
             em.persist(author);
             return author;
         } else {

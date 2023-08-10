@@ -14,10 +14,10 @@ public class QuestionDaoImpl implements QuestionDao {
     public List<Question> getAllQuestions() {
         List<Question> questions = new ArrayList<>();
 
-        try(Scanner scanner = new Scanner(
+        try (Scanner scanner = new Scanner(
                 Objects.requireNonNull(QuestionDaoImpl.class.getResourceAsStream(nameFileQuestions)),
                 "UTF-8")) {
-            while(scanner.hasNextLine()) {
+            while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
 
                 String[] data = line.split(delimiter);

@@ -20,7 +20,7 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
 
     @Override
     public Comment save(Comment comment) {
-        if(Objects.isNull(comment.getId())) {
+        if (Objects.isNull(comment.getId())) {
             em.persist(comment);
             return comment;
         } else {

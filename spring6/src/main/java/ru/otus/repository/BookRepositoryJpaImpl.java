@@ -6,6 +6,7 @@ import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.otus.domain.Book;
+
 import java.util.*;
 
 @Repository
@@ -17,7 +18,7 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
 
     @Override
     public Book save(Book book) {
-        if(Objects.isNull(book.getId())) {
+        if (Objects.isNull(book.getId())) {
             em.persist(book);
             return book;
         } else {

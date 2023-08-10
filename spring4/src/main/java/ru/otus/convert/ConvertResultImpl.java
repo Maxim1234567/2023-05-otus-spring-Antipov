@@ -14,8 +14,8 @@ public class ConvertResultImpl implements ConvertResult {
     @Override
     public String convert(Result result) {
         return messageSource.getMessage("question") + ": " + result.getQuestion() + "\n" +
-               messageSource.getMessage("answer.user") + ": " + convertAnswer.convert(result.getUserAnswer()) + "\n" +
-               messageSource.getMessage("answer.correct") + ": " + convertAnswer.convert(result.getCorrectAnswer()) + "\n" +
-               "\n";
+                messageSource.getMessage("answer.user") + ": " + convertAnswer.convert(result.getUserAnswer()) + "\n" +
+                messageSource.getMessage("answer.correct") + ": " + convertAnswer.convert(result.getCorrectAnswer()) + "\n" +
+                "\n";
     }
 }

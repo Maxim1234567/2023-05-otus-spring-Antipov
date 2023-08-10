@@ -23,7 +23,7 @@ public class CsvQuestionDao implements QuestionDao {
     public List<TestQuestion> getAllQuestions() {
         List<TestQuestion> testQuestions = new ArrayList<>();
 
-        try(Scanner scanner = new Scanner(
+        try (Scanner scanner = new Scanner(
                 Objects.requireNonNull(CsvQuestionDao.class.getResourceAsStream(resourceProvider.getFileName())),
                 "UTF-8"
         )) {
@@ -36,7 +36,7 @@ public class CsvQuestionDao implements QuestionDao {
                 List<String> textAnswers = Arrays.stream(data).skip(1).toList();
                 List<Answer> answers = new ArrayList<>();
 
-                for(int i = 0; i < textAnswers.size(); i++) {
+                for (int i = 0; i < textAnswers.size(); i++) {
                     Answer answer = new Answer(
                             textAnswers.get(i),
                             i == textAnswers.size() - 1
