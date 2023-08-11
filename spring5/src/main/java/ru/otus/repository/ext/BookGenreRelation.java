@@ -7,5 +7,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BookGenreRelation {
     private final long bookId;
+
     private final long genreId;
 }

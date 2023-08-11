@@ -31,11 +31,11 @@ public class DomainConvertImpl implements DomainConvert {
         book.getGenres().forEach(g -> genres.append("  " + convertGenreToString(g)));
 
         bookBuilder.append(bookString + "\n");
-        if(!book.getAuthors().isEmpty()) {
+        if (!book.getAuthors().isEmpty()) {
             bookBuilder.append("----------------------------------------\n");
             bookBuilder.append(authors + "\n");
         }
-        if(!book.getGenres().isEmpty()) {
+        if (!book.getGenres().isEmpty()) {
             bookBuilder.append("----------------------------------------\n");
             bookBuilder.append(genres);
         }

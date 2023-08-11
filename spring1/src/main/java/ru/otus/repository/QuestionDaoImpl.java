@@ -4,20 +4,25 @@ import lombok.RequiredArgsConstructor;
 import ru.otus.domain.Answer;
 import ru.otus.domain.Question;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 public class QuestionDaoImpl implements QuestionDao {
     private final String nameFileQuestions;
+
     private final String delimiter;
 
     public List<Question> getAllQuestions() {
         List<Question> questions = new ArrayList<>();
 
-        try(Scanner scanner = new Scanner(
+        try (Scanner scanner = new Scanner(
                 Objects.requireNonNull(QuestionDaoImpl.class.getResourceAsStream(nameFileQuestions)),
                 "UTF-8")) {
-            while(scanner.hasNextLine()) {
+            while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
 
                 String[] data = line.split(delimiter);

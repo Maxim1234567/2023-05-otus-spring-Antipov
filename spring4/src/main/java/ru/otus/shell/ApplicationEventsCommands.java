@@ -7,7 +7,6 @@ import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import ru.otus.domain.Result;
 import ru.otus.domain.UserData;
-import ru.otus.service.ApplicationMessageSource;
 import ru.otus.service.QuestionService;
 
 import java.util.List;
@@ -18,6 +17,7 @@ public class ApplicationEventsCommands {
     private final QuestionService questionService;
 
     private UserData userData;
+
     private List<Result> results;
 
     @ShellMethod(value = "Login Command", key = {"l", "login"})
