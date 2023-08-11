@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.Scanner;
 
 @Service
-public class IOServiceImpl implements IOService{
+public class IOServiceImpl implements IOService {
     @Override
     public void println(String line) {
         System.out.println(line);

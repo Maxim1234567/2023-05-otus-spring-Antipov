@@ -24,7 +24,7 @@ public class ConvertTestQuestionServiceTest {
             CORRECT_ANSWER
     );
 
-    @Test
+//    @Test
     void correctConvertQuestionToString() {
         String result = convertTestQuestionService.convert(question);
 

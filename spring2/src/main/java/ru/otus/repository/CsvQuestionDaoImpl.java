@@ -27,10 +27,10 @@ public class CsvQuestionDaoImpl implements CsvQuestionDao {
     public List<TestQuestion> getAllQuestions() {
         List<TestQuestion> testQuestions = new ArrayList<>();
 
-        try(Scanner scanner = new Scanner(
+        try (Scanner scanner = new Scanner(
                 Objects.requireNonNull(CsvQuestionDaoImpl.class.getResourceAsStream(nameFileQuestions)),
                 "UTF-8")) {
-            while(scanner.hasNextLine()) {
+            while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
 
                 String[] data = line.split(delimiter);
