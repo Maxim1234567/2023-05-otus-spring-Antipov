@@ -53,7 +53,7 @@ public class DemoApplicationTest {
 
 //    @TestConfiguration
     static class DemoTestConfiguration {
-        @Bean
+//        @Bean
         public IOService ioService() {
             return new IOServiceStreams(new PrintStream(baos), System.in);
         }
