@@ -1,5 +1,6 @@
 package ru.otus.service.impl;
 
+import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +9,9 @@ import ru.otus.convert.BookDtoConvertBook;
 import ru.otus.domain.Author;
 import ru.otus.domain.Comment;
 import ru.otus.domain.Genre;
+import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
+import ru.otus.dto.GenreDto;
 import ru.otus.exception.NotFoundException;
 import ru.otus.exception.ValidationErrorException;
 import ru.otus.repository.AuthorRepository;
@@ -21,6 +24,8 @@ import ru.otus.service.BookService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,11 +41,6 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     public BookDto getBookById(long id) {
         Book book = bookRepository.findById(id).orElseThrow(NotFoundException::new);
-
-        book.getGenres();
-        book.getAuthors();
-        book.getComments();
-
         return convertBookDto.convert(book);
     }
 
@@ -52,38 +52,48 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookDto save(BookDto book) {
+    public BookDto create(BookDto book) {
         Book bookDomain = convertBook.convert(book);
 
-        bookDomain.getAuthors().forEach(this::checkValidation);
-        bookDomain.getGenres().forEach(this::checkValidation);
+        return convertBookDto.convert(
+                save(bookDomain)
+        );
+    }
+
+    @Override
+    @Transactional
+    public BookDto update(BookDto book) {
+        Book bookDomain = convertBook.convert(book);
+
+        return convertBookDto.convert(
+                save(bookDomain)
+        );
+    }
+
+    private Book save(Book book) {
+        book.getAuthors().forEach(a -> checkValidation(a.getId()));
+        book.getGenres().forEach(g -> checkValidation(g.getId()));
 
         List<Author> authors = authorRepository.findByIds(
-                bookDomain.getAuthors().stream()
-                        .map(Author::getId)
-                        .filter(Objects::nonNull)
-                        .toList()
+                book.getAuthors().stream().map(Author::getId).toList()
         );
 
-        if(authors.size() != bookDomain.getAuthors().size())
-            throw new NotFoundException();
+        checkExists(
+                authors.stream().map(Author::getId).collect(Collectors.toSet()),
+                book.getAuthors().stream().map(Author::getId).collect(Collectors.toSet()));
 
         List<Genre> genres = genreRepository.findByIds(
-                bookDomain.getGenres().stream()
-                        .map(Genre::getId)
-                        .filter(Objects::nonNull)
-                        .toList()
+                book.getGenres().stream().map(Genre::getId).toList()
         );
 
-        if(genres.size() != bookDomain.getGenres().size())
-            throw new NotFoundException();
+        checkExists(
+                genres.stream().map(Genre::getId).collect(Collectors.toSet()),
+                book.getGenres().stream().map(Genre::getId).collect(Collectors.toSet()));
 
-        bookDomain.setAuthors(authors);
-        bookDomain.setGenres(genres);
+        book.setAuthors(authors);
+        book.setGenres(genres);
 
-        Book bookSave = bookRepository.save(bookDomain);
-
-        return convertBookDto.convert(bookSave);
+        return bookRepository.save(book);
     }
 
     @Override
@@ -92,13 +102,17 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(book.getId());
     }
 
-    private void checkValidation(Author author) {
-        if(Objects.isNull(author.getId()))
+    private void checkExists(Set<Long> ids1, Set<Long> ids2) {
+        if(!equalsIds(ids1, ids2))
+            throw new NotFoundException();
+    }
+
+    private void checkValidation(Long id) {
+        if(Objects.isNull(id))
             throw new ValidationErrorException("ID author is null");
     }
 
-    private void checkValidation(Genre genre) {
-        if(Objects.isNull(genre.getId()))
-            throw new ValidationErrorException("ID genre is null");
+    private boolean equalsIds(Set<Long> ids1, Set<Long> ids2) {
+        return Sets.symmetricDifference(ids1, ids2).isEmpty();
     }
 }

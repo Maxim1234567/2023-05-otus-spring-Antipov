@@ -9,6 +9,7 @@ import ru.otus.domain.Book;
 import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
+    @EntityGraph(value = "author-entity-graph")
     @Query("select b from Book b where b.id in (:ids)")
     List<Book> findByIds(@Param("ids") List<Long> ids);
 

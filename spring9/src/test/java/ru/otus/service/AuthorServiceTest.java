@@ -40,7 +40,7 @@ public class AuthorServiceTest {
     @DisplayName("should correct save author")
     @Test
     public void shouldCorrectSaveAuthor() {
-        AuthorDto expected = authorService.save(NOT_EXISTS_AUTHOR);
+        AuthorDto expected = authorService.create(NOT_EXISTS_AUTHOR);
         AuthorDto result = authorService.getAuthorById(expected.getId());
         authorService.delete(expected);
 
@@ -57,7 +57,7 @@ public class AuthorServiceTest {
     @DisplayName("should correct delete author")
     @Test
     public void shouldCorrectDeleteAuthor() {
-        AuthorDto expected = authorService.save(NOT_EXISTS_AUTHOR);
+        AuthorDto expected = authorService.create(NOT_EXISTS_AUTHOR);
         assertDoesNotThrow(() -> authorService.getAuthorById(expected.getId()));
         assertDoesNotThrow(() -> authorService.delete(expected));
         assertThrows(NotFoundException.class, () -> authorService.getAuthorById(expected.getId()));

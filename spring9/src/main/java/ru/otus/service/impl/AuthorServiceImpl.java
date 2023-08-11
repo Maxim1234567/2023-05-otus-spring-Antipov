@@ -28,7 +28,17 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional
-    public AuthorDto save(AuthorDto author) {
+    public AuthorDto create(AuthorDto author) {
+        return save(author);
+    }
+
+    @Override
+    @Transactional
+    public AuthorDto update(AuthorDto author) {
+        return save(author);
+    }
+
+    private AuthorDto save(AuthorDto author) {
         Author authorDomain = convertAuthor.convert(author);
         Author authorSave = authorRepository.save(authorDomain);
 

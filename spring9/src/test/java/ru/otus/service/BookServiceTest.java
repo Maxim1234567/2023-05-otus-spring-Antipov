@@ -5,7 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.domain.Author;
 import ru.otus.domain.Book;
+import ru.otus.domain.Comment;
+import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
@@ -18,8 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.otus.Utils.assertEqualsBookDto;
-import static ru.otus.Utils.assertEqualsBookListDto;
+import static ru.otus.Utils.*;
 
 @DisplayName("Service to work with book should")
 @SpringBootTest
@@ -181,22 +183,6 @@ public class BookServiceTest {
             )
     );
 
-    private static final BookDto NOT_EXISTS_BOOK_WITH_NOT_EXISTS_AUTHOR_AND_GENRE = new BookDto(
-            null,
-            "Son of Zeus",
-            2023,
-            1024,
-            List.of(
-                    new GenreDto(null, "Modern domestic prose")
-            ),
-            List.of(
-                    new AuthorDto(
-                            null, "Lyubov", "Voronkova", 70, 1906
-                    )
-            ),
-            List.of()
-    );
-
     private static final BookDto NOT_EXISTS_BOOK_WITH_AUTHOR_ID_NULL = new BookDto(
             null,
             "Son of Zeus",
@@ -278,25 +264,25 @@ public class BookServiceTest {
     @DisplayName("throws ValidationError if author id is null")
     @Test
     public void shouldThrowsIfAuthorIdIsNull() {
-        assertThrows(ValidationErrorException.class, () -> bookService.save(NOT_EXISTS_BOOK_WITH_AUTHOR_ID_NULL));
+        assertThrows(ValidationErrorException.class, () -> bookService.create(NOT_EXISTS_BOOK_WITH_AUTHOR_ID_NULL));
     }
 
     @DisplayName("throws ValidationError if genre id is null")
     @Test
     public void shouldThrowsIfGenreIdIsNull() {
-        assertThrows(ValidationErrorException.class, () -> bookService.save(NOT_EXISTS_BOOK_WITH_GENRE_ID_NULL));
+        assertThrows(ValidationErrorException.class, () -> bookService.create(NOT_EXISTS_BOOK_WITH_GENRE_ID_NULL));
     }
 
     @DisplayName("throws NotFoundException if author id is not exists")
     @Test
     public void shouldThrowsIfAuthorIdIsNotExists() {
-        assertThrows(NotFoundException.class, () -> bookService.save(NOT_EXISTS_BOOK_WITH_NOT_EXISTS_ID_AUTHOR));
+        assertThrows(NotFoundException.class, () -> bookService.create(NOT_EXISTS_BOOK_WITH_NOT_EXISTS_ID_AUTHOR));
     }
 
     @DisplayName("throws NotFoundException if genre id is not exists")
     @Test
     public void shouldThrowsIfGenreIdIsNotExists() {
-        assertThrows(NotFoundException.class, () -> bookService.save(NOT_EXISTS_BOOK_WITH_NOT_EXISTS_ID_GENRE));
+        assertThrows(NotFoundException.class, () -> bookService.create(NOT_EXISTS_BOOK_WITH_NOT_EXISTS_ID_GENRE));
     }
 
     @DisplayName("correctly return all books")
@@ -309,7 +295,7 @@ public class BookServiceTest {
     @DisplayName("correctly delete book with author and genre")
     @Test
     public void shouldCorrectDeleteBookWithAuthorAndGenre() {
-        BookDto book = bookService.save(NOT_EXISTS_BOOK);
+        BookDto book = bookService.create(NOT_EXISTS_BOOK);
         assertDoesNotThrow(() -> bookService.delete(book));
         assertThrows(NotFoundException.class, () -> bookService.getBookById(book.getId()));
     }
@@ -317,7 +303,35 @@ public class BookServiceTest {
     @DisplayName("correctly update book")
     @Test
     public void shouldCorrectUpdateBook() {
+        BookDto exceptedBook = new BookDto(
+                EXISTING_BOOK.getId(), "NEW NAME", 2012, 121,
+                List.of(
+                        new GenreDto(100L, "Fiction"),
+                        new GenreDto(200L, "Novel"),
+                        new GenreDto(300L, "Thriller")
+                ),
+                List.of(
+                        new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951),
+                        new AuthorDto(200L, "Ivan", "Efremov", 64, 1908)
+                ),
+                List.of(
+                        new CommentDto(400L, "New Comment",
+                                BookDto.builder()
+                                        .id(300L)
+                                        .name("NEW NAME")
+                                        .yearIssue(2012)
+                                        .numberPages(121)
+                                        .authors(Collections.emptyList())
+                                        .genres(Collections.emptyList())
+                                        .comments(Collections.emptyList())
+                                        .build())
+                )
+        );
 
+        BookDto book = bookService.update(exceptedBook);
+        BookDto result = bookService.getBookById(book.getId());
+
+        assertEqualsBookDto(exceptedBook, result);
     }
 
     @Test

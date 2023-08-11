@@ -41,7 +41,7 @@ public class GenreServiceTest {
     @DisplayName("should correct save genre")
     @Test
     public void shouldCorrectSaveGenre() {
-        GenreDto expected = genreService.save(NOT_EXISTING_GENRE);
+        GenreDto expected = genreService.create(NOT_EXISTING_GENRE);
         GenreDto result = genreService.getGenreById(expected.getId());
         genreService.delete(expected);
 
@@ -58,7 +58,7 @@ public class GenreServiceTest {
     @DisplayName("should correct delete genre")
     @Test
     public void shouldCorrectDeleteGenre() {
-        GenreDto genre = genreService.save(NOT_EXISTING_GENRE);
+        GenreDto genre = genreService.create(NOT_EXISTING_GENRE);
 
         assertDoesNotThrow(() -> genreService.delete(genre));
         assertThrows(NotFoundException.class, (() -> genreService.getGenreById(genre.getId())));

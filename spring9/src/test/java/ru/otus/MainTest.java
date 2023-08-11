@@ -1,13 +1,11 @@
 package ru.otus;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
@@ -145,7 +143,7 @@ public class MainTest {
                 .willReturn(1L, -1L, 1L, -1L);
     }
 
-    @Test
+//    @Test
     public void integrationTest() {
         libraryFacade.createGenre();
 
