@@ -1,13 +1,18 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
   jpa:
     generate-ddl: false
     hibernate:
       ddl-auto: none
     show-sql: true
+    open-in-view: false
 
   flyway:
     baseline-on-migrate: true
     enabled: true
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    user: sa
+    password:

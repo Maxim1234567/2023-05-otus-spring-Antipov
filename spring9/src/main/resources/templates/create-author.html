@@ -1,0 +1,78 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="#{title-create-genre}">Create Genre</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        h3 {
+            /*background-image: url("../static/listmark.png");*/
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+        /*background-image: url([[@{/listmark.png}]]);*/
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+    <body>
+        <form id="create-author-form" action="create-author.html" th:action="@{/author/create}" th:method="post" th:object="${author}">
+            <h3 th:text="#{header-author}">Author</h3>
+
+            <div class="row">
+                <label for="first-name-input" th:text="#{author-first-name} + ':'">First Name:</label>
+                <input id="first-name-input" name="firstName" type="text" th:value="*{firstName}" value="First Name">
+                <div class="errors" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Wrong first name error</div>
+            </div>
+
+            <div class="row">
+                <label for="last-name-input" th:text="#{author-last-name} + ':'">Last Name:</label>
+                <input id="last-name-input" name="lastName" type="text" th:value="*{lastName}" value="Last Name">
+                <div class="errors" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Wrong last name error</div>
+            </div>
+
+            <div class="row">
+                <label for="age-input" th:text="#{author-age} + ':'">Age:</label>
+                <input id="age-input" name="age" type="text" th:value="*{age}" value="00">
+                <div class="errors" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Wrong age error</div>
+            </div>
+
+            <div class="row">
+                <label for="year-birthdate-input" th:text="#{author-year-birthdate} + ':'">Year Birthdate:</label>
+                <input id="year-birthdate-input" name="yearBirthdate" type="text" th:value="*{yearBirthdate}" value="1970">
+                <div class="errors" th:if="${#fields.hasErrors('yearBirthdate')}" th:errors="*{yearBirthdate}">Wrong year birthdate error</div>
+            </div>
+
+            <div class="row">
+                <button type="submit" th:text="#{save-button}">Save</button>
+                <a href="list-genre.html" th:href="@{/author}"><button type="button" th:text="#{cancel-button}">Cancel</button></a>
+            </div>
+        </form>
+    </body>
+</html>
