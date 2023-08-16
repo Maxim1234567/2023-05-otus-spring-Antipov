@@ -28,4 +28,8 @@ public class AuthorDto {
 
     @NotNull(message = "{author-field-should-not-be-blank}")
     private int yearBirthdate;
+
+    public String getName() {
+        return firstName + " " + lastName;
+    }
 }
