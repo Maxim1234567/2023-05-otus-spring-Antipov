@@ -44,6 +44,7 @@
                     <td th:text="${book.numberPages}">Number Pages</td>
                     <td th:text="${book.yearIssue}">Year Issue</td>
                     <td><a href="info-book.html" th:text="#{book-info}" th:href="@{/book(id=${book.id})}">Info</a></td>
+                    <td><a href="edit-book.html" th:text="#{book-edit}" th:href="@{/book/edit(id=${book.id})}">Edit</a></td>
                 </tr>
             </tbody>
         </table>

@@ -7,12 +7,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.otus.domain.Comment;
 import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
+import ru.otus.dto.CommentDto;
 import ru.otus.dto.GenreDto;
 import ru.otus.service.AuthorService;
 import ru.otus.service.BookService;
+import ru.otus.service.CommentService;
 import ru.otus.service.GenreService;
 
 import java.util.List;
@@ -21,8 +24,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
+
     private final AuthorService authorService;
+
     private final GenreService genreService;
+
+    private final CommentService commentService;
 
     @GetMapping("/")
     public String listPage(Model model) {
@@ -51,14 +58,21 @@ public class BookController {
         return "edit-book";
     }
 
-//    @PostMapping("/book/edit")
-//    public String editPage(BookDto bookDto) {
-//        bookService.update(bookDto);
-//        return "redirect:/list-book";
-//    }
+    @PostMapping("/book/edit")
+    public String editPage(@Valid @ModelAttribute("book") BookDto bookDto,
+                           BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()) {
+            return "edit-book";
+        }
+
+        bookDto.getComments().forEach(c -> c.setBook(bookDto));
+
+        bookService.update(bookDto);
+        return "redirect:/";
+    }
 
     @PostMapping(value = "/book/edit", params = {"addGenre"})
-    public String addGenre(@ModelAttribute("book") BookDto book,
+    public String addGenre(@Valid @ModelAttribute("book") BookDto book,
                          BindingResult bindingResult, Model model) {
         List<AuthorDto> authors = authorService.getAll();
         List<GenreDto> genres = genreService.getAll();
@@ -80,7 +94,7 @@ public class BookController {
     }
 
     @PostMapping(value = "/book/edit", params = {"addAuthor"})
-    public String addAuthor(@ModelAttribute("book") BookDto book,
+    public String addAuthor(@Valid @ModelAttribute("book") BookDto book,
                             BindingResult bindingResult, Model model) {
         List<AuthorDto> authors = authorService.getAll();
         List<GenreDto> genres = genreService.getAll();
@@ -103,7 +117,7 @@ public class BookController {
     }
 
     @PostMapping(value = "/book/edit", params = {"removeGenre"})
-    public String removeGenre(@ModelAttribute("book") BookDto book,
+    public String removeGenre(@Valid @ModelAttribute("book") BookDto book,
                               BindingResult bindingResult, Model model, HttpServletRequest req) {
         List<AuthorDto> authors = authorService.getAll();
         List<GenreDto> genres = genreService.getAll();
@@ -120,7 +134,7 @@ public class BookController {
     }
 
     @PostMapping(value = "/book/edit", params = {"removeAuthor"})
-    public String removeAuthor(@ModelAttribute("book") BookDto book,
+    public String removeAuthor(@Valid @ModelAttribute("book") BookDto book,
                                BindingResult bindingResult, Model model, HttpServletRequest req) {
         List<AuthorDto> authors = authorService.getAll();
         List<GenreDto> genres = genreService.getAll();

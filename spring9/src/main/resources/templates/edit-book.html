@@ -62,13 +62,26 @@
             <h3 th:text="#{header-book} + ':'">Book:</h3>
 
             <div class="row">
-                <label for="id-input" th:text="#{book-name} + ':'">Name:</label>
-                <input id="id-input" type="text" readonly="readonly" name="name" th:value="*{name}" value="Name"/>
+                <label for="id-input" th:text="#{book-id} + ':'">ID:</label>
+                <input id="id-input" type="text" readonly="readonly" name="id" th:value="*{id}" value="1"/>
             </div>
 
             <div class="row">
-                <label for="number-input" th:text="#{book-name} + ':'">Number:</label>
-                <input id="number-input" type="text" readonly="readonly" name="numberPages" th:value="*{numberPages}" value="Name"/>
+                <label for="name-input" th:text="#{book-name} + ':'">Name:</label>
+                <input id="name-input" type="text" name="name" th:value="*{name}" value="Name"/>
+                <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="name">Wrong first name error</div>
+            </div>
+
+            <div class="row">
+                <label for="number-pages-input" th:text="#{book-number-pages} + ':'">Number Pages: </label>
+                <input id="number-pages-input" type="text" name="numberPages" th:value="*{numberPages}" value="1"/>
+                <div class="errors" th:if="${#fields.hasErrors('numberPages')}" th:errors="numberPages">Wrong first numberPages error</div>
+            </div>
+
+            <div class="row">
+                <label for="year-issue-input" th:text="#{book-year-issue} + ':'">Year Issue:</label>
+                <input id="year-issue-input" type="text" name="yearIssue" th:value="*{yearIssue}" value="1900"/>
+                <div class="errors" th:if="${#fields.hasErrors('yearIssue')}" th:errors="yearIssue">Wrong first yearIssue error</div>
             </div>
 
             <br/>
@@ -129,8 +142,31 @@
                 </tbody>
             </table>
 
+            <br/>
+
+            <table class="tbl">
+                <thead>
+                    <tr>
+                        <th th:text="#{comment-id}">ID</th>
+                        <th th:text="#{comment-comments}">Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="comment, stat: *{comments}">
+                        <td>
+                            <input type="text" readonly="readonly" th:field="*{comments[__${stat.index}__].id}" th:value="${comment.id}"/>
+                        </td>
+                        <td>
+                            <input type="text" readonly="readonly" th:field="*{comments[__${stat.index}__].comments}" th:value="${comment.comments}"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br/>
+
             <div class="row">
-                <button type="submit">Save</button>
+                <button type="submit" th:text="#{save-button}">Save</button>
             </div>
         </form>
     </body>

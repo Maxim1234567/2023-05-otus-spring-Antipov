@@ -1,6 +1,8 @@
 package ru.otus.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -18,10 +20,10 @@ public class BookDto {
     @Size(min = 3, max = 150, message = "{book-field-should-has-expected-size}")
     private String name;
 
-    @NotBlank(message = "{book-field-should-not-be-blank}")
+    @NotNull(message = "{book-field-should-not-be-blank}")
     private Integer yearIssue;
 
-    @NotBlank(message = "{book-field-should-not-be-blank}")
+    @NotNull(message = "{book-field-should-not-be-blank}")
     private Integer numberPages;
 
     @Size(min = 1, message = "{book-list-field-should-has-one-element}")
