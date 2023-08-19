@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit person</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        .tbl {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .tbl tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .tbl td:last-child, td:first-child {
+            width: 50px;
+        }
+
+        h3 {
+            /*background-image: url("../static/listmark.png");*/
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+        /*background-image: url([[@{/listmark.png}]]);*/
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+    <body>
+        <form  id="create-book-form" action="create-book.html" th:action="@{/book/create}" th:method="post" th:object="${book}">
+            <div class="row">
+                <label for="name-input" th:text="#{book-name} + ':'">Name:</label>
+                <input id="name-input" type="text" name="name" th:value="*{name}" value="Name"/>
+                <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Wrong first name error</div>
+            </div>
+
+            <div class="row">
+                <label for="number-pages-input" th:text="#{book-number-pages} + ':'">Number Pages: </label>
+                <input id="number-pages-input" type="text" name="numberPages" th:value="*{numberPages}" value="1"/>
+                <div class="errors" th:if="${#fields.hasErrors('numberPages')}" th:errors="*{numberPages}">Wrong first numberPages error</div>
+            </div>
+
+            <div class="row">
+                <label for="year-issue-input" th:text="#{book-year-issue} + ':'">Year Issue:</label>
+                <input id="year-issue-input" type="text" name="yearIssue" th:value="*{yearIssue}" value="1900"/>
+                <div class="errors" th:if="${#fields.hasErrors('yearIssue')}" th:errors="*{yearIssue}">Wrong first yearIssue error</div>
+            </div>
+
+            <table class="tbl">
+                <thead>
+                <tr>
+                    <th th:text="#{genre-genre}">Genre</th>
+                    <th>
+                        <button type="submit" name="addGenre" th:text="#{add-genre}">Add Genre</button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="g, stat : *{genres}">
+                    <td th:field="*{genres[__${stat.index}__].genre}">
+                        <select th:field="*{genres[__${stat.index}__].id}">
+                            <option
+                                    th:each="genre: ${genres}"
+                                    th:value="${genre.id}"
+                                    th:text="${genre.genre}"
+                                    th:selected="${genre.id == g.id}">Genre</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="submit" name="removeGenre" th:value="${g.id}" th:text="#{remove-genre}">Remove Genre</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <br/>
+
+            <table class="tbl">
+                <thead>
+                <tr>
+                    <th th:text="#{author-name}">Name</th>
+                    <th>
+                        <button type="submit" name="addAuthor" th:text="#{add-author}">Add Author</button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="a, stat : *{authors}">
+                    <td th:field="*{authors[__${stat.index}__].name}">
+                        <select th:field="*{authors[__${stat.index}__].id}">
+                            <option
+                                    th:each="author: ${authors}"
+                                    th:value="${author.id}"
+                                    th:text="${author.name}"
+                                    th:selected="${author.id == a.id}">Author</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="submit" name="removeAuthor" th:value="${a.id}" th:text="#{remove-author}">Remove Author</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="row">
+                <button type="submit" th:text="#{save-button}">Save</button>
+            </div>
+        </form>
+    </body>
+</html>

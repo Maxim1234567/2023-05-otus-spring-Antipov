@@ -7,21 +7,16 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.convert.BookConvertBookDto;
 import ru.otus.convert.BookDtoConvertBook;
 import ru.otus.domain.Author;
-import ru.otus.domain.Comment;
 import ru.otus.domain.Genre;
-import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
-import ru.otus.dto.GenreDto;
 import ru.otus.exception.NotFoundException;
 import ru.otus.exception.ValidationErrorException;
 import ru.otus.repository.AuthorRepository;
 import ru.otus.domain.Book;
 import ru.otus.repository.BookRepository;
-import ru.otus.repository.CommentRepository;
 import ru.otus.repository.GenreRepository;
 import ru.otus.service.BookService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -31,10 +26,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+
     private final AuthorRepository authorRepository;
+
     private final GenreRepository genreRepository;
-    private final CommentRepository commentRepository;
+
     private final BookConvertBookDto convertBookDto;
+
     private final BookDtoConvertBook convertBook;
 
     @Override
@@ -103,13 +101,15 @@ public class BookServiceImpl implements BookService {
     }
 
     private void checkExists(Set<Long> ids1, Set<Long> ids2) {
-        if(!equalsIds(ids1, ids2))
+        if (!equalsIds(ids1, ids2)) {
             throw new NotFoundException();
+        }
     }
 
     private void checkValidation(Long id) {
-        if(Objects.isNull(id))
+        if (Objects.isNull(id)) {
             throw new ValidationErrorException("ID author is null");
+        }
     }
 
     private boolean equalsIds(Set<Long> ids1, Set<Long> ids2) {

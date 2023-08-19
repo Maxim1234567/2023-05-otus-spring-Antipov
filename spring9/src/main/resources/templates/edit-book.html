@@ -69,19 +69,19 @@
             <div class="row">
                 <label for="name-input" th:text="#{book-name} + ':'">Name:</label>
                 <input id="name-input" type="text" name="name" th:value="*{name}" value="Name"/>
-                <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="name">Wrong first name error</div>
+                <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Wrong first name error</div>
             </div>
 
             <div class="row">
                 <label for="number-pages-input" th:text="#{book-number-pages} + ':'">Number Pages: </label>
                 <input id="number-pages-input" type="text" name="numberPages" th:value="*{numberPages}" value="1"/>
-                <div class="errors" th:if="${#fields.hasErrors('numberPages')}" th:errors="numberPages">Wrong first numberPages error</div>
+                <div class="errors" th:if="${#fields.hasErrors('numberPages')}" th:errors="*{numberPages}">Wrong first numberPages error</div>
             </div>
 
             <div class="row">
                 <label for="year-issue-input" th:text="#{book-year-issue} + ':'">Year Issue:</label>
                 <input id="year-issue-input" type="text" name="yearIssue" th:value="*{yearIssue}" value="1900"/>
-                <div class="errors" th:if="${#fields.hasErrors('yearIssue')}" th:errors="yearIssue">Wrong first yearIssue error</div>
+                <div class="errors" th:if="${#fields.hasErrors('yearIssue')}" th:errors="*{yearIssue}">Wrong first yearIssue error</div>
             </div>
 
             <br/>

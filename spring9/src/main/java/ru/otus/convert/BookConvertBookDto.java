@@ -16,7 +16,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookConvertBookDto implements Converter<Book, BookDto> {
     private final AuthorConvertAuthorDto convertAuthor;
+
     private final GenreConvertGenreDto convertGenre;
+
     private final CommentConvertCommentDto convertComment;
 
 

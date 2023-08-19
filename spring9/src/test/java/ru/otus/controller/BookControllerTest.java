@@ -37,8 +37,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static ru.otus.Utils.assertEqualsBookDto;
-import static ru.otus.Utils.assertEqualsCommentListDto;
+import static ru.otus.Utils.*;
 
 @DisplayName("Controller to work with book should")
 @WebMvcTest(BookController.class)
@@ -536,6 +535,61 @@ public class BookControllerTest {
         assertThat(formObject.getGenres()).hasSize(4);
 
         assertEqualsCommentListDto(formObject.getComments(), updated.getComments());
+    }
+
+    @DisplayName("correctly create book")
+    @Test
+    public void shouldCorrectCreateBook() throws Exception {
+        BookDto added = EXPECTED_BOOK.get(0);
+
+        mvc.perform(post("/book/create")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("name", added.getName())
+                .param("yearIssue", Integer.toString(added.getYearIssue()))
+                .param("numberPages", Integer.toString(added.getNumberPages()))
+                .param("genres[0].id", Long.toString(added.getGenres().get(0).getId()))
+                .param("genres[1].id", Long.toString(added.getGenres().get(1).getId()))
+                .param("authors[0].id", Long.toString(added.getAuthors().get(0).getId()))
+        )
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/"))
+        .andExpect(redirectedUrl("/"));
+
+        ArgumentCaptor<BookDto> formObjectArgument = ArgumentCaptor.forClass(BookDto.class);
+        verify(bookService, times(1)).create(formObjectArgument.capture());
+
+        BookDto formObject = formObjectArgument.getValue();
+
+        assertThat(formObject).isNotNull()
+                .matches(b -> b.getName().equals(added.getName()))
+                .matches(b -> b.getYearIssue().equals(added.getYearIssue()))
+                .matches(b -> b.getNumberPages().equals(added.getNumberPages()));
+
+        assertThat(formObject.getAuthors()).hasSize(1);
+        assertThat(formObject.getGenres()).hasSize(2);
+    }
+
+    @DisplayName("correctly delete book")
+    @Test
+    public void shouldCorrectDeleteBook() throws Exception {
+        long bookId = EXPECTED_BOOK.get(0).getId();
+
+        given(bookService.getBookById(eq(bookId)))
+                .willReturn(EXPECTED_BOOK.get(0));
+
+        mvc.perform(post("/book/delete")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", Long.toString(bookId)))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(view().name("redirect:/"))
+        .andExpect(redirectedUrl("/"));
+
+        ArgumentCaptor<BookDto> formObjectArgument = ArgumentCaptor.forClass(BookDto.class);
+        verify(bookService, times(1)).delete(formObjectArgument.capture());
+
+        BookDto formObject = formObjectArgument.getValue();
+
+        assertEqualsBookDto(formObject, EXPECTED_BOOK.get(0));
     }
 
     @DisplayName("return view not found")

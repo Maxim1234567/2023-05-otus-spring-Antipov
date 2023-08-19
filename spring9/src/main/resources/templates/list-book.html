@@ -45,8 +45,20 @@
                     <td th:text="${book.yearIssue}">Year Issue</td>
                     <td><a href="info-book.html" th:text="#{book-info}" th:href="@{/book(id=${book.id})}">Info</a></td>
                     <td><a href="edit-book.html" th:text="#{book-edit}" th:href="@{/book/edit(id=${book.id})}">Edit</a></td>
+                    <td>
+                        <form th:action="@{/book/delete(id=${book.id})}" th:method="post">
+                            <button type="submit" th:text="#{book-delete}">Delete</button>
+                        </form>
+                    </td>
+                    <td><a href="create-comment.html" th:text="#{book-add-comment}" th:href="@{/comment/create(id=${book.id})}">Add Comment</a></td>
                 </tr>
             </tbody>
         </table>
+
+        <br>
+
+        <a href="create-book.html" th:text="#{book-create}" th:href="@{/book/create}">Create</a>
+        <a href="create-genre.html" th:text="#{add-genre}" th:href="@{/genre/create}">Add Genre</a>
+        <a href="create-author.html" th:text="#{add-author}" th:href="@{/author/create}">Add Author</a>
     </body>
 </html>

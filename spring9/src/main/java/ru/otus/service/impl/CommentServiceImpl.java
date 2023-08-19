@@ -17,7 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
+
     private final CommentConvertCommentDto convertCommentDto;
+
     private final CommentDtoConvertComment convertComment;
 
     @Override

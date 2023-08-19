@@ -35,7 +35,7 @@ public class AuthorController {
     @PostMapping("/author/create")
     public String createPage(@Valid @ModelAttribute("author") AuthorDto author,
                              BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "create-author";
         }
 

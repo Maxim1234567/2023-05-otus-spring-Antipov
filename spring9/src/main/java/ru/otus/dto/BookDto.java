@@ -1,10 +1,13 @@
 package ru.otus.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -26,12 +29,9 @@ public class BookDto {
     @NotNull(message = "{book-field-should-not-be-blank}")
     private Integer numberPages;
 
-    @Size(min = 1, message = "{book-list-field-should-has-one-element}")
     private List<GenreDto> genres;
 
-    @Size(min = 1, message = "{book-list-field-should-has-one-element}")
     private List<AuthorDto> authors;
 
-    @Size(min = 1, message = "{book-list-field-should-has-one-element}")
     private List<CommentDto> comments;
 }

@@ -17,7 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
+
     private final GenreDtoConvertGenre convertGenre;
+
     private final GenreConvertGenreDto convertGenreDto;
 
     @Override

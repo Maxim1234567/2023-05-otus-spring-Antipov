@@ -7,7 +7,6 @@ import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
 
 import java.util.Collections;
-import java.util.List;
 
 @Component
 public class CommentConvertCommentDto implements Converter<Comment, CommentDto> {
