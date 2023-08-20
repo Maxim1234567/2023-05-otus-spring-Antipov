@@ -1,6 +1,5 @@
 package ru.otus.service;
 
-import ru.otus.domain.Author;
 import ru.otus.dto.AuthorDto;
 
 import java.util.List;
@@ -8,7 +7,9 @@ import java.util.List;
 public interface AuthorService {
     List<AuthorDto> getAll();
 
-    AuthorDto save(AuthorDto author);
+    AuthorDto create(AuthorDto author);
+
+    AuthorDto update(AuthorDto author);
 
     void delete(AuthorDto author);
 

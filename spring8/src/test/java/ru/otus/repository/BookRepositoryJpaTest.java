@@ -229,7 +229,7 @@ public class BookRepositoryJpaTest {
     @Test
     public void shouldCorrectReturnAuthorsByBookId() {
         String bookId = "100";
-        Book result = bookRepository.findAuthorsByBookId(bookId);
+        Book result = bookRepository.findBookWithAuthorsById(bookId);
         assertEqualsAuthorList(List.of(EXPECTED_AUTHORS.get(0)), result.getAuthors());
     }
 
@@ -237,7 +237,7 @@ public class BookRepositoryJpaTest {
     @Test
     public void shouldCorrectReturnAuthorsByBookIds() {
         List<String> bookIds = List.of("100", "200", "300");
-        List<Book> books = bookRepository.findAuthorsByBookIds(bookIds);
+        List<Book> books = bookRepository.findBookWithAuthorsByIds(bookIds);
         List<Author> result = books.stream()
                 .flatMap(b -> b.getAuthors().stream())
                 .toList();
@@ -251,7 +251,7 @@ public class BookRepositoryJpaTest {
         String bookId = "100";
         List<Genre> expected = List.of(EXPECTED_GENRES.get(8), EXPECTED_GENRES.get(9));
 
-        Book result = bookRepository.findGenresByBookId(bookId);
+        Book result = bookRepository.findBookWithGenresById(bookId);
         assertEqualsGenreList(expected, result.getGenres());
     }
 
@@ -261,7 +261,7 @@ public class BookRepositoryJpaTest {
         List<String> bookIds = List.of("100", "200");
         List<Genre> expected = List.of(EXPECTED_GENRES.get(8), EXPECTED_GENRES.get(9), EXPECTED_GENRES.get(5), EXPECTED_GENRES.get(6), EXPECTED_GENRES.get(1));
 
-        List<Book> books = bookRepository.findGenresByBookIds(bookIds);
+        List<Book> books = bookRepository.findBookWithGenresByIds(bookIds);
         List<Genre> result = books.stream()
                 .flatMap(b -> b.getGenres().stream())
                 .toList();

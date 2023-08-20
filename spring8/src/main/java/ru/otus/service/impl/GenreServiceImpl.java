@@ -28,7 +28,17 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     @Transactional
-    public GenreDto save(GenreDto genre) {
+    public GenreDto create(GenreDto genre) {
+        return save(genre);
+    }
+
+    @Override
+    @Transactional
+    public GenreDto update(GenreDto genre) {
+        return save(genre);
+    }
+
+    private GenreDto save(GenreDto genre) {
         Genre genreDomain = convertGenre.convert(genre);
         Genre genreSave = genreRepository.save(genreDomain);
 

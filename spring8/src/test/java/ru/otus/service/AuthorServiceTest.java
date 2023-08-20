@@ -1,21 +1,12 @@
 package ru.otus.service;
 
-import com.github.cloudyrock.spring.v5.EnableMongock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dto.AuthorDto;
 import ru.otus.exception.NotFoundException;
-import ru.otus.repository.AuthorRepository;
-import ru.otus.service.impl.IOServiceStreams;
 
-import java.io.PrintStream;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,7 +38,7 @@ public class AuthorServiceTest {
     @DisplayName("should correct save author")
     @Test
     public void shouldCorrectSaveAuthor() {
-        AuthorDto expected = authorService.save(NOT_EXISTS_AUTHOR);
+        AuthorDto expected = authorService.create(NOT_EXISTS_AUTHOR);
         AuthorDto result = authorService.getAuthorById(expected.getId());
         authorService.delete(expected);
 
@@ -65,7 +56,7 @@ public class AuthorServiceTest {
     @DisplayName("should correct delete author")
     @Test
     public void shouldCorrectDeleteAuthor() {
-        AuthorDto expected = authorService.save(NOT_EXISTS_AUTHOR);
+        AuthorDto expected = authorService.create(NOT_EXISTS_AUTHOR);
         assertDoesNotThrow(() -> authorService.getAuthorById(expected.getId()));
         assertDoesNotThrow(() -> authorService.delete(expected));
         assertThrows(NotFoundException.class, () -> authorService.getAuthorById(expected.getId()));

@@ -47,7 +47,17 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public BookDto save(BookDto book) {
+    public BookDto create(BookDto book) {
+        return save(book);
+    }
+
+    @Override
+    @Transactional
+    public BookDto update(BookDto book) {
+        return save(book);
+    }
+
+    private BookDto save(BookDto book) {
         Book bookDomain = convertBook.convert(book);
 
         List<Author> authors = authorRepository.findByIds(

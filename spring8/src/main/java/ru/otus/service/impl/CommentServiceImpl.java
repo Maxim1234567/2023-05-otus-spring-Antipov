@@ -22,7 +22,17 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentDto save(CommentDto comment) {
+    public CommentDto create(CommentDto comment) {
+        return save(comment);
+    }
+
+    @Override
+    @Transactional
+    public CommentDto update(CommentDto comment) {
+        return save(comment);
+    }
+
+    private CommentDto save(CommentDto comment) {
         Comment commentDomain = convertComment.convert(comment);
         Comment commentSave = commentRepository.save(commentDomain);
 

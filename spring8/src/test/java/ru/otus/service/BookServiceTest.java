@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
@@ -140,7 +139,7 @@ public class BookServiceTest {
     @DisplayName("correctly save book with authors and genres")
     @Test
     public void shouldCorrectSaveBookWithAuthorAndGenre() {
-        BookDto book = bookService.save(NOT_EXISTS_BOOK);
+        BookDto book = bookService.create(NOT_EXISTS_BOOK);
         BookDto result = bookService.getBookById(book.getId());
         bookService.delete(book);
 
@@ -150,7 +149,7 @@ public class BookServiceTest {
     @DisplayName("correctly delete book with author and genre")
     @Test
     public void shouldCorrectDeleteBookWithAuthorAndGenre() {
-        BookDto book = bookService.save(NOT_EXISTS_BOOK);
+        BookDto book = bookService.create(NOT_EXISTS_BOOK);
         assertDoesNotThrow(() -> bookService.delete(book));
     }
 

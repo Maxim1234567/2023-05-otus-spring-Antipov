@@ -2,9 +2,6 @@ package ru.otus.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.otus.domain.Author;
-import ru.otus.domain.Book;
-import ru.otus.domain.Genre;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
@@ -29,7 +26,7 @@ public class LibraryFacadeImpl implements LibraryFacade {
     @Override
     public void createBook() {
         BookDto book = createBook("Create book!");
-        bookService.save(book);
+        bookService.create(book);
     }
 
     @Override
@@ -46,7 +43,7 @@ public class LibraryFacadeImpl implements LibraryFacade {
                 book.getAuthors(),
                 List.of()
         );
-        bookService.save(updateBook);
+        bookService.create(updateBook);
     }
 
     private BookDto createBook(String text) {
@@ -80,14 +77,14 @@ public class LibraryFacadeImpl implements LibraryFacade {
     public void createAuthor() {
         ioService.println("Create author!");
         AuthorDto author = userInteraction.createAuthor();
-        authorService.save(author);
+        authorService.create(author);
     }
 
     @Override
     public void createGenre() {
         ioService.println("Create genre!");
         GenreDto genre = userInteraction.createGenre();
-        genreService.save(genre);
+        genreService.create(genre);
     }
 
     @Override
@@ -95,7 +92,7 @@ public class LibraryFacadeImpl implements LibraryFacade {
         ioService.println("Create comment!");
         CommentDto comment = userInteraction.createComment();
         comment.setBookId(bookId);
-        commentService.save(comment);
+        commentService.create(comment);
     }
 
     @Override

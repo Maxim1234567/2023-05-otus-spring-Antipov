@@ -9,16 +9,16 @@ import java.util.List;
 
 public interface BookRepository extends MongoRepository<Book, String> {
     @Query(value = "{'_id': :#{#bookId}}", fields = "{_id: 0, authors: 1}")
-    Book findAuthorsByBookId(@Param("bookId") String bookId);
+    Book findBookWithAuthorsById(@Param("bookId") String bookId);
 
     @Query(value = "{'_id': {$in: :#{#ids}}}", fields = "{_id: 0, authors: 1}")
-    List<Book> findAuthorsByBookIds(@Param("ids") List<String> ids);
+    List<Book> findBookWithAuthorsByIds(@Param("ids") List<String> ids);
 
     @Query(value = "{'_id':  :#{#bookId}}", fields = "{_id: 0, genres:  1}")
-    Book findGenresByBookId(@Param("bookId") String bookId);
+    Book findBookWithGenresById(@Param("bookId") String bookId);
 
     @Query(value = "{'_id': {$in: :#{#ids}}}", fields = "{_id: 0, genres: 1}")
-    List<Book> findGenresByBookIds(@Param("ids") List<String> ids);
+    List<Book> findBookWithGenresByIds(@Param("ids") List<String> ids);
 
     @Query("{'_id': {$in: :#{#ids}}}")
     List<Book> findByIds(@Param("ids") List<String> ids);
