@@ -1,0 +1,74 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="keywords" th:content="${keywords}"/>
+    <title>List of all persons</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .book {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .book tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .book td:last-child, td:first-child {
+            width: 50px;
+        }
+    </style>
+</head>
+    <body>
+        <h1>Books:</h1>
+
+        <table class="book">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Number Pages</th>
+                    <th>Year Issue</th>
+                    <th>Info</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                    <th>Add Comment</th>
+                </tr>
+            </thead>
+            <tbody id="bookTable"/>
+        </table>
+
+        <script>
+            const params = {
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                },
+                method: 'GET',
+                mode: 'no-cors'
+            }
+
+            fetch("http://localhost:8080/api/book", params)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(book => {
+                        bookTable.innerHTML +=
+                            "<tr>" +
+                            "<td>" + book.id + "</td>" +
+                            "<td>" + book.name + "</td>" +
+                            "<td>" + book.numberPages + "</td>" +
+                            "<td>" + book.yearIssue + "</td>" +
+                            "<td><a href=\"info-book.html\" th:href=\"@{/}\"><button type=\"button\">Info</button></a></td>" +
+                            "<td><a href=\"update-book.html\" th:href=\"@{/}\"><button type=\"button\">Update</button></a></td>" +
+                            "<td><button type=\"button\">Delete</button></td>" +
+                            "<td><a href=\"create-comment.html\" th:href=\"@{/}\"><button type=\"button\">Add Comment</button></a></td>" +
+                            "</tr>";
+                    })
+                });
+        </script>
+    </body>
+</html>
