@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit person</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        .tbl {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .tbl tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .tbl td:last-child, td:first-child {
+            width: 50px;
+        }
+
+        h3 {
+            /*background-image: url("../static/listmark.png");*/
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+        /*background-image: url([[@{/listmark.png}]]);*/
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+
+    <script>
+        function addGenre() {
+            const params = {
+                method: 'GET'
+            }
+
+            fetch("/api/genre", params)
+                .then(response => response.json())
+                .then(data => {
+                    const table = document.getElementById("genreTable")
+
+                    const select = document.createElement("select")
+
+                    data.forEach(genre => {
+                        const option = document.createElement("option")
+                        option.value = genre.id
+                        option.text = genre.genre
+                        select.appendChild(option)
+                    })
+
+                    const row = document.createElement("tr")
+
+                    const selectCell = document.createElement("td")
+                    selectCell.appendChild(select)
+
+                    const buttonCell = document.createElement("td")
+                    const buttonRemove = document.createElement("button")
+                    buttonRemove.textContent = "Remove Genre"
+
+                    const iRow = table.childElementCount
+                    const rowId = "genre" + iRow;
+
+                    buttonRemove.onclick = function () {
+                        removeGenre(rowId)
+                    }
+
+                    buttonCell.appendChild(buttonRemove)
+
+                    row.appendChild(selectCell)
+                    row.appendChild(buttonCell)
+                    row.id = rowId
+
+                    table.appendChild(row)
+                })
+        }
+    </script>
+
+    <script>
+        function removeGenre(iRow) {
+            const table = document.getElementById("genreTable")
+            table.removeChild(document.getElementById(iRow))
+        }
+    </script>
+
+    <script>
+        function addAuthor() {
+            const params = {
+                method: 'GET'
+            }
+
+            fetch("/api/author", params)
+                .then(response => response.json())
+                .then(data => {
+                    const table = document.getElementById("authorTable")
+
+                    const select = document.createElement("select")
+
+                    data.forEach(author => {
+                        const option = document.createElement("option")
+                        option.value = author.id
+                        option.text = author.firstName + ' ' + author.lastName
+                        select.appendChild(option)
+                    })
+
+                    const row = document.createElement("tr")
+
+                    const selectCell = document.createElement("td")
+                    selectCell.appendChild(select)
+
+                    const buttonCell = document.createElement("td")
+                    const buttonRemove = document.createElement("button")
+                    buttonRemove.textContent = "Remove Author"
+
+                    const iRow = table.childElementCount
+                    const rowId = "author" + iRow
+
+                    buttonRemove.onclick = function () {
+                        removeAuthor(rowId)
+                    }
+
+                    buttonCell.appendChild(buttonRemove)
+
+                    row.appendChild(selectCell)
+                    row.appendChild(buttonCell)
+                    row.id = rowId
+
+                    table.appendChild(row)
+                })
+        }
+    </script>
+
+    <script>
+        function removeAuthor(iRow) {
+            const table = document.getElementById("authorTable")
+            table.removeChild(document.getElementById(iRow))
+        }
+    </script>
+
+    <script>
+        function save() {
+            const nameInput = document.getElementById("name-input")
+            const numberPagesInput = document.getElementById("number-pages-input")
+            const yearIssueInput = document.getElementById("year-issue-input")
+            const genres = document.getElementById("genreTable")
+            const authors = document.getElementById("authorTable")
+
+            const book = {
+                name: nameInput.value,
+                numberPages: numberPagesInput.value,
+                yearIssue: yearIssueInput.value,
+                genres: tableToJsonGenre(genres),
+                authors: tableToJsonAuthor(authors)
+            }
+
+            console.log("book: " + JSON.stringify(book))
+
+            fetch("/api/book", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(book)
+            }).then(
+                window.location.replace("/")
+            ).catch((error) => console.log("error: " + error))
+        }
+    </script>
+
+    <script>
+        function tableToJsonGenre(table) {
+            const rows = [];
+
+            for (var i = 0; i < table.rows.length; i++) {
+                const row = {};
+                const select = table.rows[i].cells[0].childNodes[0];
+
+                row["id"] = select.value;
+                row["genre"] = "genre";
+                rows.push(row);
+            }
+
+            return rows
+        }
+    </script>
+
+    <script>
+        function tableToJsonAuthor(table) {
+            const rows = [];
+
+            for (var i = 0; i < table.rows.length; i++) {
+                const row = {};
+                const select = table.rows[i].cells[0].childNodes[0];
+
+                row["id"] = select.value;
+                row["firstName"] = "first-name";
+                row["lastName"] = "last-name";
+                row["age"] = 18
+                row["yearBirthdate"] = 1900
+                rows.push(row);
+            }
+
+            return rows
+        }
+    </script>
+</head>
+    <body>
+        <form id="create-book" action="create-book.html">
+            <div class="row">
+                <label for="name-input">Name:</label>
+                <input id="name-input" type="text" name="name"/>
+            </div>
+
+            <div class="row">
+                <label for="number-pages-input">Number Pages: </label>
+                <input id="number-pages-input" type="text" name="numberPages"/>
+            </div>
+
+            <div class="row">
+                <label for="year-issue-input">Year Issue:</label>
+                <input id="year-issue-input" type="text" name="yearIssue"/>
+            </div>
+
+            <br/>
+
+            <table class="tbl">
+                <thead>
+                    <tr>
+                        <th>Genre</th>
+                        <th>
+                            <button type="button" onclick="addGenre()">Add Genre</button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="genreTable"/>
+            </table>
+
+            <br/>
+
+            <table class="tbl">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>
+                            <button type="button" onclick="addAuthor()">Add Author</button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="authorTable"/>
+            </table>
+
+            <br/>
+
+            <div class="row">
+                <button type="button" onclick="save()">Save</button>
+            </div>
+        </form>
+    </body>
+</html>

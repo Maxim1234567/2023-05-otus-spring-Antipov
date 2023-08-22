@@ -48,11 +48,10 @@
                 headers: {
                     'Access-Control-Allow-Origin': '*'
                 },
-                method: 'GET',
-                mode: 'no-cors'
+                method: 'GET'
             }
 
-            fetch("http://localhost:8080/api/book", params)
+            fetch("/api/book", params)
                 .then(response => response.json())
                 .then(data => {
                     data.forEach(book => {
@@ -62,13 +61,17 @@
                             "<td>" + book.name + "</td>" +
                             "<td>" + book.numberPages + "</td>" +
                             "<td>" + book.yearIssue + "</td>" +
-                            "<td><a href=\"info-book.html\" th:href=\"@{/}\"><button type=\"button\">Info</button></a></td>" +
-                            "<td><a href=\"update-book.html\" th:href=\"@{/}\"><button type=\"button\">Update</button></a></td>" +
+                            "<td><a href=\"/\">Info</a></td>" +
+                            "<td><a href=\"/book/update?id=" + book.id + "\">Update</a></td>" +
                             "<td><button type=\"button\">Delete</button></td>" +
                             "<td><a href=\"create-comment.html\" th:href=\"@{/}\"><button type=\"button\">Add Comment</button></a></td>" +
                             "</tr>";
                     })
                 });
         </script>
+
+        <br/>
+
+        <a href="create-book.html" th:href="@{/book/create}">Create</a>
     </body>
 </html>

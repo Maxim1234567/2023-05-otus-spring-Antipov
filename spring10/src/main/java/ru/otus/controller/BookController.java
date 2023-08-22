@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import ru.otus.dto.BookDto;
@@ -29,12 +30,13 @@ public class BookController {
     }
 
     @PutMapping("/api/book")
-    public BookDto updateBook(BookDto book) {
+    public BookDto updateBook(@RequestBody BookDto book) {
         return bookService.update(book);
     }
 
     @PostMapping("/api/book")
-    public BookDto createBook(BookDto book) {
+    public BookDto createBook(@RequestBody BookDto book) {
+        book.setComments(List.of());
         return bookService.create(book);
     }
 
