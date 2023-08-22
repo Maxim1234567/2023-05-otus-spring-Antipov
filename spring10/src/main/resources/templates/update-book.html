@@ -173,24 +173,28 @@
 
     <script>
         function update() {
+            const idInput = document.getElementById("id-input")
             const nameInput = document.getElementById("name-input")
             const numberPagesInput = document.getElementById("number-pages-input")
             const yearIssueInput = document.getElementById("year-issue-input")
             const genres = document.getElementById("genreTable")
             const authors = document.getElementById("authorTable")
+            const comments = document.getElementById("commentTable")
 
             const book = {
+                id: idInput.value,
                 name: nameInput.value,
                 numberPages: numberPagesInput.value,
                 yearIssue: yearIssueInput.value,
                 genres: tableToJsonGenre(genres),
-                authors: tableToJsonAuthor(authors)
+                authors: tableToJsonAuthor(authors),
+                comments: tableToJsonComment(comments)
             }
 
             console.log("book: " + JSON.stringify(book))
 
             fetch("/api/book", {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -236,6 +240,26 @@
             }
 
             return rows
+        }
+    </script>
+
+    <script>
+        function tableToJsonComment(table) {
+            var header = [];
+            var rows = [];
+
+            header.push("id")
+            header.push("comments")
+
+            for (var i = 1; i < table.rows.length; i++) {
+                var row = {};
+                for (var j = 0; j < table.rows[i].cells.length; j++) {
+                    row[header[j]] = table.rows[i].cells[j].innerHTML;
+                }
+                rows.push(row);
+            }
+
+            return rows;
         }
     </script>
 </head>
@@ -291,8 +315,20 @@
 
             <br/>
 
+            <table id="commentTable" class="tbl">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Comment</th>
+                </tr>
+                </thead>
+                <tbody/>
+            </table>
+
+            <br/>
+
             <div class="row">
-                <button type="button" onclick="update()">Save</button>
+                <button type="button" onclick="update()">Update</button>
             </div>
 
             <script>
@@ -322,6 +358,16 @@
                         data.authors.forEach(author => {
                             addAuthor(author.id)
                         })
+
+                        if(data.comments !== null) {
+                            data.comments.forEach(comment => {
+                                commentTable.innerHTML +=
+                                    "<tr>" +
+                                    "<td>" + comment.id + "</td>" +
+                                    "<td>" + comment.comments + "</td>" +
+                                    "</tr>"
+                            })
+                        }
                     })
             </script>
         </form>

@@ -13,6 +13,7 @@ import ru.otus.dto.BookDto;
 import ru.otus.service.BookService;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +32,11 @@ public class BookController {
 
     @PutMapping("/api/book")
     public BookDto updateBook(@RequestBody BookDto book) {
+        if(Objects.isNull(book.getComments()))
+            book.setComments(List.of());
+
+        book.getComments().forEach(c -> c.setBook(book));
+
         return bookService.update(book);
     }
 
