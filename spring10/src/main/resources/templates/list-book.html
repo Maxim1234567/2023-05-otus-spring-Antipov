@@ -23,6 +23,21 @@
             width: 50px;
         }
     </style>
+
+    <script>
+        function del(bookId) {
+            const params = {
+                method: 'DELETE'
+            }
+
+            console.log("bookId: " + bookId);
+
+            fetch("/api/book/" + bookId, params)
+                .then(
+                    window.location.replace("/")
+                );
+        }
+    </script>
 </head>
     <body>
         <h1>Books:</h1>
@@ -61,10 +76,10 @@
                             "<td>" + book.name + "</td>" +
                             "<td>" + book.numberPages + "</td>" +
                             "<td>" + book.yearIssue + "</td>" +
-                            "<td><a href=\"/book/info?id=" + book.id + "\">Info</a></td>" +
-                            "<td><a href=\"/book/update?id=" + book.id + "\">Update</a></td>" +
-                            "<td><button type=\"button\">Delete</button></td>" +
-                            "<td><a href=\"create-comment.html\" th:href=\"@{/}\"><button type=\"button\">Add Comment</button></a></td>" +
+                            "<td><a href=\"/book/info?id=" + book.id + "\"><button type=\"button\">Info</button></a></td>" +
+                            "<td><a href=\"/book/update?id=" + book.id + "\"><button type=\"button\">Update</button></a></td>" +
+                            "<td><button type=\"button\" onclick=\"del(" + book.id + ")\">Delete</button></td>" +
+                            "<td><a href=\"/comment/create?id=" + book.id + "\"><button type=\"button\">Add Comment</button></a></td>" +
                             "</tr>";
                     })
                 });
@@ -73,5 +88,9 @@
         <br/>
 
         <a href="create-book.html" th:href="@{/book/create}">Create</a>
+        <br/>
+        <a href="create-genre.html" th:href="@{/genre/create}">Add Genre</a>
+        <br/>
+        <a href="create-author.html"  th:href="@{/author/create}">Add Author</a>
     </body>
 </html>

@@ -32,17 +32,11 @@ public class BookController {
 
     @PutMapping("/api/book")
     public BookDto updateBook(@RequestBody BookDto book) {
-        if(Objects.isNull(book.getComments()))
-            book.setComments(List.of());
-
-        book.getComments().forEach(c -> c.setBook(book));
-
         return bookService.update(book);
     }
 
     @PostMapping("/api/book")
     public BookDto createBook(@RequestBody BookDto book) {
-        book.setComments(List.of());
         return bookService.create(book);
     }
 
