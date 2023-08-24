@@ -63,6 +63,9 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookDto update(BookDto book) {
+        bookRepository.findById(book.getId())
+                .orElseThrow(NotFoundException::new);
+
         if(Objects.isNull(book.getComments()))
             book.setComments(List.of());
 
