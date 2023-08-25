@@ -17,7 +17,7 @@ public class CommentController {
 
     @PostMapping("/api/comment")
     public CommentDto addComment(@Valid @RequestBody CommentDto comment, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             throw new ValidationErrorException("Validation Error");
         }
 

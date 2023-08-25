@@ -21,7 +21,6 @@ public class BookConvertBookDto implements Converter<Book, BookDto> {
 
     private final CommentConvertCommentDto convertComment;
 
-
     @Override
     public BookDto convert(Book book) {
         BookDto bookDto = BookDto.builder()

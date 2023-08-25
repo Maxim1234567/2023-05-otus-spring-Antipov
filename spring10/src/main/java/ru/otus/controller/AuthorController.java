@@ -25,7 +25,7 @@ public class AuthorController {
 
     @PostMapping("/api/author")
     public AuthorDto addAuthor(@Valid @RequestBody AuthorDto authorDto, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             throw new ValidationErrorException("Validation Error");
         }
 

@@ -66,8 +66,9 @@ public class BookServiceImpl implements BookService {
         bookRepository.findById(book.getId())
                 .orElseThrow(NotFoundException::new);
 
-        if(Objects.isNull(book.getComments()))
+        if (Objects.isNull(book.getComments())) {
             book.setComments(List.of());
+        }
 
         book.getComments().forEach(c -> c.setBook(book));
 

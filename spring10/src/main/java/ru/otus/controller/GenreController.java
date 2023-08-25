@@ -25,7 +25,7 @@ public class GenreController {
 
     @PostMapping("/api/genre")
     public GenreDto addGenre(@Valid @RequestBody GenreDto genre, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             throw new ValidationErrorException("Validation Error");
         }
 
