@@ -41,8 +41,6 @@ public class CommentController {
             return "create-comment";
         }
 
-        BookDto book = bookService.getBookById(comment.getBook().getId());
-        comment.setBook(book);
         commentService.create(comment);
 
         return "redirect:/";

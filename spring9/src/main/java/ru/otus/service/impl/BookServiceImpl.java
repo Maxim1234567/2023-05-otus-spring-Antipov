@@ -51,6 +51,8 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookDto create(BookDto book) {
+        book.setComments(List.of());
+
         Book bookDomain = convertBook.convert(book);
 
         return convertBookDto.convert(
@@ -61,6 +63,15 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookDto update(BookDto book) {
+        bookRepository.findById(book.getId())
+                .orElseThrow(NotFoundException::new);
+
+        if (Objects.nonNull(book.getComments())) {
+            book.getComments().forEach(c -> c.setBook(book));
+        } else {
+            book.setComments(List.of());
+        }
+
         Book bookDomain = convertBook.convert(book);
 
         return convertBookDto.convert(

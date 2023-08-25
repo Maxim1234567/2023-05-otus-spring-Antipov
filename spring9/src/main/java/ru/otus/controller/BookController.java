@@ -64,12 +64,6 @@ public class BookController {
             return "edit-book";
         }
 
-        if (Objects.nonNull(bookDto.getComments())) {
-            bookDto.getComments().forEach(c -> c.setBook(bookDto));
-        } else {
-            bookDto.setComments(List.of());
-        }
-
         bookService.update(bookDto);
         return "redirect:/";
     }
@@ -94,7 +88,6 @@ public class BookController {
             return "create-book";
         }
 
-        book.setComments(List.of());
         bookService.create(book);
         return "redirect:/";
     }
@@ -121,8 +114,6 @@ public class BookController {
         });
 
         book.getGenres().add(genres.get(0));
-
-        book.getGenres().forEach(System.out::println);
 
         model.addAttribute("book", book);
         model.addAttribute("genres", genres);
