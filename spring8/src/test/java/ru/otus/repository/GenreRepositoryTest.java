@@ -15,7 +15,7 @@ import static ru.otus.Utils.assertEqualsGenreList;
 
 @DisplayName("Dao to work with genres should")
 @DataMongoTest
-public class GenreRepositoryJpaTest {
+public class GenreRepositoryTest {
     private static final Genre EXISTING_GENRE = new Genre("400", "Tale");
 
     private static final List<Genre> EXPECTED_GENRES = List.of(

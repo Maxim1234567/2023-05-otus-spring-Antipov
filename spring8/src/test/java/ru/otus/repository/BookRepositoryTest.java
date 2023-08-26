@@ -17,7 +17,7 @@ import static ru.otus.Utils.*;
 
 @DisplayName("Dao to work with book should")
 @DataMongoTest
-public class BookRepositoryJpaTest {
+public class BookRepositoryTest {
 
     private static final List<Author> EXPECTED_AUTHORS = List.of(
             new Author("100", "Herbert", "Shieldt", 72, 1951),

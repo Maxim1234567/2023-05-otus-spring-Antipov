@@ -1,18 +1,23 @@
 spring:
+#  autoconfigure:
+#    exclude:
+#      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+#      - de.flapdoodle.embed.mongo.spring.autoconfigure.EmbeddedMongoAutoConfiguration
   main:
     allow-bean-definition-overriding: true
   data:
     mongodb:
-      username: springboot
-      password: pivotal
       database: library
-      port: 27017
-      host: localhost
-      authentication-database: admin
-      uri: mongodb://springboot:pivotal@localhost:27017/library?authSource=admin&authMechanism=SCRAM-SHA-1
+      port: 0
   shell:
     interactive:
       enabled: false
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2
 
 mongock:
   runner-type: "ApplicationRunner"

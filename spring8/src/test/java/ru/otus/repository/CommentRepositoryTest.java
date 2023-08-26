@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import ru.otus.domain.Comment;
 
 import java.util.List;
@@ -17,7 +16,7 @@ import static ru.otus.Utils.assertEqualsCommentList;
 
 @DisplayName("Dao to work with comment should")
 @DataMongoTest
-public class CommentRepositoryJpaTest {
+public class CommentRepositoryTest {
     private static final Comment EXISTING_COMMENT = new Comment(
             "100", "Good Book!", "100"
     );
