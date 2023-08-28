@@ -1,0 +1,25 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  data:
+    mongodb:
+      database: pps
+      port: 0
+  shell:
+    interactive:
+      enabled: false
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2
+
+mongock:
+  runner-type: "ApplicationRunner"
+  change-logs-scan-package:
+    - ru.otus.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
