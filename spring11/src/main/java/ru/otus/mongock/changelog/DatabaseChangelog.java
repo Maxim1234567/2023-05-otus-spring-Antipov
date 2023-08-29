@@ -11,11 +11,11 @@ import java.util.List;
 @ChangeLog
 public class DatabaseChangelog {
     private final List<Passport> passports = List.of(
-            Passport.builder().id("1").series("0000").number("111111").issued("there").dateOfIssue("00.00.0000").codeDivision("000-001").build(),
-            Passport.builder().id("2").series("0001").number("111110").issued("there").dateOfIssue("00.00.1000").codeDivision("000-010").build(),
-            Passport.builder().id("3").series("0010").number("111100").issued("where").dateOfIssue("00.00.2000").codeDivision("000-100").build(),
+            Passport.builder().id("1").series("0000").number("111111").issued("there").dateOfIssue("00.00.0000").codeDivision("000-000").build(),
+            Passport.builder().id("2").series("0001").number("111110").issued("there").dateOfIssue("00.00.1000").codeDivision("000-000").build(),
+            Passport.builder().id("3").series("0010").number("111100").issued("where").dateOfIssue("00.00.2000").codeDivision("000-000").build(),
             Passport.builder().id("4").series("0011").number("111000").issued("here").dateOfIssue("00.00.3000").codeDivision("001-000").build(),
-            Passport.builder().id("5").series("0100").number("110000").issued("here").dateOfIssue("00.00.4000").codeDivision("010-000").build()
+            Passport.builder().id("5").series("0100").number("110000").issued("here").dateOfIssue("00.00.4000").codeDivision("001-000").build()
     );
 
     @ChangeSet(order = "001", id ="dropDB", author = "antipov", runAlways = true)

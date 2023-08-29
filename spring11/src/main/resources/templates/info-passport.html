@@ -1,0 +1,96 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+
+    <title>List of all persons</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        .passport {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .passport tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .passport td:last-child, td:first-child {
+            width: 50px;
+        }
+    </style>
+</head>
+    <body>
+        <form id = "info-passport" action="info-passport.html">
+            <h1>Passport:</h1>
+
+            <div class="row">
+                <label for="id-input">ID:</label>
+                <input id="id-input" type="text" readonly="readonly" name="id"/>
+            </div>
+
+            <div class="row">
+                <label for="series-input">Series:</label>
+                <input id="series-input" type="text" readonly="readonly" name="series">
+            </div>
+
+            <div class="row">
+                <label for="number-input">Number:</label>
+                <input id="number-input" type="text" readonly="readonly" name="number"/>
+            </div>
+
+            <div class="row">
+                <label for="issued-input">Issued:</label>
+                <input id="issued-input" type="text" readonly="readonly" name="issued"/>
+            </div>
+
+            <div class="row">
+                <label for="date-of-issue-input">Date of Issue:</label>
+                <input id="date-of-issue-input" type="text" readonly="readonly" name="dateOfIssue"/>
+            </div>
+
+            <div class="row">
+                <label for="code-division-input">Code Division:</label>
+                <input id="code-division-input" type="text" readonly="readonly" name="codeDivision"/>
+            </div>
+
+            <script>
+                const params = {
+                    method: 'GET'
+                }
+
+                const series = "[[${series}]]"
+                const number = "[[${number}]]"
+
+                console.log("series: " + series)
+                console.log("number: " + number)
+
+                fetch("/api/passport/" + series + "/" + number, params)
+                    .then(response => response.json())
+                    .then(data => {
+                        const idInput = document.getElementById("id-input")
+                        const seriesInput = document.getElementById("series-input")
+                        const numberInput = document.getElementById("number-input")
+                        const issuedInput = document.getElementById("issued-input")
+                        const dateOfIssueInput = document.getElementById("date-of-issue-input")
+                        const codeDivisionInput = document.getElementById("code-division-input")
+
+                        idInput.value = data.id
+                        seriesInput.value = data.series
+                        numberInput.value = data.number
+                        issuedInput.value = data.issued
+                        dateOfIssueInput.value = data.dateOfIssue
+                        codeDivisionInput.value = data.codeDivision
+                    })
+            </script>
+        </form>
+    </body>
+</html>

@@ -7,6 +7,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import ru.otus.convert.PassportConvertPassportDto;
 import ru.otus.convert.PassportDtoConvertPassport;
 import ru.otus.domain.Passport;
@@ -37,7 +38,7 @@ public class PassportRouter {
                         new PassportHandler(passportRepository, convertPassport, convertPassportDto)::findByCodeDivision)
                 .POST("/api/passport", accept(APPLICATION_JSON),
                         new PassportHandler(passportRepository, convertPassport, convertPassportDto)::create)
-                .PUT("/api/passport", accept(APPLICATION_JSON),
+                .PUT("/api/passport/{id}", accept(APPLICATION_JSON),
                         new PassportHandler(passportRepository, convertPassport, convertPassportDto)::update)
                 .build();
     }
@@ -76,30 +77,26 @@ public class PassportRouter {
             return ServerResponse
                     .ok()
                     .contentType(APPLICATION_JSON)
-                    .body(fromPublisher(passport.flatMap(this::save), Passport.class));
+                    .body(fromPublisher(passport.flatMap(this::save).mapNotNull(convertPassportDto::convert), PassportDto.class));
         }
 
         public Mono<ServerResponse> update(ServerRequest request) {
+            String id = request.pathVariable("id");
+
             Mono<Passport> passport = request.bodyToMono(PassportDto.class).mapNotNull(convertPassport::convert);
-            Mono<Passport> oldPassport = passport.doOnNext(p -> passportRepository.findById(p.getId()));
+            Mono<Passport> oldPassport = passportRepository.findById(id).subscribeOn(Schedulers.single());
 
             return oldPassport.flatMap(t -> ServerResponse
                     .ok()
                     .contentType(APPLICATION_JSON)
-                    .body(fromPublisher(passport.flatMap(this::save), Passport.class)))
+                    .body(fromPublisher(passport.flatMap(this::save).mapNotNull(convertPassportDto::convert), PassportDto.class)))
                     .switchIfEmpty(notFound().build());
         }
 
         private Mono<Passport> save(Passport passport) {
-            return Mono.fromSupplier(
-                    () -> {
-                        passportRepository
-                                .save(passport)
-                                .subscribe();
-
-                        return passport;
-                    }
-            );
+            return passportRepository
+                            .save(passport)
+                            .subscribeOn(Schedulers.single());
         }
     }
 }
