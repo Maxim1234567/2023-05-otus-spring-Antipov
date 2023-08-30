@@ -7,5 +7,6 @@ import ru.otus.domain.Passport;
 
 public interface PassportRepository extends ReactiveMongoRepository<Passport, String> {
     Mono<Passport> findBySeriesAndNumber(String series, String number);
+
     Flux<Passport> findByCodeDivision(String codeDivision);
 }
