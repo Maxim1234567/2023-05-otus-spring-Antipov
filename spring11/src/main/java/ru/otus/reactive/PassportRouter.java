@@ -23,28 +23,37 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 
 @Configuration
 public class PassportRouter {
+
     @Bean
     public RouterFunction<ServerResponse> routerFunction(
             PassportRepository passportRepository,
             PassportDtoConvertPassport convertPassport,
-            PassportConvertPassportDto convertPassportDto
-            ) {
+            PassportConvertPassportDto convertPassportDto) {
         return route()
                 .GET("/api/passport/{series}/{number}", accept(APPLICATION_JSON),
-                        new PassportHandler(passportRepository, convertPassport, convertPassportDto)::findBySeriesAndNumber)
+                        new PassportHandler(passportRepository,
+                                convertPassport, convertPassportDto)::findBySeriesAndNumber)
+                .GET("/api/passport/{id}", accept(APPLICATION_JSON),
+                        new PassportHandler(passportRepository,
+                                convertPassport, convertPassportDto)::findById)
                 .GET("/api/passport", accept(APPLICATION_JSON),
-                        new PassportHandler(passportRepository, convertPassport, convertPassportDto)::list)
+                        new PassportHandler(passportRepository,
+                                convertPassport, convertPassportDto)::list)
                 .GET("/api/passport/{codeDivision}", accept(APPLICATION_JSON),
-                        new PassportHandler(passportRepository, convertPassport, convertPassportDto)::findByCodeDivision)
+                        new PassportHandler(passportRepository,
+                                convertPassport, convertPassportDto)::findByCodeDivision)
                 .POST("/api/passport", accept(APPLICATION_JSON),
-                        new PassportHandler(passportRepository, convertPassport, convertPassportDto)::create)
+                        new PassportHandler(passportRepository,
+                                convertPassport, convertPassportDto)::create)
                 .PUT("/api/passport/{id}", accept(APPLICATION_JSON),
-                        new PassportHandler(passportRepository, convertPassport, convertPassportDto)::update)
+                        new PassportHandler(passportRepository,
+                                convertPassport, convertPassportDto)::update)
                 .build();
     }
 
     @RequiredArgsConstructor
     static class PassportHandler {
+
         private final PassportRepository passportRepository;
 
         private final PassportDtoConvertPassport convertPassport;
@@ -54,7 +63,8 @@ public class PassportRouter {
         Mono<ServerResponse> findBySeriesAndNumber(ServerRequest serverRequest) {
             return ok().contentType(APPLICATION_JSON)
                     .body(passportRepository
-                            .findBySeriesAndNumber(serverRequest.pathVariable("series"), serverRequest.pathVariable("number"))
+                                    .findBySeriesAndNumber(serverRequest.pathVariable("series"),
+                                            serverRequest.pathVariable("number"))
                                     .mapNotNull(convertPassportDto::convert)
                                     .switchIfEmpty(Mono.empty()),
                             PassportDto.class)
@@ -67,6 +77,15 @@ public class PassportRouter {
                             .mapNotNull(convertPassportDto::convert), PassportDto.class);
         }
 
+        Mono<ServerResponse> findById(ServerRequest serverRequest) {
+            return ok().contentType(APPLICATION_JSON)
+                    .body(passportRepository.findById(serverRequest.pathVariable("id"))
+                                    .mapNotNull(convertPassportDto::convert)
+                                    .switchIfEmpty(Mono.empty()),
+                            PassportDto.class)
+                    .switchIfEmpty(notFound().build());
+        }
+
         Mono<ServerResponse> list(ServerRequest serverRequest) {
             return ok().contentType(APPLICATION_JSON).body(passportRepository.findAll()
                     .mapNotNull(convertPassportDto::convert), PassportDto.class);
@@ -74,10 +93,12 @@ public class PassportRouter {
 
         public Mono<ServerResponse> create(ServerRequest request) {
             Mono<Passport> passport = request.bodyToMono(PassportDto.class).mapNotNull(convertPassport::convert);
+
             return ServerResponse
                     .ok()
                     .contentType(APPLICATION_JSON)
-                    .body(fromPublisher(passport.flatMap(this::save).mapNotNull(convertPassportDto::convert), PassportDto.class));
+                    .body(fromPublisher(passport.flatMap(this::save).mapNotNull(convertPassportDto::convert),
+                            PassportDto.class));
         }
 
         public Mono<ServerResponse> update(ServerRequest request) {
@@ -87,16 +108,17 @@ public class PassportRouter {
             Mono<Passport> oldPassport = passportRepository.findById(id).subscribeOn(Schedulers.single());
 
             return oldPassport.flatMap(t -> ServerResponse
-                    .ok()
-                    .contentType(APPLICATION_JSON)
-                    .body(fromPublisher(passport.flatMap(this::save).mapNotNull(convertPassportDto::convert), PassportDto.class)))
+                            .ok()
+                            .contentType(APPLICATION_JSON)
+                            .body(fromPublisher(passport.flatMap(this::save).mapNotNull(convertPassportDto::convert),
+                                    PassportDto.class)))
                     .switchIfEmpty(notFound().build());
         }
 
         private Mono<Passport> save(Passport passport) {
             return passportRepository
-                            .save(passport)
-                            .subscribeOn(Schedulers.single());
+                    .save(passport)
+                    .subscribeOn(Schedulers.single());
         }
     }
 }

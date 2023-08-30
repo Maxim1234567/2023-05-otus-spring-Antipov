@@ -3,7 +3,9 @@ package ru.otus.reactive;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -98,6 +100,28 @@ public class PassportRouterTest {
         assertEqualsPassport(result, passports
                 .stream()
                 .filter(p -> p.getSeries().equals(series) && p.getNumber().equals(number))
+                .findFirst()
+                .orElse(PassportDto.builder().build()));
+    }
+
+    @Test
+    @DisplayName("correctly return passport by id")
+    void shouldCorrectReturnPassportById() {
+        String id = "1";
+
+        var client = WebClient.create(String.format("http://localhost:%d", port));
+
+        PassportDto result = client
+                .get().uri(uriBuilder -> uriBuilder.path("/api/passport/{id}").build(id))
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(PassportDto.class)
+                .timeout(Duration.ofSeconds(3))
+                .block();
+
+        assertEqualsPassport(result, passports
+                .stream()
+                .filter(p -> p.getId().equals(id))
                 .findFirst()
                 .orElse(PassportDto.builder().build()));
     }

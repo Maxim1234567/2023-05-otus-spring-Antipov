@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit person</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+
+    <script>
+        function createPassport() {
+            const seriesInput = document.getElementById("series-input")
+            const numberInput = document.getElementById("number-input")
+            const issuedInput = document.getElementById("issued-input")
+            const dateOfIssueInput = document.getElementById("date-of-issue-input")
+            const codeDivisionInput = document.getElementById("code-division-input")
+
+            const passport = {
+                series: seriesInput.value,
+                number: numberInput.value,
+                issued: issuedInput.value,
+                dateOfIssue: dateOfIssueInput.value,
+                codeDivision: codeDivisionInput.value
+            }
+
+            fetch("/api/passport", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(passport)
+            }).then(
+                window.location.replace("/")
+            ).catch((error) => console.log("error: " + error))
+        }
+    </script>
+</head>
+    <body>
+        <h1>Passport:</h1>
+
+        <form id="create-passport" action="create-passport.html">
+            <div class="row">
+                <label for="series-input">Series:</label>
+                <input id="series-input" type="text" name="series">
+            </div>
+
+            <div class="row">
+                <label for="number-input">Number:</label>
+                <input id="number-input" type="text" name="number"/>
+            </div>
+
+            <div class="row">
+                <label for="issued-input">Issued:</label>
+                <input id="issued-input" type="text" name="issued"/>
+            </div>
+
+            <div class="row">
+                <label for="date-of-issue-input">Date of Issue:</label>
+                <input id="date-of-issue-input" type="text" name="dateOfIssue"/>
+            </div>
+
+            <div class="row">
+                <label for="code-division-input">Code Division:</label>
+                <input id="code-division-input" type="text" name="codeDivision"/>
+            </div>
+
+            <div class="row">
+                <button type="button" onclick="createPassport()">Save</button>
+                <a href="list-passport.html" th:href="@{/}"><button type="button">Cancel</button></a>
+            </div>
+        </form>
+    </body>
+</html>

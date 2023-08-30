@@ -5,9 +5,6 @@ spring:
     mongodb:
       database: pps
       port: 0
-  shell:
-    interactive:
-      enabled: false
 
 de:
   flapdoodle:
