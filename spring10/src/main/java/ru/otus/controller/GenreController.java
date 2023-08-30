@@ -2,6 +2,7 @@ package ru.otus.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,16 +20,12 @@ public class GenreController {
     private final GenreService genreService;
 
     @GetMapping("/api/genre")
-    public List<GenreDto> getAllGenres() {
-        return genreService.getAll();
+    public ResponseEntity<List<GenreDto>> getAllGenres() {
+        return ResponseEntity.ok(genreService.getAll());
     }
 
     @PostMapping("/api/genre")
-    public GenreDto addGenre(@Valid @RequestBody GenreDto genre, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new ValidationErrorException("Validation Error");
-        }
-
-        return genreService.create(genre);
+    public ResponseEntity<GenreDto> addGenre(@Valid @RequestBody GenreDto genre) {
+        return ResponseEntity.ok(genreService.create(genre));
     }
 }

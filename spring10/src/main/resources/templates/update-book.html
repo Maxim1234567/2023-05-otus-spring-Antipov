@@ -193,7 +193,7 @@
 
             console.log("book: " + JSON.stringify(book))
 
-            fetch("/api/book", {
+            fetch("/api/book/" + idInput.value, {
                 method: 'PUT',
                 headers: {
                     'Accept': 'application/json',

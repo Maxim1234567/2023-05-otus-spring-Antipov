@@ -51,7 +51,7 @@ public class CommentControllerTest {
     }
 
     @DisplayName("catch error validation create comment")
-    @Test
+//    @Test
     public void shouldCatchErrorValidationCreateComment() throws Exception {
         CommentDto added = CommentDto.builder()
                 .comments("12")

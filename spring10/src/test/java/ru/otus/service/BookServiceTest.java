@@ -1,10 +1,13 @@
 package ru.otus.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import ru.otus.convert.BookConvertBookDto;
+import ru.otus.convert.BookDtoConvertBook;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Comment;
@@ -14,20 +17,29 @@ import ru.otus.dto.BookDto;
 import ru.otus.dto.CommentDto;
 import ru.otus.dto.GenreDto;
 import ru.otus.exception.NotFoundException;
-import ru.otus.exception.ValidationErrorException;
+import ru.otus.repository.AuthorRepository;
+import ru.otus.repository.BookRepository;
+import ru.otus.repository.GenreRepository;
+import ru.otus.service.impl.BookServiceImpl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.otus.Utils.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static ru.otus.Utils.assertEqualsBookDto;
+import static ru.otus.Utils.assertEqualsBookListDto;
 
 @DisplayName("Service to work with book should")
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 public class BookServiceTest {
-    private static final BookDto EXISTING_BOOK = new BookDto(
+    private BookDto bookDto = new BookDto(
             300L,
             "FOUNDATION",
             2022,
@@ -64,7 +76,44 @@ public class BookServiceTest {
             )
     );
 
-    private static final List<BookDto> EXPECTED_BOOK = List.of(
+    private Book book = new Book(
+            300L,
+            "FOUNDATION",
+            2022,
+            320,
+            List.of(
+                    new Genre(200L, "Novel"),
+                    new Genre(600L, "Drama"),
+                    new Genre(700L, "Popular science literature")
+            ),
+            List.of(
+                    new Author(300L, "Isaac", "Asimov", 72, 1919)
+            ),
+            List.of(
+                    new Comment(400L, "Isaac Asimov Top",
+                            Book.builder()
+                                    .id(300L)
+                                    .name("FOUNDATION")
+                                    .yearIssue(2022)
+                                    .numberPages(320)
+                                    .authors(Collections.emptyList())
+                                    .genres(Collections.emptyList())
+                                    .comments(Collections.emptyList())
+                                    .build()),
+                    new Comment(500L, "The best book in the world",
+                            Book.builder()
+                                    .id(300L)
+                                    .name("FOUNDATION")
+                                    .yearIssue(2022)
+                                    .numberPages(320)
+                                    .authors(Collections.emptyList())
+                                    .genres(Collections.emptyList())
+                                    .comments(Collections.emptyList())
+                                    .build())
+            )
+    );
+
+    private static final List<BookDto> EXPECTED_BOOK_DTO = List.of(
             new BookDto(
                     100L,
                     "Java. Complete guide",
@@ -183,160 +232,247 @@ public class BookServiceTest {
             )
     );
 
-    private static final BookDto NOT_EXISTS_BOOK_WITH_AUTHOR_ID_NULL = new BookDto(
-            null,
-            "Son of Zeus",
-            2023,
-            1024,
-            List.of(),
-            List.of(
-                    new AuthorDto(
-                            null, "Lyubov", "Voronkova", 70, 1906
+    private static final List<Book> EXPECTED_BOOK = List.of(
+            new Book(
+                    100L,
+                    "Java. Complete guide",
+                    2022,
+                    1344,
+                    List.of(
+                            new Genre(900L, "Reference books and professional literature"),
+                            new Genre(1000L, "Hobbies, skills")
+                    ),
+                    List.of(
+                            new Author(100L, "Herbert", "Shieldt", 72, 1951)
+                    ),
+                    List.of(
+                            new Comment(100L, "Good Book!",
+                                    Book.builder()
+                                            .id(100L)
+                                            .name("Java. Complete guide")
+                                            .yearIssue(2022)
+                                            .numberPages(1344)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build()),
+                            new Comment(200L, "Very Interesting!",
+                                    Book.builder()
+                                            .id(100L)
+                                            .name("Java. Complete guide")
+                                            .yearIssue(2022)
+                                            .numberPages(1344)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build()),
+                            new Comment(300L, "I cried when I read it",
+                                    Book.builder()
+                                            .id(100L)
+                                            .name("Java. Complete guide")
+                                            .yearIssue(2022)
+                                            .numberPages(1344)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build())
                     )
             ),
-            List.of()
-    );
-
-    private static final BookDto NOT_EXISTS_BOOK_WITH_GENRE_ID_NULL = new BookDto(
-            null,
-            "Son of Zeus",
-            2023,
-            1024,
-            List.of(
-                    new GenreDto(null, "Modern domestic prose")
-            ),
-            List.of(),
-            List.of()
-    );
-
-    private static final BookDto NOT_EXISTS_BOOK_WITH_NOT_EXISTS_ID_AUTHOR = new BookDto(
-            null,
-            "Son of Zeus",
-            2023,
-            1024,
-            List.of(),
-            List.of(
-                    new AuthorDto(
-                            222L, "Lyubov", "Voronkova", 70, 1906
+            new Book(
+                    200L,
+                    "Starships. Andromeda's nebula",
+                    1987,
+                    400,
+                    List.of(
+                            new Genre(200L, "Novel"),
+                            new Genre(600L, "Drama"),
+                            new Genre(700L, "Popular science literature")
+                    ),
+                    List.of(
+                            new Author(200L, "Ivan", "Efremov", 64, 1908)
+                    ),
+                    List.of(
+                            new Comment(600L, "I read it, it's cool",
+                                    Book.builder()
+                                            .id(200L)
+                                            .name("Starships. Andromeda's nebula")
+                                            .yearIssue(1987)
+                                            .numberPages(400)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build())
                     )
             ),
-            List.of()
-    );
-
-    private static final BookDto NOT_EXISTS_BOOK_WITH_NOT_EXISTS_ID_GENRE = new BookDto(
-            null,
-            "Son of Zeus",
-            2023,
-            1024,
-            List.of(
-                    new GenreDto(222L, "Modern domestic prose")
-            ),
-            List.of(),
-            List.of()
-    );
-
-    private static final BookDto NOT_EXISTS_BOOK = new BookDto(
-            null,
-            "Son of Zeus",
-            2023,
-            1024,
-            List.of(
-                    new GenreDto(1100L, "Modern domestic prose")
-            ),
-            List.of(
-                    new AuthorDto(
-                            500L, "Lyubov", "Voronkova", 70, 1906
+            new Book(
+                    300L,
+                    "FOUNDATION",
+                    2022,
+                    320,
+                    List.of(
+                            new Genre(200L, "Novel"),
+                            new Genre(600L, "Drama"),
+                            new Genre(700L, "Popular science literature")
+                    ),
+                    List.of(
+                            new Author(300L, "Isaac", "Asimov", 72, 1919)
+                    ),
+                    List.of(
+                            new Comment(400L, "Isaac Asimov Top",
+                                    Book.builder()
+                                            .id(300L)
+                                            .name("FOUNDATION")
+                                            .yearIssue(2022)
+                                            .numberPages(320)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build()),
+                            new Comment(500L, "The best book in the world",
+                                    Book.builder()
+                                            .id(300L)
+                                            .name("FOUNDATION")
+                                            .yearIssue(2022)
+                                            .numberPages(320)
+                                            .authors(Collections.emptyList())
+                                            .genres(Collections.emptyList())
+                                            .comments(Collections.emptyList())
+                                            .build())
                     )
             ),
-            List.of()
+            new Book(
+                    400L,
+                    "Alice's Adventures in Wonderland",
+                    1865,
+                    225,
+                    List.of(),
+                    List.of(),
+                    List.of()
+            )
     );
 
-    @Autowired
+    @Mock
+    private BookRepository bookRepository;
+
+    @Mock
+    private AuthorRepository authorRepository;
+
+    @Mock
+    private GenreRepository genreRepository;
+
+    @Mock
+    private BookConvertBookDto convertBookDto;
+
+    @Mock
+    private BookDtoConvertBook convertBook;
+
     private BookService bookService;
+
+    @BeforeEach
+    public void setUp() {
+        bookService = new BookServiceImpl(
+                bookRepository,
+                authorRepository,
+                genreRepository,
+                convertBookDto,
+                convertBook
+        );
+    }
 
     @DisplayName("correctly return book with genres and authors")
     @Test
     public void shouldCorrectReturnBookWithGenreAndAuthors() {
-        BookDto result = bookService.getBookById(EXISTING_BOOK.getId());
-        assertEqualsBookDto(EXISTING_BOOK, result);
-    }
+        given(bookRepository.findById(eq(bookDto.getId())))
+                .willReturn(Optional.of(book));
+        given(convertBookDto.convert(eq(book)))
+                .willReturn(bookDto);
 
-    @DisplayName("throws ValidationError if author id is null")
-    @Test
-    public void shouldThrowsIfAuthorIdIsNull() {
-        assertThrows(ValidationErrorException.class, () -> bookService.create(NOT_EXISTS_BOOK_WITH_AUTHOR_ID_NULL));
-    }
+        BookDto result = bookService.getBookById(bookDto.getId());
 
-    @DisplayName("throws ValidationError if genre id is null")
-    @Test
-    public void shouldThrowsIfGenreIdIsNull() {
-        assertThrows(ValidationErrorException.class, () -> bookService.create(NOT_EXISTS_BOOK_WITH_GENRE_ID_NULL));
-    }
+        assertEqualsBookDto(result, bookDto);
 
-    @DisplayName("throws NotFoundException if author id is not exists")
-    @Test
-    public void shouldThrowsIfAuthorIdIsNotExists() {
-        assertThrows(NotFoundException.class, () -> bookService.create(NOT_EXISTS_BOOK_WITH_NOT_EXISTS_ID_AUTHOR));
-    }
-
-    @DisplayName("throws NotFoundException if genre id is not exists")
-    @Test
-    public void shouldThrowsIfGenreIdIsNotExists() {
-        assertThrows(NotFoundException.class, () -> bookService.create(NOT_EXISTS_BOOK_WITH_NOT_EXISTS_ID_GENRE));
-    }
-
-    @DisplayName("correctly return all books")
-    @Test
-    public void shouldCorrectReturnAllBooks() {
-        List<BookDto> result = bookService.getAllBooks();
-        assertEqualsBookListDto(EXPECTED_BOOK, result);
-    }
-
-    @DisplayName("correctly delete book with author and genre")
-    @Test
-    public void shouldCorrectDeleteBookWithAuthorAndGenre() {
-        BookDto book = bookService.create(NOT_EXISTS_BOOK);
-        assertDoesNotThrow(() -> bookService.delete(book));
-        assertThrows(NotFoundException.class, () -> bookService.getBookById(book.getId()));
-    }
-
-    @DisplayName("correctly update book")
-    @Test
-    public void shouldCorrectUpdateBook() {
-        BookDto exceptedBook = new BookDto(
-                EXISTING_BOOK.getId(), "NEW NAME", 2012, 121,
-                List.of(
-                        new GenreDto(100L, "Fiction"),
-                        new GenreDto(200L, "Novel"),
-                        new GenreDto(300L, "Thriller")
-                ),
-                List.of(
-                        new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951),
-                        new AuthorDto(200L, "Ivan", "Efremov", 64, 1908)
-                ),
-                List.of(
-                        new CommentDto(400L, "New Comment",
-                                BookDto.builder()
-                                        .id(300L)
-                                        .name("NEW NAME")
-                                        .yearIssue(2012)
-                                        .numberPages(121)
-                                        .authors(Collections.emptyList())
-                                        .genres(Collections.emptyList())
-                                        .comments(Collections.emptyList())
-                                        .build())
-                )
-        );
-
-        BookDto book = bookService.update(exceptedBook);
-        BookDto result = bookService.getBookById(book.getId());
-
-        assertEqualsBookDto(exceptedBook, result);
+        verify(bookRepository, times(1)).findById(eq(book.getId()));
+        verify(convertBookDto, times(1)).convert(eq(book));
     }
 
     @Test
     @DisplayName("should throws NotFoundException if book not exists")
     public void shouldThrowNotFoundExceptionIfBookNotExists() {
-        assertThrows(NotFoundException.class, () -> bookService.getBookById(1111L));
+        given(bookRepository.findById(eq(bookDto.getId())))
+                .willReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> bookService.getBookById(bookDto.getId()));
+
+        verify(bookRepository, times(1)).findById(eq(book.getId()));
+        verify(convertBookDto, times(0)).convert(any(Book.class));
+    }
+
+    @DisplayName("correctly return all books")
+    @Test
+    public void shouldCorrectReturnAllBooks() {
+        given(bookRepository.findAll())
+                .willReturn(EXPECTED_BOOK);
+        given(convertBookDto.convert(EXPECTED_BOOK.get(0)))
+                .willReturn(EXPECTED_BOOK_DTO.get(0));
+        given(convertBookDto.convert(EXPECTED_BOOK.get(1)))
+                .willReturn(EXPECTED_BOOK_DTO.get(1));
+        given(convertBookDto.convert(EXPECTED_BOOK.get(2)))
+                .willReturn(EXPECTED_BOOK_DTO.get(2));
+        given(convertBookDto.convert(EXPECTED_BOOK.get(3)))
+                .willReturn(EXPECTED_BOOK_DTO.get(3));
+
+        List<BookDto> results = bookService.getAllBooks();
+
+        assertEqualsBookListDto(results, EXPECTED_BOOK_DTO);
+
+        verify(bookRepository, times(1))
+                .findAll();
+        verify(convertBookDto, times(1))
+                .convert(eq(EXPECTED_BOOK.get(0)));
+        verify(convertBookDto, times(1))
+                .convert(eq(EXPECTED_BOOK.get(1)));
+        verify(convertBookDto, times(1))
+                .convert(eq(EXPECTED_BOOK.get(2)));
+        verify(convertBookDto, times(1))
+                .convert(eq(EXPECTED_BOOK.get(3)));
+    }
+
+    @DisplayName("correctly save book with authors and genres")
+    @Test
+    public void shouldCorrectSaveBookWithAuthorAndGenre() {
+        given(convertBook.convert(eq(bookDto)))
+                .willReturn(book);
+        given(authorRepository.findByIds(eq(bookDto.getAuthors().stream().map(AuthorDto::getId).toList())))
+                .willReturn(new ArrayList<>(book.getAuthors()));
+        given(genreRepository.findByIds(eq(bookDto.getGenres().stream().map(GenreDto::getId).toList())))
+                .willReturn(new ArrayList<>(book.getGenres()));
+        given(bookRepository.save(eq(book)))
+                .willReturn(book);
+        given(convertBookDto.convert(eq(book)))
+                .willReturn(bookDto);
+
+        BookDto result = bookService.create(bookDto);
+
+        assertEqualsBookDto(result, bookDto);
+
+        verify(convertBook, times(1))
+                .convert(eq(bookDto));
+        verify(authorRepository, times(1))
+                .findByIds(eq(bookDto.getAuthors().stream().map(AuthorDto::getId).toList()));
+        verify(genreRepository, times(1))
+                .findByIds(eq(bookDto.getGenres().stream().map(GenreDto::getId).toList()));
+        verify(bookRepository, times(1))
+                .save(eq(book));
+        verify(convertBookDto, times(1))
+                .convert(eq(book));
+    }
+
+    @DisplayName("correctly delete book with author and genre")
+    @Test
+    public void shouldCorrectDeleteBookWithAuthorAndGenre() {
+        bookService.delete(bookDto);
+
+        verify(bookRepository, times(1))
+                .deleteById(eq(bookDto.getId()));
     }
 }
