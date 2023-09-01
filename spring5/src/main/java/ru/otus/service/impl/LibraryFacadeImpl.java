@@ -5,7 +5,13 @@ import org.springframework.stereotype.Service;
 import ru.otus.domain.Author;
 import ru.otus.domain.Book;
 import ru.otus.domain.Genre;
-import ru.otus.service.*;
+import ru.otus.service.AuthorService;
+import ru.otus.service.IOService;
+import ru.otus.service.LibraryFacade;
+import ru.otus.service.GenreService;
+import ru.otus.service.BookService;
+import ru.otus.service.ShowDomain;
+import ru.otus.service.UserInteraction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +20,15 @@ import java.util.List;
 @Service
 public class LibraryFacadeImpl implements LibraryFacade {
     private final IOService ioService;
+
     private final AuthorService authorService;
+
     private final GenreService genreService;
+
     private final BookService bookService;
+
     private final ShowDomain showDomain;
+
     private final UserInteraction userInteraction;
 
     @Override

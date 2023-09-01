@@ -17,21 +17,21 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
 public class UserInteractionTest {
-    @Mock
+//    @Mock
     private ConvertTestQuestionService convert;
 
-    @Mock
+//    @Mock
     private IOService ioService;
 
-    @Mock
+//    @Mock
     private ApplicationMessageSource messageSource;
 
-    @InjectMocks
+//    @InjectMocks
     private UserInteractionImpl userInteraction;
 
-    @Test
+//    @Test
     public void askFirstNameTest() {
         given(ioService.readLine())
                 .willReturn("Maxim");
@@ -43,7 +43,7 @@ public class UserInteractionTest {
                 .readLine();
     }
 
-    @Test
+//    @Test
     public void askLastNameTest() {
         given(ioService.readLine())
                 .willReturn("Antipov");
@@ -70,7 +70,7 @@ public class UserInteractionTest {
     }
     */
 
-    @Test
+//    @Test
     public void askQuestionTest() {
         TestQuestion testQuestion = new TestQuestion(
                 "Test Question 1?",

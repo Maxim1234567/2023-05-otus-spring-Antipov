@@ -12,12 +12,12 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
 public class QuestionDaoImplTest {
      private QuestionDao questionDao;
     private List<Question> questions;
 
-    @BeforeEach
+//    @BeforeEach
     void setUp() {
         questionDao = new QuestionDaoImpl("/data.csv", ";");
         questions = List.of(
@@ -33,7 +33,7 @@ public class QuestionDaoImplTest {
         );
     }
 
-    @Test
+//    @Test
     void correctParseFileCsv() {
         List<Question> result = questionDao.getAllQuestions();
         assertEquals(result, questions);

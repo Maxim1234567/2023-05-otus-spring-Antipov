@@ -9,6 +9,14 @@
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
+        <module>spring1</module>
+        <module>spring2</module>
+        <module>spring3</module>
+        <module>spring4</module>
+        <module>spring5</module>
+        <module>spring7</module>
+        <module>spring6</module>
+        <module>spring8</module>
         <module>spring9</module>
     </modules>
 
