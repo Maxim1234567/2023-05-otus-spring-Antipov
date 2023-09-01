@@ -19,6 +19,7 @@
         <module>spring8</module>
         <module>spring9</module>
         <module>spring10</module>
+        <module>spring11</module>
     </modules>
 
     <parent>
