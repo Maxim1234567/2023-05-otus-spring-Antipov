@@ -1,0 +1,60 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="#{title-create-genre}">Create Genre</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        h3 {
+            /*background-image: url("../static/listmark.png");*/
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+        /*background-image: url([[@{/listmark.png}]]);*/
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+    <body>
+        <form id="create-genre-form" action="create-genre.html" th:action="@{/genre/create}" th:method="post" th:object="${genre}">
+            <h3 th:text="#{header-genre}">Genre</h3>
+
+            <div class="row">
+                <label for="genre-input" th:text="#{header-genre} + ':'">Genre: </label>
+                <input id="genre-input" name="genre" type="text" th:value="*{genre}" value="Genre">
+                <div class="errors" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}">Wrong genre name error</div>
+            </div>
+
+            <div class="row">
+                <button type="submit" th:text="#{save-button}">Save</button>
+                <a href="list-genre.html" th:href="@{/genre}"><button type="button" th:text="#{cancel-button}">Cancel</button></a>
+            </div>
+        </form>
+    </body>
+</html>
