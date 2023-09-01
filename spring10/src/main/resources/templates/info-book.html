@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit person</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+
+        .tbl {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .tbl tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .tbl td:last-child, td:first-child {
+            width: 50px;
+        }
+
+        h3 {
+            /*background-image: url("../static/listmark.png");*/
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+        .errors {
+            color: red;
+        }
+    </style>
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+        /*background-image: url([[@{/listmark.png}]]);*/
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+    </style>
+</head>
+    <body>
+        <form id="info-book" action="info-book.html">
+            <div class="row">
+                <label for="id-input">ID:</label>
+                <input id="id-input" type="text" readonly="readonly" name="id"/>
+            </div>
+
+            <div class="row">
+                <label for="name-input">Name:</label>
+                <input id="name-input" type="text" readonly="readonly" name="name"/>
+            </div>
+
+            <div class="row">
+                <label for="number-pages-input">Number Pages: </label>
+                <input id="number-pages-input" type="text" readonly="readonly" name="numberPages"/>
+            </div>
+
+            <div class="row">
+                <label for="year-issue-input">Year Issue:</label>
+                <input id="year-issue-input" type="text" readonly="readonly" name="yearIssue"/>
+            </div>
+
+            <br/>
+
+            <table class="tbl">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Genre</th>
+                    </tr>
+                </thead>
+                <tbody id="genreTable"/>
+            </table>
+
+            <br/>
+
+            <table class="tbl">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Age</th>
+                        <th>Year Birthdate</th>
+                    </tr>
+                </thead>
+                <tbody id="authorTable"/>
+            </table>
+
+            <br/>
+
+            <table class="tbl">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody id="commentTable"/>
+            </table>
+
+            <br/>
+
+            <div class="row">
+                <a href="list-book.html" th:href="@{/}"><button type="button">Go Back</button></a>
+            </div>
+
+            <script>
+                const params = {
+                    method: 'GET'
+                }
+
+                const bookId = "[[${id}]]";
+
+                fetch("/api/book/" + bookId, params)
+                    .then(response => response.json())
+                    .then(data => {
+                        const idInput = document.getElementById("id-input")
+                        const nameInput = document.getElementById("name-input")
+                        const numberPagesInput = document.getElementById("number-pages-input")
+                        const yearIssueInput = document.getElementById("year-issue-input")
+
+                        idInput.value = data.id
+                        nameInput.value = data.name
+                        numberPagesInput.value = data.numberPages
+                        yearIssueInput.value = data.yearIssue
+
+                        data.genres.forEach(genre => {
+                            genreTable.innerHTML +=
+                                "<tr>" +
+                                "<td>" + genre.id + "</td>" +
+                                "<td>" + genre.genre + "</td>" +
+                                "</tr>"
+                        })
+
+                        data.authors.forEach(author => {
+                            authorTable.innerHTML +=
+                                "<tr>" +
+                                "<td>" + author.id + "</td>" +
+                                "<td>" + author.firstName + "</td>" +
+                                "<td>" + author.lastName + "</td>" +
+                                "<td>" + author.age + "</td>" +
+                                "<td>" + author.yearBirthdate + "</td>" +
+                                "</tr>"
+                        })
+
+                        data.comments.forEach(comment => {
+                            commentTable.innerHTML +=
+                                "<tr>" +
+                                "<td>" + comment.id + "</td>" +
+                                "<td>" + comment.comments + "</td>" +
+                                "</tr>"
+                        })
+                    })
+            </script>
+        </form>
+    </body>
+</html>
