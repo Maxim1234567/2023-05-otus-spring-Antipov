@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all persons</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .tbl {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .tbl tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .tbl td:last-child, td:first-child {
+            width: 50px;
+        }
+    </style>
+</head>
+    <body>
+        <h3 th:text="#{header-book} + ':'">Book</h3>
+        <h3 th:text="#{book-id} + ': ' + ${book.id}">ID: 1</h3>
+        <h3 th:text="#{book-name} + ': ' + ${book.name}">Name: name</h3>
+        <h3 th:text="#{book-number-pages} + ': ' + ${book.numberPages}">Number Pages: number-pages</h3>
+        <h3 th:text="#{book-year-issue} + ': ' + ${book.yearIssue}">Year Issue: year-issue</h3>
+
+        <h3 th:text="#{book-authors} + ':'">Authors:</h3>
+        <table class="tbl">
+            <thead>
+                <tr>
+                    <th th:text="#{author-id}">ID</th>
+                    <th th:text="#{author-first-name}">First Name</th>
+                    <th th:text="#{author-last-name}">Last Name</th>
+                    <th th:text="#{author-age}">Age</th>
+                    <th th:text="#{author-year-birthdate}">Year Birthdate</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="author: ${book.authors}">
+                    <td th:text="${author.id}">1</td>
+                    <td th:text="${author.firstName}">First Name</td>
+                    <td th:text="${author.lastName}">Last Name</td>
+                    <td th:text="${author.age}">Age</td>
+                    <td th:text="${author.yearBirthdate}">Year Birthdate</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 th:text="#{book-genres} + ':'">Genres:</h3>
+        <table class="tbl">
+            <thead>
+                <tr>
+                    <th th:text="#{genre-id}">ID</th>
+                    <th th:text="#{genre-genre}">Genre</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="genre: ${book.genres}">
+                    <td th:text="${genre.id}">1</td>
+                    <td th:text="${genre.genre}">Genre</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 th:text="#{book-comments} + ':'">Comments:</h3>
+        <table class="tbl">
+            <thead>
+                <tr>
+                    <th th:text="#{comment-id}">ID</th>
+                    <th th:text="#{comment-comments}">Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="comment: ${book.comments}">
+                    <td th:text="${comment.id}">1</td>
+                    <td th:text="${comment.comments}">Comments</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
