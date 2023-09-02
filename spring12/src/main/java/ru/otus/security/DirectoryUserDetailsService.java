@@ -22,6 +22,7 @@ public class DirectoryUserDetailsService implements UserDetailsService {
         return User
                 .withUsername(person.getUsername())
                 .password(person.getPassword())
+                .roles(person.getRole())
                 .build();
     }
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -18,6 +19,9 @@ public class BookPageControllerTest {
     private MockMvc mvc;
 
     @DisplayName("should return view list-book")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldReturnViewListBook() throws Exception {
         mvc.perform(get("/"))
@@ -26,6 +30,9 @@ public class BookPageControllerTest {
     }
 
     @DisplayName("should return view create-book")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldReturnViewCreateBook() throws Exception {
         mvc.perform(get("/book/create"))
@@ -34,6 +41,9 @@ public class BookPageControllerTest {
     }
 
     @DisplayName("should return view update-book")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldReturnViewUpdateBook() throws Exception {
         mvc.perform(get("/book/update")
@@ -45,6 +55,9 @@ public class BookPageControllerTest {
     }
 
     @DisplayName("should return view info-book")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldReturnViewInfoBook() throws Exception {
         mvc.perform(get("/book/info")

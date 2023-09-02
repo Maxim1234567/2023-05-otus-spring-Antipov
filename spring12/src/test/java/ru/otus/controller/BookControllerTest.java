@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
@@ -22,6 +23,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -160,6 +162,9 @@ public class BookControllerTest {
     private BookService bookService;
 
     @DisplayName("correctly return all books")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldCorrectReturnAllBooks() throws Exception {
         BookDto book1 = EXPECTED_BOOK.get(0);
@@ -182,6 +187,9 @@ public class BookControllerTest {
     }
 
     @DisplayName("correctly return book by id")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldCorrectReturnBookById() throws Exception {
         BookDto book1 = EXPECTED_BOOK.get(0);
@@ -198,6 +206,9 @@ public class BookControllerTest {
     }
 
     @DisplayName("throw NotFoundException book not exist id")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldThrowNotFoundBookNotExistId() throws Exception {
         long notExistsBookId = 1111L;
@@ -213,6 +224,9 @@ public class BookControllerTest {
     }
 
     @DisplayName("correctly correct create book")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldCorrectCreateBook() throws Exception {
         BookDto added = EXPECTED_BOOK.get(0);
@@ -221,6 +235,7 @@ public class BookControllerTest {
                 .willReturn(added);
 
         mvc.perform(post("/api/book")
+                        .with(csrf())
                         .header("Accept", "application/json")
                         .header("Content-Type", "application/json")
                         .content(mapper.writeValueAsString(added))
@@ -232,6 +247,9 @@ public class BookControllerTest {
     }
 
     @DisplayName("correctly correct update book")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldCorrectUpdateBook() throws Exception {
         BookDto update = EXPECTED_BOOK.get(0);
@@ -240,6 +258,7 @@ public class BookControllerTest {
                 .willReturn(update);
 
         mvc.perform(put("/api/book/" + update.getId())
+                        .with(csrf())
                         .header("Accept", "application/json")
                         .header("Content-Type", "application/json")
                         .content(mapper.writeValueAsString(update))
@@ -250,54 +269,10 @@ public class BookControllerTest {
                 .update(any(BookDto.class));
     }
 
-    @DisplayName("catch error validation create book")
-//    @Test
-    public void shouldCatchErrorValidationCreateBook() throws Exception {
-        BookDto added = BookDto.builder()
-                .name("12")
-                .numberPages(null)
-                .yearIssue(null)
-                .authors(List.of())
-                .genres(List.of())
-                .comments(List.of())
-                .build();
-
-        mvc.perform(post("/api/book")
-                        .header("Accept", "application/json")
-                        .header("Content-Type", "application/json")
-                        .content(mapper.writeValueAsString(added))
-                ).andExpect(status().isBadRequest())
-                .andExpect(content().string("Validation Error"));
-
-        verify(bookService, times(0))
-                .create(any(BookDto.class));
-    }
-
-    @DisplayName("catch error validation update book")
-//    @Test
-    public void shouldCatchErrorValidationUpdateBook() throws Exception {
-        BookDto update = BookDto.builder()
-                .id(100L)
-                .name("12")
-                .numberPages(null)
-                .yearIssue(null)
-                .authors(List.of())
-                .genres(List.of())
-                .comments(List.of())
-                .build();
-
-        mvc.perform(put("/api/book")
-                        .header("Accept", "application/json")
-                        .header("Content-Type", "application/json")
-                        .content(mapper.writeValueAsString(update))
-                ).andExpect(status().isBadRequest())
-                .andExpect(content().string("Validation Error"));
-
-        verify(bookService, times(0))
-                .update(any(BookDto.class));
-    }
-
     @DisplayName("correctly delete book")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldCorrectDeleteBook() throws Exception {
         BookDto book = EXPECTED_BOOK.get(0);
@@ -305,7 +280,7 @@ public class BookControllerTest {
         given(bookService.getBookById(eq(book.getId())))
                 .willReturn(book);
 
-        mvc.perform(delete("/api/book/" + book.getId()))
+        mvc.perform(delete("/api/book/" + book.getId()).with(csrf()))
                 .andExpect(status().isNoContent());
 
         verify(bookService, times(1))

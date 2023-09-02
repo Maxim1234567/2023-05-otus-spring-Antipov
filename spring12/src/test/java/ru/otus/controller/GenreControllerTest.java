@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.dto.GenreDto;
 import ru.otus.service.GenreService;
@@ -17,6 +18,7 @@ import static org.mockito.BDDMockito.given;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -48,6 +50,9 @@ public class GenreControllerTest {
     private GenreService genreService;
 
     @DisplayName("correctly return all genre")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldCorrectReturnAllGenre() throws Exception {
         GenreDto genre1 = EXPECTED_GENRES.get(0);
@@ -70,6 +75,9 @@ public class GenreControllerTest {
     }
 
     @DisplayName("correctly add genre")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldCorrectAddGenre() throws Exception {
         GenreDto added = EXPECTED_GENRES.get(0);
@@ -78,6 +86,7 @@ public class GenreControllerTest {
                 .willReturn(added);
 
         mvc.perform(post("/api/genre")
+                        .with(csrf())
                         .header("Accept", "application/json")
                         .header("Content-Type", "application/json")
                         .content(mapper.writeValueAsString(added))
@@ -85,24 +94,6 @@ public class GenreControllerTest {
                 .andExpect(content().json(mapper.writeValueAsString(added)));
 
         verify(genreService, times(1))
-                .create(any(GenreDto.class));
-    }
-
-    @DisplayName("catch error validation create genre")
-//    @Test
-    public void shouldCatchErrorValidationCreateGenre() throws Exception {
-        GenreDto added = GenreDto.builder()
-                .genre("12")
-                .build();
-
-        mvc.perform(post("/api/genre")
-                        .header("Accept", "application/json")
-                        .header("Content-Type", "application/json")
-                        .content(mapper.writeValueAsString(added))
-                ).andExpect(status().isBadRequest())
-                .andExpect(content().string("Validation Error"));
-
-        verify(genreService, times(0))
                 .create(any(GenreDto.class));
     }
 }

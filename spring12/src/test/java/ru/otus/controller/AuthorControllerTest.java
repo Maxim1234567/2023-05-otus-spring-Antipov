@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.dto.AuthorDto;
 import ru.otus.service.AuthorService;
@@ -17,6 +19,7 @@ import static org.mockito.BDDMockito.given;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -42,6 +45,9 @@ public class AuthorControllerTest {
     private AuthorService authorService;
 
     @DisplayName("correctly return all author")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldCorrectReturnAllAuthor() throws Exception {
         AuthorDto author1 = EXPECTED_AUTHORS.get(0);
@@ -64,6 +70,9 @@ public class AuthorControllerTest {
     }
 
     @DisplayName("correctly add genre")
+    @WithMockUser(
+            username = "user"
+    )
     @Test
     public void shouldCorrectAddAuthor() throws Exception {
         AuthorDto added = EXPECTED_AUTHORS.get(0);
@@ -72,6 +81,7 @@ public class AuthorControllerTest {
                 .willReturn(added);
 
         mvc.perform(post("/api/author")
+                        .with(csrf())
                         .header("Accept", "application/json")
                         .header("Content-Type", "application/json")
                         .content(mapper.writeValueAsString(added))
@@ -79,27 +89,6 @@ public class AuthorControllerTest {
                 .andExpect(content().json(mapper.writeValueAsString(added)));
 
         verify(authorService, times(1))
-                .create(any(AuthorDto.class));
-    }
-
-    @DisplayName("catch error validation create author")
-//    @Test
-    public void shouldCatchErrorValidationCreateAuthor() throws Exception {
-        AuthorDto added = AuthorDto.builder()
-                .firstName("12")
-                .lastName("12")
-                .age(17)
-                .yearBirthdate(0)
-                .build();
-
-        mvc.perform(post("/api/author")
-                        .header("Accept", "application/json")
-                        .header("Content-Type", "application/json")
-                        .content(mapper.writeValueAsString(added))
-                ).andExpect(status().isBadRequest())
-                .andExpect(content().string("Validation Error"));
-
-        verify(authorService, times(0))
                 .create(any(AuthorDto.class));
     }
 }
