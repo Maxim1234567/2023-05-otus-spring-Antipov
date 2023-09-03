@@ -19,7 +19,8 @@ public class AuthorPageControllerTest {
 
     @DisplayName("should correctly return view list-author")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldReturnViewListAuthor() throws Exception {
@@ -30,7 +31,8 @@ public class AuthorPageControllerTest {
 
     @DisplayName("should correctly return view create-author")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldReturnViewCreateAuthor() throws Exception {

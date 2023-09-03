@@ -20,7 +20,8 @@ public class BookPageControllerTest {
 
     @DisplayName("should return view list-book")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldReturnViewListBook() throws Exception {
@@ -31,7 +32,8 @@ public class BookPageControllerTest {
 
     @DisplayName("should return view create-book")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldReturnViewCreateBook() throws Exception {
@@ -42,7 +44,8 @@ public class BookPageControllerTest {
 
     @DisplayName("should return view update-book")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldReturnViewUpdateBook() throws Exception {
@@ -56,7 +59,8 @@ public class BookPageControllerTest {
 
     @DisplayName("should return view info-book")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldReturnViewInfoBook() throws Exception {

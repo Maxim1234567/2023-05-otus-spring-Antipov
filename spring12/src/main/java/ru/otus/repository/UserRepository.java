@@ -1,10 +1,10 @@
 package ru.otus.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.otus.domain.Person;
+import ru.otus.domain.User;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<Person, Long> {
-    Optional<Person> findByUsername(String username);
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUsername(String username);
 }

@@ -1,12 +1,11 @@
 package ru.otus.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import ru.otus.domain.Person;
+import ru.otus.domain.User;
 import ru.otus.repository.UserRepository;
 
 @RequiredArgsConstructor
@@ -16,13 +15,13 @@ public class DirectoryUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Person person = userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        return User
-                .withUsername(person.getUsername())
-                .password(person.getPassword())
-                .roles(person.getRole())
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .roles(user.getRole())
                 .build();
     }
 }

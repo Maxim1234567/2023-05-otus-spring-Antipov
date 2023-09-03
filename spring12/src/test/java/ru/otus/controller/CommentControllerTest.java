@@ -33,7 +33,8 @@ public class CommentControllerTest {
 
     @DisplayName("correctly add comment")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldCorrectAddComment() throws Exception {

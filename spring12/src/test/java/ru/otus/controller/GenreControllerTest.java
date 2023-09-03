@@ -51,7 +51,8 @@ public class GenreControllerTest {
 
     @DisplayName("correctly return all genre")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldCorrectReturnAllGenre() throws Exception {
@@ -76,7 +77,8 @@ public class GenreControllerTest {
 
     @DisplayName("correctly add genre")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldCorrectAddGenre() throws Exception {

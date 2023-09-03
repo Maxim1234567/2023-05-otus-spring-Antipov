@@ -20,7 +20,8 @@ public class CommentPageControllerTest {
 
     @DisplayName("correctly return view create-comment")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldReturnViewCreateComment() throws Exception {

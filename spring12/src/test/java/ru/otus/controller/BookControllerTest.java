@@ -163,7 +163,8 @@ public class BookControllerTest {
 
     @DisplayName("correctly return all books")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldCorrectReturnAllBooks() throws Exception {
@@ -188,7 +189,8 @@ public class BookControllerTest {
 
     @DisplayName("correctly return book by id")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldCorrectReturnBookById() throws Exception {
@@ -207,7 +209,8 @@ public class BookControllerTest {
 
     @DisplayName("throw NotFoundException book not exist id")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldThrowNotFoundBookNotExistId() throws Exception {
@@ -225,7 +228,8 @@ public class BookControllerTest {
 
     @DisplayName("correctly correct create book")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldCorrectCreateBook() throws Exception {
@@ -248,7 +252,8 @@ public class BookControllerTest {
 
     @DisplayName("correctly correct update book")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldCorrectUpdateBook() throws Exception {
@@ -271,7 +276,8 @@ public class BookControllerTest {
 
     @DisplayName("correctly delete book")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldCorrectDeleteBook() throws Exception {

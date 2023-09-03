@@ -18,7 +18,8 @@ public class GenrePageControllerTest {
 
     @DisplayName("should correctly return view list-genre")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldReturnViewListGenre() throws Exception {
@@ -29,7 +30,8 @@ public class GenrePageControllerTest {
 
     @DisplayName("should correctly return view create-genre")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldReturnViewCreateGenre() throws Exception {

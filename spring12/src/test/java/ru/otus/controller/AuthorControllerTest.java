@@ -46,7 +46,8 @@ public class AuthorControllerTest {
 
     @DisplayName("correctly return all author")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldCorrectReturnAllAuthor() throws Exception {
@@ -71,7 +72,8 @@ public class AuthorControllerTest {
 
     @DisplayName("correctly add genre")
     @WithMockUser(
-            username = "user"
+            username = "user",
+            authorities = "USER"
     )
     @Test
     public void shouldCorrectAddAuthor() throws Exception {
