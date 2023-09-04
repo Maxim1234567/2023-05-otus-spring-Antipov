@@ -20,13 +20,18 @@ public class SecurityConfiguration {
                         sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 )
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers("/", "/author", "/book/info", "/genre")
-                                .hasAnyRole("ADMIN", "USER")
+                        request.requestMatchers(
+                                "/",
+                                        "/author",
+                                        "/book/info",
+                                        "/genre").hasAnyRole("ADMIN", "USER")
                                 .requestMatchers(
-                                        "/author/create","/book/create", "/book/update",
-                                        "/comment/create", "/genre/create"
-                                )
-                                .hasRole("ADMIN").anyRequest()
+                                        "/author/create",
+                                        "/book/create",
+                                        "/book/update",
+                                        "/comment/create",
+                                        "/genre/create"
+                                ).hasRole("ADMIN").anyRequest()
                                 .authenticated()
                 )
                 .formLogin(Customizer.withDefaults())

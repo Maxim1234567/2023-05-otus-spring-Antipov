@@ -21,7 +21,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @Entity
-@Table(name = "COMMENT")
+@Table(name = "COMMENTS")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

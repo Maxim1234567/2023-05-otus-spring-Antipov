@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @Entity
-@Table(name = "AUTHOR")
+@Table(name = "AUTHORS")
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

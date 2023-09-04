@@ -1,5 +1,6 @@
 package ru.otus.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,13 +28,44 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(AuthorController.class)
 @DisplayName("Controller to work with author should")
 public class AuthorControllerTest {
-    private static final List<AuthorDto> EXPECTED_AUTHORS = List.of(
-            new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951),
-            new AuthorDto(200L, "Ivan", "Efremov", 64, 1908),
-            new AuthorDto(300L, "Isaac", "Asimov", 72, 1919),
-            new AuthorDto(400L, "Irvine", "Welsh", 64, 1958),
-            new AuthorDto(500L, "Lyubov", "Voronkova", 70, 1906)
-    );
+
+    private static final String JSON_AUTHORS =
+            "[\n" +
+            "    {\n" +
+            "        \"id\": 100,\n" +
+            "        \"firstName\": \"Herbert\",\n" +
+            "        \"lastName\": \"Shieldt\",\n" +
+            "        \"age\": 72,\n" +
+            "        \"yearBirthdate\": 1951,\n" +
+            "        \"name\": \"Herbert Shieldt\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "        \"id\": 200,\n" +
+            "        \"firstName\": \"Ivan\",\n" +
+            "        \"lastName\": \"Efremov\",\n" +
+            "        \"age\": 64,\n" +
+            "        \"yearBirthdate\": 1908,\n" +
+            "        \"name\": \"Ivan Efremov\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "        \"id\": 300,\n" +
+            "        \"firstName\": \"Isaac\",\n" +
+            "        \"lastName\": \"Asimov\",\n" +
+            "        \"age\": 72,\n" +
+            "        \"yearBirthdate\": 1919,\n" +
+            "        \"name\": \"Isaac Asimov\"\n" +
+            "    }\n" +
+            "]";
+
+    private static final String JSON_AUTHOR =
+            "{\n" +
+            "    \"id\": 100,\n" +
+            "    \"firstName\": \"Herbert\",\n" +
+            "    \"lastName\": \"Shieldt\",\n" +
+            "    \"age\": 72,\n" +
+            "    \"yearBirthdate\": 1951,\n" +
+            "    \"name\": \"Herbert Shieldt\"\n" +
+            "}";
 
     @Autowired
     private MockMvc mvc;
@@ -51,12 +83,10 @@ public class AuthorControllerTest {
     )
     @Test
     public void shouldCorrectReturnAllAuthor() throws Exception {
-        AuthorDto author1 = EXPECTED_AUTHORS.get(0);
-        AuthorDto author2 = EXPECTED_AUTHORS.get(1);
-        AuthorDto author3 = EXPECTED_AUTHORS.get(2);
-
         List<AuthorDto> authors = List.of(
-                author1, author2, author3
+                new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951),
+                new AuthorDto(200L, "Ivan", "Efremov", 64, 1908),
+                new AuthorDto(300L, "Isaac", "Asimov", 72, 1919)
         );
 
         given(authorService.getAll())
@@ -64,7 +94,7 @@ public class AuthorControllerTest {
 
         mvc.perform(get("/api/author"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(authors)));
+                .andExpect(content().json(JSON_AUTHORS));
 
         verify(authorService, times(1))
                 .getAll();
@@ -77,7 +107,7 @@ public class AuthorControllerTest {
     )
     @Test
     public void shouldCorrectAddAuthor() throws Exception {
-        AuthorDto added = EXPECTED_AUTHORS.get(0);
+        AuthorDto added = new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951);
 
         given(authorService.create(any(AuthorDto.class)))
                 .willReturn(added);
@@ -88,7 +118,7 @@ public class AuthorControllerTest {
                         .header("Content-Type", "application/json")
                         .content(mapper.writeValueAsString(added))
                 ).andExpect(status().isCreated())
-                .andExpect(content().json(mapper.writeValueAsString(added)));
+                .andExpect(content().json(JSON_AUTHOR));
 
         verify(authorService, times(1))
                 .create(any(AuthorDto.class));

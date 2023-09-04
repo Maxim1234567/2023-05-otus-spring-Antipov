@@ -1,5 +1,6 @@
 package ru.otus.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,19 +27,28 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("Controller to work with genre should")
 @WebMvcTest(GenreController.class)
 public class GenreControllerTest {
-    private static final List<GenreDto> EXPECTED_GENRES = List.of(
-            new GenreDto(100L, "Fiction"),
-            new GenreDto(200L, "Novel"),
-            new GenreDto(300L, "Thriller"),
-            new GenreDto(400L, "Tale"),
-            new GenreDto(500L, "Comedy"),
-            new GenreDto(600L, "Drama"),
-            new GenreDto(700L, "Popular science literature"),
-            new GenreDto(800L, "Art and culture"),
-            new GenreDto(900L, "Reference books and professional literature"),
-            new GenreDto(1000L, "Hobbies, skills"),
-            new GenreDto(1100L, "Modern domestic prose")
-    );
+
+    private static final String JSON_GENRES =
+            "[\n" +
+            "    {\n" +
+            "        \"id\": 100,\n" +
+            "        \"genre\": \"Fiction\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "        \"id\": 200,\n" +
+            "        \"genre\": \"Novel\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "        \"id\": 300,\n" +
+            "        \"genre\": \"Thriller\"\n" +
+            "    }\n" +
+            "]";
+
+    private static final String JSON_GENRE =
+            "{\n" +
+            "    \"id\": 100,\n" +
+            "    \"genre\": \"Fiction\"\n" +
+            "}";
 
     @Autowired
     private MockMvc mvc;
@@ -56,12 +66,10 @@ public class GenreControllerTest {
     )
     @Test
     public void shouldCorrectReturnAllGenre() throws Exception {
-        GenreDto genre1 = EXPECTED_GENRES.get(0);
-        GenreDto genre2 = EXPECTED_GENRES.get(1);
-        GenreDto genre3 = EXPECTED_GENRES.get(2);
-
         List<GenreDto> genres = List.of(
-                genre1, genre2, genre3
+                new GenreDto(100L, "Fiction"),
+                new GenreDto(200L, "Novel"),
+                new GenreDto(300L, "Thriller")
         );
 
         given(genreService.getAll())
@@ -69,7 +77,7 @@ public class GenreControllerTest {
 
         mvc.perform(get("/api/genre"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(genres)));
+                .andExpect(content().json(JSON_GENRES));
 
         verify(genreService, times(1))
                 .getAll();
@@ -82,7 +90,7 @@ public class GenreControllerTest {
     )
     @Test
     public void shouldCorrectAddGenre() throws Exception {
-        GenreDto added = EXPECTED_GENRES.get(0);
+        GenreDto added = new GenreDto(100L, "Fiction");
 
         given(genreService.create(any(GenreDto.class)))
                 .willReturn(added);
@@ -93,7 +101,7 @@ public class GenreControllerTest {
                         .header("Content-Type", "application/json")
                         .content(mapper.writeValueAsString(added))
                 ).andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(added)));
+                .andExpect(content().json(JSON_GENRE));
 
         verify(genreService, times(1))
                 .create(any(GenreDto.class));

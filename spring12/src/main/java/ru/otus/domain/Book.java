@@ -32,7 +32,7 @@ import java.util.List;
 @Setter
 @Builder
 @Entity
-@Table(name = "BOOK")
+@Table(name = "BOOKS")
 @NamedEntityGraphs({
         @NamedEntityGraph(
                 name = "author-entity-graph",
