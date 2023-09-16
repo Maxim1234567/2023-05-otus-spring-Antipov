@@ -20,6 +20,7 @@
         <module>spring9</module>
         <module>spring10</module>
         <module>spring11</module>
+        <module>spring12</module>
     </modules>
 
     <parent>

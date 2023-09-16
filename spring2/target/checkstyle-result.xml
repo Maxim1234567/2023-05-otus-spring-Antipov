@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="10.9.1">
-<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\dao\CsvQuestionDaoImpl.java">
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\DemoApplication.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\domain\Result.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\domain\TestQuestion.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\domain\UserData.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\repository\CsvQuestionDao.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\repository\CsvQuestionDaoImpl.java">
 <error line="26" column="5" severity="error" message="Количество строк у метода getAllQuestions 26 (максимум 25)." source="com.puppycrawl.tools.checkstyle.checks.sizes.MethodLengthCheck"/>
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\service\ConvertTestQuestionService.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\service\ConvertTestQuestionServiceImpl.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\service\DemoInteraction.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\service\DemoInteractionImpl.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\service\IOService.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\service\IOServiceImpl.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\service\QuestionService.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\service\QuestionServiceImpl.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\service\UserInteraction.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\java\ru\otus\service\UserInteractionImpl.java">
+</file>
+<file name="C:\Users\user\Desktop\Otus\homework\spring-outs-05-2023\spring2\src\main\resources\application.properties">
 </file>
 </checkstyle>
