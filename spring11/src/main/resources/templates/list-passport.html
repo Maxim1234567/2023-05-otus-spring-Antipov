@@ -1,0 +1,72 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="keywords" th:content="${keywords}"/>
+    <title>List of all persons</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .passport {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .passport tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .passport td:last-child, td:first-child {
+            width: 50px;
+        }
+    </style>
+</head>
+    <body>
+        <h1>Passport:</h1>
+
+        <table class="passport">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Series</td>
+                    <td>Number</td>
+                    <td>Issued</td>
+                    <td>Date Of Issue</td>
+                    <td>Code Division</td>
+                </tr>
+            </thead>
+            <tbody id="passportTable"/>
+        </table>
+
+        <br/>
+
+        <a href="create-passport.html" th:href="@{/passport/create}"><button type="button">Create</button></a>
+
+        <script>
+            const params = {
+                method: 'GET'
+            }
+
+            fetch("/api/passport", params)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(passport => {
+                        passportTable.innerHTML +=
+                            "<tr>" +
+                            "<td>" + passport.id + "</td>" +
+                            "<td>" + passport.series + "</td>" +
+                            "<td>" + passport.number + "</td>" +
+                            "<td>" + passport.issued + "</td>" +
+                            "<td>" + passport.dateOfIssue + "</td>" +
+                            "<td>" + passport.codeDivision + "</td>" +
+                            "<td><a href=\"/passport/info?series=" + passport.series + "&number=" + passport.number + "\"><button type=\"button\">Info</button></td>" +
+                            "<td><a href=\"/passport/update?id=" + passport.id + "\"><button type=\"button\">Update</button></td>" +
+                            "</tr>" ;
+                    })
+                });
+        </script>
+    </body>
+</html>

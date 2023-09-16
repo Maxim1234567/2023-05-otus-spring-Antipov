@@ -1,0 +1,64 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="keywords" th:content="${keywords}"/>
+    <title>List of all persons</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .genre {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .genre tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .genre td:last-child, td:first-child {
+            width: 50px;
+        }
+    </style>
+</head>
+    <body>
+        <h1>Genre:</h1>
+
+        <table class="genre">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Genre</th>
+                </tr>
+            </thead>
+            <tbody id="genreTable"/>
+        </table>
+
+        <script>
+            const params = {
+                method: 'GET'
+            }
+
+            fetch("/api/genre", params)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(genre => {
+                        genreTable.innerHTML +=
+                            "<tr>" +
+                            "<td>" + genre.id + "</td>" +
+                            "<td>" + genre.genre + "</td>" +
+                            "</tr>";
+                    })
+                });
+        </script>
+
+        <br/>
+
+        <a href="create-genre.html" th:href="@{/genre/create}"><button type="button">Create</button></a>
+        <br/>
+        <a href="list-book.html" th:href="@{/}">Main</a>
+    </body>
+</html>
