@@ -9,7 +9,9 @@ import ru.otus.domain.Genre;
 import java.util.List;
 
 public interface GenreRepository extends JpaRepository<Genre, Long> {
-//    @PostFilter("hasPermission(filterObject, 'READ')")
+//    @Query(value = "SELECT NEXTVAL('id_sequence')", nativeQuery = true)
+//    long getNextEntityId();
+
     List<Genre> findAll();
 
     @Query("select g from Genre g where g.id in (:ids)")

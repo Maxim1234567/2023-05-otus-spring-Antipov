@@ -1,5 +1,6 @@
 package ru.otus.security;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +18,11 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .authorizeHttpRequests((authorize) -> authorize
                         .antMatchers("/**", "/").permitAll()
-                ).httpBasic();
+                        .requestMatchers(PathRequest.toH2Console()).permitAll()
+                )
+                .httpBasic();
+
+        http.headers().frameOptions().disable();
 
         return http.build();
     }
