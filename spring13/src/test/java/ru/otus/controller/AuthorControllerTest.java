@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.dto.AuthorDto;
 import ru.otus.service.AuthorService;
@@ -17,6 +18,7 @@ import static org.mockito.BDDMockito.given;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -74,6 +76,7 @@ public class AuthorControllerTest {
 
     @DisplayName("correctly return all author")
     @Test
+    @WithMockUser(username = "user")
     public void shouldCorrectReturnAllAuthor() throws Exception {
         List<AuthorDto> authors = List.of(
                 new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951),
@@ -94,6 +97,7 @@ public class AuthorControllerTest {
 
     @DisplayName("correctly add genre")
     @Test
+    @WithMockUser(username = "user")
     public void shouldCorrectAddAuthor() throws Exception {
         AuthorDto added = new AuthorDto(100L, "Herbert", "Shieldt", 72, 1951);
 
@@ -101,6 +105,7 @@ public class AuthorControllerTest {
                 .willReturn(added);
 
         mvc.perform(post("/api/author")
+                        .with(csrf())
                         .header("Accept", "application/json")
                         .header("Content-Type", "application/json")
                         .content(mapper.writeValueAsString(added))

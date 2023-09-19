@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.dto.AuthorDto;
 import ru.otus.dto.BookDto;
@@ -22,6 +23,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -285,6 +287,7 @@ public class BookControllerTest {
 
     @DisplayName("correctly return all books")
     @Test
+    @WithMockUser(username = "user")
     public void shouldCorrectReturnAllBooks() throws Exception {
         BookDto book1 = new BookDto(
                 100L,
@@ -413,6 +416,7 @@ public class BookControllerTest {
 
     @DisplayName("correctly return book by id")
     @Test
+    @WithMockUser(username = "user")
     public void shouldCorrectReturnBookById() throws Exception {
         BookDto book1 = new BookDto(
                 100L,
@@ -473,6 +477,7 @@ public class BookControllerTest {
 
     @DisplayName("throw NotFoundException book not exist id")
     @Test
+    @WithMockUser(username = "user")
     public void shouldThrowNotFoundBookNotExistId() throws Exception {
         long notExistsBookId = 1111L;
 
@@ -488,6 +493,7 @@ public class BookControllerTest {
 
     @DisplayName("correctly correct create book")
     @Test
+    @WithMockUser(username = "user")
     public void shouldCorrectCreateBook() throws Exception {
         BookDto added = new BookDto(
                 100L,
@@ -539,6 +545,7 @@ public class BookControllerTest {
                 .willReturn(added);
 
         mvc.perform(post("/api/book")
+                        .with(csrf())
                         .header("Accept", "application/json")
                         .header("Content-Type", "application/json")
                         .content(mapper.writeValueAsString(added))
@@ -551,6 +558,7 @@ public class BookControllerTest {
 
     @DisplayName("correctly correct update book")
     @Test
+    @WithMockUser(username = "user")
     public void shouldCorrectUpdateBook() throws Exception {
         BookDto update = new BookDto(
                 100L,
@@ -602,6 +610,7 @@ public class BookControllerTest {
                 .willReturn(update);
 
         mvc.perform(put("/api/book/" + update.getId())
+                        .with(csrf())
                         .header("Accept", "application/json")
                         .header("Content-Type", "application/json")
                         .content(mapper.writeValueAsString(update))
@@ -614,6 +623,7 @@ public class BookControllerTest {
 
     @DisplayName("correctly delete book")
     @Test
+    @WithMockUser(username = "user")
     public void shouldCorrectDeleteBook() throws Exception {
         BookDto book = new BookDto(
                 100L,
@@ -664,7 +674,7 @@ public class BookControllerTest {
         given(bookService.getBookById(eq(book.getId())))
                 .willReturn(book);
 
-        mvc.perform(delete("/api/book/" + book.getId()))
+        mvc.perform(delete("/api/book/" + book.getId()).with(csrf()))
                 .andExpect(status().isNoContent());
 
         verify(bookService, times(1))

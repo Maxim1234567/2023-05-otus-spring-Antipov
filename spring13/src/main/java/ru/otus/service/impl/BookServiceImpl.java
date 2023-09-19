@@ -2,6 +2,19 @@ package ru.otus.service.impl;
 
 import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.acls.domain.BasePermission;
+import org.springframework.security.acls.domain.GrantedAuthoritySid;
+import org.springframework.security.acls.domain.ObjectIdentityImpl;
+import org.springframework.security.acls.domain.PrincipalSid;
+import org.springframework.security.acls.model.MutableAcl;
+import org.springframework.security.acls.model.MutableAclService;
+import org.springframework.security.acls.model.ObjectIdentity;
+import org.springframework.security.acls.model.Sid;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.convert.BookConvertBookDto;
@@ -35,8 +48,11 @@ public class BookServiceImpl implements BookService {
 
     private final BookDtoConvertBook convertBook;
 
+    private final MutableAclService mutableAclService;
+
     @Override
     @Transactional(readOnly = true)
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public BookDto getBookById(long id) {
         Book book = bookRepository.findById(id).orElseThrow(NotFoundException::new);
         return convertBookDto.convert(book);
@@ -44,6 +60,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = true)
+    @PostFilter("hasPermission(filterObject, 'READ')")
     public List<BookDto> getAllBooks() {
         return bookRepository.findAll().stream().map(convertBookDto::convert).toList();
     }
@@ -54,14 +71,27 @@ public class BookServiceImpl implements BookService {
         book.setComments(List.of());
 
         Book bookDomain = convertBook.convert(book);
+        BookDto newBook = convertBookDto.convert(save(bookDomain));
 
-        return convertBookDto.convert(
-                save(bookDomain)
-        );
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final Sid owner = new PrincipalSid(authentication);
+        ObjectIdentity oid = new ObjectIdentityImpl(newBook.getClass(), newBook.getId());
+
+        final Sid admin = new GrantedAuthoritySid("ROLE_EDITOR");
+
+        MutableAcl acl = mutableAclService.createAcl(oid);
+        acl.setOwner(admin);
+        acl.setEntriesInheriting(false);
+        acl.insertAce(acl.getEntries().size(), BasePermission.READ, owner, true);
+
+        mutableAclService.updateAcl(acl);
+
+        return newBook;
     }
 
     @Override
     @Transactional
+    @PreAuthorize("hasPermission(#book, 'WRITE')")
     public BookDto update(BookDto book) {
         bookRepository.findById(book.getId())
                 .orElseThrow(NotFoundException::new);
@@ -107,6 +137,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasPermission(#book, 'WRITE')")
     public void delete(BookDto book) {
         bookRepository.deleteById(book.getId());
     }
