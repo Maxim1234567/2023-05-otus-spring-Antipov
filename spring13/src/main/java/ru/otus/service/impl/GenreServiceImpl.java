@@ -59,9 +59,9 @@ public class GenreServiceImpl implements GenreService {
         final Sid admin = new GrantedAuthoritySid("ROLE_EDITOR");
 
         MutableAcl acl = mutableAclService.createAcl(oid);
-        acl.setOwner(admin);
+        acl.setOwner(owner);
         acl.setEntriesInheriting(false);
-        acl.insertAce(acl.getEntries().size(), BasePermission.READ, owner, true);
+        acl.insertAce(acl.getEntries().size(), BasePermission.ADMINISTRATION, admin, true);
 
         mutableAclService.updateAcl(acl);
 
