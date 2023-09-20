@@ -1,0 +1,36 @@
+spring:
+  main.allow-bean-definition-overriding: true
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+  data:
+    mongodb:
+      username: springboot
+      password: pivotal
+      host: localhost
+      port: 27017
+      database: griffins
+      authentication-database: admin
+      uri: mongodb://springboot:pivotal@localhost:27017/griffins?authSource=admin&authMechanism=SCRAM-SHA-1
+  jpa:
+    hibernate:
+      hbm2ddl:
+        auto: create-drop
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/habrdb
+    username: habrpguser
+    password: pgpwd4habr
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.mongock.changelog
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
