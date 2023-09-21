@@ -33,7 +33,7 @@ public class EpisodeRelation {
 
     private int episode;
 
-    @ManyToMany(targetEntity = CharacterRelation.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(targetEntity = CharacterRelation.class, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "EPISODE_CHARACTER",
             joinColumns = @JoinColumn(name = "episode_id"),
