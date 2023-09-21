@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring12</artifactId>
+    <artifactId>spring15</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
