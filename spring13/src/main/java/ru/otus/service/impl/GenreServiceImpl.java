@@ -61,8 +61,8 @@ public class GenreServiceImpl implements GenreService {
         MutableAcl acl = mutableAclService.createAcl(oid);
         acl.setOwner(owner);
         acl.setEntriesInheriting(false);
-        acl.insertAce(acl.getEntries().size(), BasePermission.ADMINISTRATION, admin, true);
-
+        acl.insertAce(acl.getEntries().size(), BasePermission.READ, admin, true);
+        acl.insertAce(acl.getEntries().size(), BasePermission.WRITE, admin, true);
         mutableAclService.updateAcl(acl);
 
         return newGenre;
