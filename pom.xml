@@ -10,7 +10,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-         <module>spring1</module>
+        <module>spring1</module>
         <module>spring2</module>
         <module>spring3</module>
         <module>spring4</module>
@@ -23,6 +23,7 @@
         <module>spring11</module>
         <module>spring12</module>
         <module>spring13</module>
+        <module>spring14</module>
     </modules>
 
     <parent>
