@@ -20,7 +20,7 @@ public class CommentHealthIndicator implements HealthIndicator {
     public Health health() {
         boolean isManyComments = commentRepository.count() >= resourceProvider.getComment().getEnough();
 
-        if(isManyComments) {
+        if (isManyComments) {
             return Health.down()
                     .status(Status.DOWN)
                     .withDetail("message", "Too many comments")
