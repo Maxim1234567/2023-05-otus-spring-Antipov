@@ -1,0 +1,24 @@
+### Spring Data Rest - Single genre
+GET http://localhost:8080/data-rest/genre/100
+Authorization: Basic user1 password1
+
+### Spring Data Rest - Single author
+GET http://localhost:8080/data-rest/author/100
+Authorization: Basic user1 password1
+
+### Spring Data Rest - Single Book
+GET http://localhost:8080/data-rest/book/100
+Authorization: Basic user1 password1
+
+### Spring Data Rest - Add genre
+POST http://localhost:8080/data-rest/genre
+Authorization: Basic user1 password1
+Content-Type: application/json
+
+{
+  "genre": "genre"
+}
+
+### Spring Data Rest - Get all genres
+GET http://localhost:8080/data-rest/genre
+Authorization: Basic user1 password1

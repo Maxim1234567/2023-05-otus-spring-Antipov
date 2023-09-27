@@ -1,4 +1,7 @@
 spring:
+  data:
+    rest:
+      base-path: /data-rest
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
     username: sa
@@ -27,6 +30,10 @@ logging:
       max-file-size: 10MB
   level:
     org.springframework.web: DEBUG
+
+app:
+  comment:
+    enough: 1000
 
 management:
   endpoints:

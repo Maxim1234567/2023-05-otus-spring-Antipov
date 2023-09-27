@@ -34,7 +34,8 @@ public class SecurityConfiguration {
                                 ).hasRole("ADMIN").anyRequest()
                                 .authenticated()
                 )
-                .formLogin(Customizer.withDefaults())
+//                .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
