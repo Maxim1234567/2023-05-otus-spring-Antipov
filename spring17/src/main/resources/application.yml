@@ -1,0 +1,51 @@
+
+spring:
+  data:
+    rest:
+      base-path: /data-rest
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    open-in-view: false
+
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    user: sa
+    password:
+
+
+logging:
+  file:
+    name: C:\Users\user\Downloads\spring-outs-05-2023.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: spring-outs-05-2023.%d{yyyy-MM-dd}.%i.gz
+      max-file-size: 10MB
+  level:
+    org.springframework.web: DEBUG
+
+app:
+  comment:
+    enough: 1000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    logfile:
+      enabled: true
+  health:
+    defaults:
+      enabled: true
