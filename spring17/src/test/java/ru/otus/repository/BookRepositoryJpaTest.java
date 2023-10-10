@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static ru.otus.Utils.assertEqualsBook;
 import static ru.otus.Utils.assertEqualsBookList;
 
