@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit person</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+
+    <script>
+        function createAuthor() {
+            const firstInput = document.getElementById("first-name-input")
+            const lastInput = document.getElementById("last-name-input")
+            const ageInput = document.getElementById("age-input");
+            const yearBirthdateInput = document.getElementById("year-birthdate-input")
+
+            const author = {
+                firstName: firstInput.value,
+                lastName: lastInput.value,
+                age: ageInput.value,
+                yearBirthdate: yearBirthdateInput.value
+            }
+
+            // console.log("json: " + JSON.stringify(author))
+
+            fetch("/api/author", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(author)
+            }).then(
+                window.location.replace("/author")
+            ).catch((error) => console.log("error: " + error))
+        }
+    </script>
+</head>
+<h3>Author:</h3>
+
+<form id="create-author" action="create-author.html">
+    <div class="row">
+        <label for="first-name-input">First Name:</label>
+        <input id="first-name-input" name="firstName" type="text">
+    </div>
+
+    <div class="row">
+        <label for="last-name-input">Last Name:</label>
+        <input id="last-name-input" name="lastName" type="text">
+    </div>
+
+    <div class="row">
+        <label for="age-input">Age:</label>
+        <input id="age-input" name="age" type="text">
+    </div>
+
+    <div class="row">
+        <label for="year-birthdate-input">Year Birthdate:</label>
+        <input id="year-birthdate-input" name="yearBirthdate" type="text">
+    </div>
+
+    <div class="row">
+        <button type="button" onclick="createAuthor()">Save</button>
+        <a href="list-author.html.html" th:href="@{/author}"><button type="button">Cancel</button></a>
+    </div>
+</form>
+</html><!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit person</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+
+    <script>
+        function createAuthor() {
+            const firstInput = document.getElementById("first-name-input")
+            const lastInput = document.getElementById("last-name-input")
+            const ageInput = document.getElementById("age-input");
+            const yearBirthdateInput = document.getElementById("year-birthdate-input")
+
+            const author = {
+                firstName: firstInput.value,
+                lastName: lastInput.value,
+                age: ageInput.value,
+                yearBirthdate: yearBirthdateInput.value
+            }
+
+            // console.log("json: " + JSON.stringify(author))
+
+            fetch("/api/author", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(author)
+            }).then(
+                window.location.replace("/author")
+            ).catch((error) => console.log("error: " + error))
+        }
+    </script>
+</head>
+<h3>Author:</h3>
+
+<form id="create-author" action="create-author.html">
+    <div class="row">
+        <label for="first-name-input">First Name:</label>
+        <input id="first-name-input" name="firstName" type="text">
+    </div>
+
+    <div class="row">
+        <label for="last-name-input">Last Name:</label>
+        <input id="last-name-input" name="lastName" type="text">
+    </div>
+
+    <div class="row">
+        <label for="age-input">Age:</label>
+        <input id="age-input" name="age" type="text">
+    </div>
+
+    <div class="row">
+        <label for="year-birthdate-input">Year Birthdate:</label>
+        <input id="year-birthdate-input" name="yearBirthdate" type="text">
+    </div>
+
+    <div class="row">
+        <button type="button" onclick="createAuthor()">Save</button>
+        <a href="list-author.html.html" th:href="@{/author}"><button type="button">Cancel</button></a>
+    </div>
+</form>
+</html>
