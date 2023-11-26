@@ -1,5 +1,6 @@
 package ru.otus.service.impl;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +23,14 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentDtoConvertComment convertComment;
 
+    @HystrixCommand(commandKey = "CreateComment")
     @Override
     @Transactional
     public CommentDto create(CommentDto comment) {
         return save(comment);
     }
 
+    @HystrixCommand(commandKey = "UpdateComment")
     @Override
     @Transactional
     public CommentDto update(CommentDto comment) {
@@ -41,12 +44,14 @@ public class CommentServiceImpl implements CommentService {
         return convertCommentDto.convert(commentSave);
     }
 
+    @HystrixCommand(commandKey = "DeleteComment")
     @Override
     @Transactional
     public void delete(CommentDto comment) {
         commentRepository.deleteById(comment.getId());
     }
 
+    @HystrixCommand(commandKey = "GetCommentById")
     @Override
     @Transactional(readOnly = true)
     public CommentDto getCommentById(long id) {
@@ -54,6 +59,7 @@ public class CommentServiceImpl implements CommentService {
         return convertCommentDto.convert(comment);
     }
 
+    @HystrixCommand(commandKey = "GetAllCommentsByBookId")
     @Override
     @Transactional(readOnly = true)
     public List<CommentDto> getAllCommentsByBookId(long bookId) {

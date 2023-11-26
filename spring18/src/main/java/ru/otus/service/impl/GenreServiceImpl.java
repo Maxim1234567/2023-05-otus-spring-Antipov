@@ -1,5 +1,6 @@
 package ru.otus.service.impl;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,18 +23,21 @@ public class GenreServiceImpl implements GenreService {
 
     private final GenreConvertGenreDto convertGenreDto;
 
+    @HystrixCommand(commandKey = "GetAllGenre")
     @Override
     @Transactional(readOnly = true)
     public List<GenreDto> getAll() {
         return genreRepository.findAll().stream().map(convertGenreDto::convert).toList();
     }
 
+    @HystrixCommand(commandKey = "CreateGenre")
     @Override
     @Transactional
     public GenreDto create(GenreDto genre) {
         return save(genre);
     }
 
+    @HystrixCommand(commandKey = "UpdateGenre")
     @Override
     public GenreDto update(GenreDto genre) {
         return save(genre);
@@ -46,12 +50,14 @@ public class GenreServiceImpl implements GenreService {
         return convertGenreDto.convert(genreSave);
     }
 
+    @HystrixCommand(commandKey = "DeleteGenre")
     @Override
     @Transactional
     public void delete(GenreDto genre) {
         genreRepository.deleteById(genre.getId());
     }
 
+    @HystrixCommand(commandKey = "GetGenreById")
     @Override
     @Transactional(readOnly = true)
     public GenreDto getGenreById(Long id) {

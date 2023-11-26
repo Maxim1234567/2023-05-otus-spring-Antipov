@@ -1,6 +1,7 @@
 package ru.otus.service.impl;
 
 import com.google.common.collect.Sets;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,7 @@ public class BookServiceImpl implements BookService {
 
     private final BookDtoConvertBook convertBook;
 
+    @HystrixCommand(commandKey = "GetBookById")
     @Override
     @Transactional(readOnly = true)
     public BookDto getBookById(long id) {
@@ -42,12 +44,14 @@ public class BookServiceImpl implements BookService {
         return convertBookDto.convert(book);
     }
 
+    @HystrixCommand(commandKey = "GetAllBooks")
     @Override
     @Transactional(readOnly = true)
     public List<BookDto> getAllBooks() {
         return bookRepository.findAll().stream().map(convertBookDto::convert).toList();
     }
 
+    @HystrixCommand(commandKey = "CreateBook")
     @Override
     @Transactional
     public BookDto create(BookDto book) {
@@ -60,6 +64,7 @@ public class BookServiceImpl implements BookService {
         );
     }
 
+    @HystrixCommand(commandKey = "UpdateBook")
     @Override
     @Transactional
     public BookDto update(BookDto book) {
@@ -105,6 +110,7 @@ public class BookServiceImpl implements BookService {
         return bookRepository.save(book);
     }
 
+    @HystrixCommand(commandKey = "DeleteBook")
     @Override
     @Transactional
     public void delete(BookDto book) {

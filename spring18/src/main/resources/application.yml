@@ -20,6 +20,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/db
     user: postgres
     password: postgres
+  application:
+    name: library
 
 app:
   comment:
@@ -38,3 +40,106 @@ management:
   health:
     defaults:
       enabled: true
+
+hystrix:
+  command:
+    GetGenreById:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    DeleteGenre:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    UpdateGenre:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    CreateGenre:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    GetAllGenre:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    GetAllCommentsByBookId:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    GetCommentById:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    DeleteComment:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    UpdateComment:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    CreateComment:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    DeleteBook:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    UpdateBook:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    CreateBook:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    GetAllBooks:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    GetBookById:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    GetAuthorById:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    DeleteAuthor:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    UpdateAuthor:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    CreateAuthor:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    GetAllAuthor:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000

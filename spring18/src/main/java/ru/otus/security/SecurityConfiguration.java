@@ -20,12 +20,12 @@ public class SecurityConfiguration {
                         sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 )
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers(
+                        request.antMatchers(
                                         "/",
                                         "/author",
                                         "/book/info",
                                         "/genre").hasAnyRole("ADMIN", "USER")
-                                .requestMatchers(
+                                .antMatchers(
                                         "/author/create",
                                         "/book/create",
                                         "/book/update",

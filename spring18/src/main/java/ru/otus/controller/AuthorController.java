@@ -1,6 +1,5 @@
 package ru.otus.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.otus.dto.AuthorDto;
 import ru.otus.service.AuthorService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
