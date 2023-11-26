@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: hystrix-dashboard
+
+server:
+  port: 8788
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+turbine:
+  app-config: library
+  cluster-name-expression: "new String(\"default\")"
